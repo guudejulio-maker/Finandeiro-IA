@@ -339,13 +339,15 @@ function stampUpdate() { window.lastUpdate = new Date(); }
 
 async function loadAll() {
   const fbCols = ['receitas','despesas','produtos','fornecedores','apagar','fechamentos'];
+
   for (const col of fbCols) {
-    try { const snap = await getDocs(collection(db, col)); window.state[col] = snap.docs.map(d => ({...d.data(), _id: d.id})); } catch(e) { window.state[col] = []; }
+    try {
+      const snap = await getDocs(collection(db, col));
+      window.state[col] = snap.docs.map(d => ({ ...d.data(), _id: d.id }));
+    } catch (e) {
+      window.state[col] = [];
+    }
   }
-  // [7] Load recebimentos instead of areceber
-  try { const snap = await getDocs(collection(db, 'recebimentos')); window.state.recebimentos = snap.docs.map(d => ({...d.data(), _id: d.id})); } catch(e) { window.state.recebimentos = []; }
-  // [9] Load retiradas
-  try { const snap = await getDocs(collection(db, 'retiradas')); window.state.retiradas = snap.docs.map(d => ({...d.data(), _id: d.id})); } catch(e) { window.state.retiradas = []; }
 
   if (supabase) {
     try {
@@ -357,14 +359,28 @@ async function loadAll() {
       state.sb_compras = await SB.list('compras', { order: 'criado_em', asc: false });
       state.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false });
       state.sb_documentos = await SB.list('documentos', { order: 'criado_em', asc: false });
-    } catch(e) { console.error('Supabase load error:', e); }
+
+      // RECEBIMENTOS via Supabase
+      state.recebimentos = await SB.list('recebimentos', { order: 'data', asc: false });
+
+      // RETIRADAS via Supabase
+      state.retiradas = await SB.list('retiradas_diretor', { order: 'data', asc: false });
+    } catch (e) {
+      console.error('Supabase load error:', e);
+      if (!Array.isArray(state.recebimentos)) state.recebimentos = [];
+      if (!Array.isArray(state.retiradas)) state.retiradas = [];
+    }
+  } else {
+    state.recebimentos = [];
+    state.retiradas = [];
   }
-  // [6] Auto-mark overdue boletos
+
   autoMarkOverdue();
   stampUpdate();
   window.render();
   window.updateBadges();
 }
+  
 
 window.reloadAllData = async function() {
   toast('Recarregando dados...');
@@ -442,9 +458,9 @@ const tReceb = () => fReceb().reduce((s,r)=>s+(r.valor||0),0);
 const tRetir = () => fRetir().reduce((s,r)=>s+(r.valor||0),0);
 const lucro = () => tR() + tReceb() - tD() - tRetir();
 const mediaL = () => state.historico.length ? state.historico.reduce((s,m)=>s+(m.r-m.d),0)/state.historico.length : 0;
-const tLanc = () => fLanc().reduce((s,l) => s + Number(l.valentia || 0), 0);
-const tBol = () => fBol().reduce((s,b) => s + Number(b.valentia || 0), 0);
-const tComp = () => fComp().reduce((s,c) => s + Number(c.valentia || 0), 0);
+const tLanc = () => fLanc().reduce((s,l) => s + Number(l.valor || 0), 0);
+const tBol = () => fBol().reduce((s,b) => s + Number(b.valor || 0), 0);
+const tComp = () => fComp().reduce((s,c) => s + Number(c.valor || 0), 0);
 
 const fmt = n => 'R$ '+Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
 const pct = (a,b) => b ? Math.round((a/b)*100) : 0;
@@ -466,23 +482,24 @@ function toast(msg, type='ts') {
 function autoMarkOverdue() {
   const today = new Date().toISOString().slice(0,10);
   // Firebase apagar
-  state.apagar.forEach(a => {
-    if (a.status === 'pendente' && a.venc && a.venc < today) {
-      a.status = 'atrasado';
-      try { window.dbUpd('apagar', a._id, { status: 'atrasado' }); } catch(e){}
-    }
-  });
-  // Supabase boletos
+   // Supabase boletos
   state.sb_boletos.forEach(b => {
     if ((b.status === 'pendente' || !b.status) && b.data_vencimento && b.data_vencimento < today) {
       b.status = 'atrasado';
-      try { SB.update('boletos', b.id, { status: 'atrasado' }); } catch(e){}
+      try {
+  supabase
+    .from('boletos')
+    .update({ status: 'atrasado' })
+    .eq('id', b.id);
+} catch (e) {}
     }
   });
 }
 
 window.updateBadges = function() {
-  const ap = state.apagar.filter(a=>a.status==='pendente'||a.status==='atrasado').length + state.sb_boletos.filter(b=>b.status==='pendente'||b.status==='atrasado').length;
+  const ap = state.sb_boletos.filter(
+  b => b.status === 'pendente' || b.status === 'atrasado'
+).length;
   document.getElementById('badge-apagar')&&(document.getElementById('badge-apagar').textContent=ap);
   const pb=document.getElementById('badge-pdf');
   if(pb){if(state.pdfPendentes.length>0){pb.style.display='';pb.textContent=state.pdfPendentes.length;}else pb.style.display='none';}
@@ -534,10 +551,17 @@ window.render = function() {
 function getAlertasContas() {
   const today = new Date().toISOString().slice(0,10);
   const weekEnd = new Date(Date.now() + 7*86400000).toISOString().slice(0,10);
-  const allContas = [
-    ...state.apagar.filter(a=>a.status!=='pago').map(a=>({desc:a.desc,valor:a.valor,venc:a.venc,status:a.status,src:'FB'})),
-    ...state.sb_boletos.filter(b=>b.status!=='pago').map(b=>({desc:b.descricao||'Boleto #'+b.id,valor:Number(b.valentia||0),venc:b.data_vencimento,status:b.status,src:'SB'}))
-  ];
+ const allContas = [
+  ...state.sb_boletos
+    .filter(b => b.status !== 'pago')
+    .map(b => ({
+      desc: b.descricao || ('Boleto #' + b.id),
+      valor: Number(b.valor || 0),
+      venc: b.data_vencimento,
+      status: b.status,
+      src: 'SB'
+    }))
+];
   const atrasadas = allContas.filter(c => c.venc && c.venc < today);
   const hoje = allContas.filter(c => c.venc === today);
   const semana = allContas.filter(c => c.venc && c.venc > today && c.venc <= weekEnd);
@@ -612,79 +636,157 @@ function pgDash() {
   </div>
   <div class="g2">
     <div class="card"><div class="shd">Últimos Lançamentos <span class="supabase-tag">SB</span></div>
-      ${fLanc().slice(0,5).map(l=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${l.status==='pago'?'dg':l.status==='atrasado'?'dr':'da'}"></span>${l.descricao||'—'}</span><span style="color:var(--red);font-weight:500">${fmt(l.valentia)}</span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum lançamento neste mês</div>'}
+      ${fLanc().slice(0,5).map(l=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${l.status==='pago'?'dg':l.status==='atrasado'?'dr':'da'}"></span>${l.descricao||'—'}</span><span style="color:var(--red);font-weight:500">${fmt(l.valor)}</span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum lançamento neste mês</div>'}
     </div>
     <div class="card"><div class="shd">Últimos Boletos <span class="supabase-tag">SB</span></div>
-      ${fBol().slice(0,5).map(b=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${b.status==='pago'?'dg':b.status==='atrasado'?'dr':'da'}"></span>${b.descricao||'Boleto #'+b.id}</span><span style="display:flex;gap:8px;align-items:center"><span class="badge ${b.status==='atrasado'?'br':'ba'}">${(b.data_vencimento||'').slice(5)}</span><span style="color:var(--red);font-weight:500">${fmt(b.valentia)}</span></span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum boleto neste mês</div>'}
+      ${fBol().slice(0,5).map(b=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${b.status==='pago'?'dg':b.status==='atrasado'?'dr':'da'}"></span>${b.descricao||'Boleto #'+b.id}</span><span style="display:flex;gap:8px;align-items:center"><span class="badge ${b.status==='atrasado'?'br':'ba'}">${(b.data_vencimento||'').slice(5)}</span><span style="color:var(--red);font-weight:500">${fmt(b.valor)}</span></span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum boleto neste mês</div>'}
     </div>
   </div>`;
 }
 
 // ===== [7] RECEBIMENTOS (replaces A Receber) =====
 function pgReceb() {
-  const total = tReceb();
-  const lista = fReceb();
+  const totalMes = state.recebimentos
+    .filter(r => {
+      const d = new Date(r.data);
+      const now = new Date();
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    })
+    .reduce((s, r) => s + Number(r.valor || 0), 0);
+
+  const totalGeral = state.recebimentos.reduce((s, r) => s + Number(r.valor || 0), 0);
+
   return `
   <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('freceb')">+ Novo Recebimento</button>
-    <span class="badge bg" style="padding:5px 11px">Total no mês: ${fmt(total)}</span>
+    <button class="btn btn-p btn-sm" onclick="toggleForm('frec')">+ Novo Recebimento</button>
+    <span class="badge ba" style="padding:5px 11px">Mês: ${fmt(totalMes)}</span>
+    <span class="badge bp" style="padding:5px 11px">Total geral: ${fmt(totalGeral)}</span>
   </div>
-  <div id="freceb" class="fc" style="display:none">
-    <div class="ft">Registrar Recebimento (dinheiro que entrou)</div>
-    <div class="fg c4">
-      <div class="fl"><label>Descrição</label><input id="rb-desc" placeholder="Ex: Venda ouro 18k"/></div>
-      <div class="fl"><label>Valor (R$)</label><input id="rb-val" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Data</label><input id="rb-data" type="date" value="${new Date().toISOString().slice(0,10)}"/></div>
-      <div class="fl"><label>Forma</label><select id="rb-forma"><option>PIX</option><option>Dinheiro</option><option>Transferência</option><option>Cartão</option><option>Cheque</option></select></div>
+
+  <div id="frec" class="fc" style="display:none">
+    <div class="ft">Novo Recebimento</div>
+    <div class="fg c3">
+      <div class="fl">
+        <label>Valor (R$)</label>
+        <input id="rec-val" type="number" step="0.01" placeholder="0,00"/>
+      </div>
+      <div class="fl">
+        <label>Data</label>
+        <input id="rec-data" type="date" value="${new Date().toISOString().slice(0,10)}"/>
+      </div>
+      <div class="fl">
+        <label>Descrição</label>
+        <input id="rec-desc" placeholder="Ex: Venda cliente X"/>
+      </div>
     </div>
-    <div class="fg c2">
-      <div class="fl"><label>Origem / Cliente</label><input id="rb-origem" placeholder="De quem veio?"/></div>
-      <div class="fl"><label>Observação</label><input id="rb-obs" placeholder="Opcional"/></div>
+
+    <div class="fl">
+      <label>Observação</label>
+      <input id="rec-obs" placeholder="Opcional"/>
     </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addReceb()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('freceb')">Cancelar</button></div>
+
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-p btn-sm" onclick="addReceb()">Salvar</button>
+      <button class="btn btn-g btn-sm" onclick="toggleForm('frec')">Cancelar</button>
+    </div>
   </div>
-  <div class="tw"><table>
-    <thead><tr><th>Descrição</th><th>Origem</th><th>Data</th><th>Forma</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${lista.length?lista.map(r=>`<tr>
-      <td style="font-weight:500">${r.desc||''}</td>
-      <td style="color:var(--txt2)">${r.origem||'—'}</td>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${r.data||''}</td>
-      <td style="font-size:11px">${r.forma||'—'}</td>
-      <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(r.valor)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delItem('recebimentos','${r._id}')">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum recebimento neste mês</td></tr>'}</tbody>
-  </table></div>`;
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Descrição</th>
+          <th>Observação</th>
+          <th style="text-align:right">Valor</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${state.recebimentos.length ? state.recebimentos.map(r => `
+          <tr>
+            <td style="font-family:'DM Mono',monospace;font-size:11px">${r.data || ''}</td>
+            <td>${r.descricao || '-'}</td>
+            <td>${r.observacao || '-'}</td>
+            <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">
+              ${fmt(r.valor)}
+            </td>
+            <td>
+              <button class="btn btn-d btn-sm" onclick="delRecebSB(${r.id})">×</button>
+            </td>
+          </tr>
+        `).join('') : `
+          <tr>
+            <td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">
+              Nenhum recebimento cadastrado
+            </td>
+          </tr>
+        `}
+      </tbody>
+    </table>
+  </div>`;
 }
 
 // ===== [9] RETIRADA DIRETOR =====
 function pgRetirada() {
   const total = tRetir();
-  const totalGeral = state.retiradas.reduce((s,r)=>s+(r.valor||0),0);
+  const totalGeral = state.retiradas.reduce((s, r) => s + Number(r.valor || 0), 0);
   const lista = fRetir();
+
   return `
   <div class="ar">
     <button class="btn btn-p btn-sm" onclick="toggleForm('fret')">+ Nova Retirada</button>
     <span class="badge ba" style="padding:5px 11px">Mês: ${fmt(total)}</span>
     <span class="badge bp" style="padding:5px 11px">Total geral: ${fmt(totalGeral)}</span>
   </div>
+
   <div id="fret" class="fc" style="display:none">
     <div class="ft">Nova Retirada do Diretor</div>
     <div class="fg c3">
-      <div class="fl"><label>Valor (R$)</label><input id="ret-val" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Data</label><input id="ret-data" type="date" value="${new Date().toISOString().slice(0,10)}"/></div>
-      <div class="fl"><label>Observação</label><input id="ret-obs" placeholder="Ex: Retirada pessoal"/></div>
+      <div class="fl">
+        <label>Valor (R$)</label>
+        <input id="ret-val" type="number" step="0.01" placeholder="0,00"/>
+      </div>
+      <div class="fl">
+        <label>Data</label>
+        <input id="ret-data" type="date" value="${new Date().toISOString().slice(0,10)}"/>
+      </div>
+      <div class="fl">
+        <label>Observação</label>
+        <input id="ret-obs" placeholder="Ex: Retirada pessoal"/>
+      </div>
     </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addRetirada()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fret')">Cancelar</button></div>
+
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-p btn-sm" onclick="addRetirada()">Salvar</button>
+      <button class="btn btn-g btn-sm" onclick="toggleForm('fret')">Cancelar</button>
+    </div>
   </div>
-  <div class="tw"><table>
-    <thead><tr><th>Data</th><th>Observação</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${lista.length?lista.map(r=>`<tr>
-      <td style="font-family:'DM Mono',monospace;font-size:11px">${r.data||''}</td>
-      <td>${r.obs||'Retirada'}</td>
-      <td style="text-align:right;font-weight:600;color:var(--amber);font-family:'DM Mono',monospace">${fmt(r.valor)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delItem('retiradas','${r._id}')">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma retirada neste mês</td></tr>'}</tbody>
-  </table></div>`;
+
+  <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Observação</th>
+          <th style="text-align:right">Valor</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${lista.length ? lista.map(r => `
+          <tr>
+            <td style="font-family:'DM Mono',monospace;font-size:11px">${r.data || ''}</td>
+            <td>${r.observacao || 'Retirada'}</td>
+            <td style="text-align:right;font-weight:600;color:var(--amber);font-family:'DM Mono',monospace">${fmt(r.valor)}</td>
+            <td><button class="btn btn-d btn-sm" onclick="delRetiradaSB(${r.id})">×</button></td>
+          </tr>
+        `).join('') : `
+          <tr><td colspan="4" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma retirada neste mês</td></tr>
+        `}
+      </tbody>
+    </table>
+  </div>`;
 }
 
 // ===== [4] COMPARAR PREÇOS =====
@@ -693,10 +795,10 @@ function pgPrecos() {
   const priceMap = {};
   state.sb_compras.forEach(c => {
     const desc = (c.descricao || '').toLowerCase().trim();
-    if (!desc || !c.valentia) return;
+    if (!desc || !c.valor) return;
     const forn = getFornNome(c.fornecedor_id);
     if (!priceMap[desc]) priceMap[desc] = [];
-    priceMap[desc].push({ valor: Number(c.valentia), forn, data: c.data_compra || '', id: c.id });
+    priceMap[desc].push({ valor: Number(c.valor), forn, data: c.data_compra || '', id: c.id });
   });
 
   let html = `<div class="aip"><div class="aip-hd">✦ Comparação de Preços por Produto</div><div class="aip-bd">Analisa automaticamente todas as compras e compara preços entre fornecedores e ao longo do tempo.</div></div>`;
@@ -799,7 +901,7 @@ function pgBol() {
       <td style="color:var(--txt2)">${b.descricao||'—'}</td>
       <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${b.data_vencimento||'—'}</td>
       <td><span class="badge ${b.status==='pago'?'bg':b.status==='atrasado'?'br':b.status==='renegociado'?'bp':'ba'}">${b.status||'pendente'}</span></td>
-      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(b.valentia)}</td>
+      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(b.valor)}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap">
         ${b.status!=='pago'?`<button class="btn btn-s btn-sm" onclick="pagarBolSB(${b.id})">✓ Pagar</button><button class="btn btn-a btn-sm" onclick="showRenegociar(${b.id})">🔄 Renegociar</button>`:''}
         <button class="btn btn-d btn-sm" onclick="delSB('boletos',${b.id})">×</button>
@@ -834,7 +936,7 @@ function pgComp() {
       <td style="font-weight:500">${getFornNome(c.fornecedor_id)}</td>
       <td style="color:var(--txt2)">${c.descricao||'—'}</td>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${c.data_compra||'—'}</td>
-      <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valentia)}</td>
+      <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valor)}</td>
       <td><button class="btn btn-d btn-sm" onclick="delSB('compras',${c.id})">×</button></td>
     </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra neste mês</td></tr>'}</tbody>
   </table></div>`;
@@ -843,7 +945,7 @@ function pgComp() {
 // ===== REMAINING PAGES (keeping structure, just updated with filtered data) =====
 function pgLanc() {
   const lista = fLanc();
-  const total = lista.reduce((s,l) => s + Number(l.valentia||0), 0);
+  const total = lista.reduce((s,l) => s + Number(l.valor||0), 0);
   return `
   <div class="ar">
     <button class="btn btn-p btn-sm" onclick="toggleForm('flanc')">+ Novo Lançamento</button>
@@ -875,7 +977,7 @@ function pgLanc() {
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${l.data_emissao||'—'}</td>
       <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${l.data_vencimento||'—'}</td>
       <td><span class="badge ${l.status==='pago'?'bg':l.status==='atrasado'?'br':'ba'}">${l.status||'—'}</span></td>
-      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(l.valentia)}</td>
+      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(l.valor)}</td>
       <td style="display:flex;gap:4px">
         ${l.status==='pendente'?`<button class="btn btn-s btn-sm" onclick="pagarLancSB(${l.id})">✓</button>`:''}
         <button class="btn btn-d btn-sm" onclick="delSB('lancamentos',${l.id})">×</button>
@@ -893,8 +995,8 @@ function pgCat() {
 function pgPag() {
   const lista = fPag();
   return `<div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('fpag')">+ Novo Pagamento</button><span class="badge bg" style="padding:5px 11px">${lista.length} pagamentos no mês</span><button class="btn btn-g btn-sm" onclick="reloadSB('pagamentos')">↻</button></div>
-  <div id="fpag" class="fc" style="display:none"><div class="ft">Registrar Pagamento</div><div class="fg c3"><div class="fl"><label>Boleto</label><select id="sp-bol"><option value="">Selecionar boleto...</option>${state.sb_boletos.filter(b=>b.status!=='pago').map(b=>`<option value="${b.id}">#${b.id} - ${b.descricao||getFornNome(b.fornecedor_id)} (${fmt(b.valentia)})</option>`).join('')}</select></div><div class="fl"><label>Valor (R$)</label><input id="sp-val" type="number" step="0.01" placeholder="0,00"/></div><div class="fl"><label>Data Pagamento</label><input id="sp-data" type="date" value="${new Date().toISOString().slice(0,10)}"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addPagSB()">Registrar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fpag')">Cancelar</button></div></div>
-  <div class="tw"><table><thead><tr><th>ID</th><th>Boleto</th><th>Data Pagamento</th><th style="text-align:right">Valor</th><th></th></tr></thead><tbody>${lista.length?lista.map(p=>`<tr><td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${p.id}</td><td style="font-weight:500">Boleto #${p.boleto_id||'—'}</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green)">${p['pagamento de dados']||p.pagamento_de_dados||'—'}</td><td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(p.valentia)}</td><td><button class="btn btn-d btn-sm" onclick="delSB('pagamentos',${p.id})">×</button></td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhum pagamento neste mês</td></tr>'}</tbody></table></div>`;
+  <div id="fpag" class="fc" style="display:none"><div class="ft">Registrar Pagamento</div><div class="fg c3"><div class="fl"><label>Boleto</label><select id="sp-bol"><option value="">Selecionar boleto...</option>${state.sb_boletos.filter(b=>b.status!=='pago').map(b=>`<option value="${b.id}">#${b.id} - ${b.descricao||getFornNome(b.fornecedor_id)} (${fmt(b.valor)})</option>`).join('')}</select></div><div class="fl"><label>Valor (R$)</label><input id="sp-val" type="number" step="0.01" placeholder="0,00"/></div><div class="fl"><label>Data Pagamento</label><input id="sp-data" type="date" value="${new Date().toISOString().slice(0,10)}"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addPagSB()">Registrar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fpag')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>ID</th><th>Boleto</th><th>Data Pagamento</th><th style="text-align:right">Valor</th><th></th></tr></thead><tbody>${lista.length?lista.map(p=>`<tr><td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${p.id}</td><td style="font-weight:500">Boleto #${p.boleto_id||'—'}</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green)">${p.data_pagamento || '—'}</td><td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(p.valor)}</td><td><button class="btn btn-d btn-sm" onclick="delSB('pagamentos',${p.id})">×</button></td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhum pagamento neste mês</td></tr>'}</tbody></table></div>`;
 }
 
 function pgForn() {
@@ -981,40 +1083,286 @@ async function delItem(col, id) { if(!id) return; await window.dbDel(col, id); s
 
 // [7] Add Recebimento
 window.addReceb = async function() {
-  const desc=document.getElementById('rb-desc').value, val=+document.getElementById('rb-val').value, data=document.getElementById('rb-data').value, forma=document.getElementById('rb-forma').value, origem=document.getElementById('rb-origem').value, obs=document.getElementById('rb-obs').value;
-  if(!val) return toast('Informe o valor','te');
-  const obj={desc:desc||'Recebimento',valor:val,data,forma,origem,obs};
-  const id=await window.dbAdd('recebimentos',obj); state.recebimentos.push({...obj,_id:id}); render(); toast('Recebimento registrado!');
+  const desc = document.getElementById('rec-desc')?.value.trim() || '';
+  const val = +document.getElementById('rec-val')?.value;
+  const data = document.getElementById('rec-data')?.value || null;
+  const obs = document.getElementById('rec-obs')?.value.trim() || '';
+
+  if (!val) return toast('Informe o valor', 'te');
+
+  try {
+    const insertReceb = await supabase
+      .from('recebimentos')
+      .insert([{
+        descricao: desc || 'Recebimento',
+        valor: val,
+        data: data,
+        observacao: obs || null
+      }])
+      .select()
+      .single();
+
+    if (insertReceb.error) throw insertReceb.error;
+
+    if (!Array.isArray(state.recebimentos)) state.recebimentos = [];
+    state.recebimentos.unshift(insertReceb.data);
+
+    render();
+    toast('Recebimento registrado!', 'ok');
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao registrar recebimento', 'er');
+  }
 };
 
 // [9] Add Retirada
-window.addRetirada = async function() {
-  const val=+document.getElementById('ret-val').value, data=document.getElementById('ret-data').value, obs=document.getElementById('ret-obs').value;
-  if(!val) return toast('Informe o valor','te');
-  const obj={valor:val,data,obs:obs||'Retirada Diretor',tipo:'retirada_diretor'};
-  const id=await window.dbAdd('retiradas',obj); state.retiradas.push({...obj,_id:id}); render(); toast('Retirada registrada!');
+window.delRecebSB = async function(id) {
+  if (!id) return;
+
+  try {
+    await SB.remove('recebimentos', id);
+    state.recebimentos = state.recebimentos.filter(r => r.id !== id);
+    render();
+    toast('Recebimento removido.', 'ok');
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao remover recebimento', 'er');
+  }
 };
 
-async function pagarC(id) { await window.dbUpd('apagar', id, {status:'pago'}); const a=state.apagar.find(x=>x._id===id); if(a) a.status='pago'; render(); toast('Pago!'); }
+window.delRetiradaSB = async function(id) {
+  if (!id) return;
+
+  try {
+    await SB.remove('retiradas_diretor', id);
+    state.retiradas = state.retiradas.filter(r => r.id !== id);
+    render();
+    toast('Retirada removida.', 'ok');
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao remover retirada', 'er');
+  }
+};
+
+window.addRetirada = async function() {
+  const val = +document.getElementById('ret-val')?.value;
+  const data = document.getElementById('ret-data')?.value || null;
+  const obs = document.getElementById('ret-obs')?.value.trim() || '';
+
+  if (!val) return toast('Informe o valor', 'te');
+
+  try {
+    const insertRet = await supabase
+      .from('retiradas_diretor')
+      .insert([{
+        valor: val,
+        data: data,
+        observacao: obs || 'Retirada Diretor'
+      }])
+      .select()
+      .single();
+
+    if (insertRet.error) throw insertRet.error;
+
+    if (!Array.isArray(state.retiradas)) state.retiradas = [];
+    state.retiradas.unshift(insertRet.data);
+
+    render();
+    toast('Retirada registrada!', 'ok');
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao registrar retirada', 'er');
+  }
+};
+
+async function pagarC(id) {
+  try {
+    const upd = await supabase
+      .from('boletos')
+      .update({ status: 'pago' })
+      .eq('id', id);
+
+    if (upd.error) throw upd.error;
+
+    const b = state.sb_boletos.find(x => x.id === id);
+    if (b) b.status = 'pago';
+
+    render();
+    toast('Pago!', 'ok');
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao marcar como pago', 'er');
+  }
+}
 
 async function addDesp() {
-  const desc=document.getElementById('d-desc').value, cat=document.getElementById('d-cat').value, forn=document.getElementById('d-forn').value, val=+document.getElementById('d-val').value, data=document.getElementById('d-data').value, status=document.getElementById('d-status').value, forma=document.getElementById('d-forma').value, obs=document.getElementById('d-obs').value;
-  if(!desc||!val) return toast('Preencha os campos','te');
-  const obj={desc,cat,fornecedor:forn,valor:val,data,status,forma,obs,origem:'manual'};
-  const id=await window.dbAdd('despesas',obj); state.despesas.push({...obj,_id:id}); render(); toast('Despesa salva!');
+  const desc = document.getElementById('d-desc').value.trim();
+  const cat = document.getElementById('d-cat').value.trim();
+  const forn = document.getElementById('d-forn').value.trim();
+  const val = +document.getElementById('d-val').value;
+  const data = document.getElementById('d-data').value;
+  const status = document.getElementById('d-status').value;
+  const forma = document.getElementById('d-forma').value.trim();
+  const obs = document.getElementById('d-obs').value.trim();
+
+  if (!desc || !val) return toast('Preencha os campos', 'te');
+
+  try {
+    let fornecedor_id = null;
+
+    if (forn) {
+      const vinc = await supabase.rpc('buscar_vinculo', {
+        p_entidade: 'fornecedor',
+        p_nome: forn,
+        p_firebase_id: null,
+        p_supabase_id: null
+      });
+
+      if (vinc.data && vinc.data.length && vinc.data[0].supabase_id) {
+        fornecedor_id = vinc.data[0].supabase_id;
+      } else {
+        const insFornecedor = await supabase
+          .from('fornecedores')
+          .insert([{ nome: forn }])
+          .select()
+          .single();
+
+        if (insFornecedor.error) throw insFornecedor.error;
+
+        fornecedor_id = insFornecedor.data.id;
+
+        await supabase.rpc('registrar_vinculo', {
+          p_entidade: 'fornecedor',
+          p_firebase_id: null,
+          p_supabase_id: fornecedor_id,
+          p_nome: forn
+        });
+      }
+    }
+
+    const insertBoleto = await supabase
+      .from('boletos')
+      .insert([{
+        fornecedor_id,
+        descricao: desc,
+        valor: val,
+        data_vencimento: data || null,
+        status: status || 'pendente'
+      }])
+      .select()
+      .single();
+
+    if (insertBoleto.error) throw insertBoleto.error;
+
+    if (!Array.isArray(state.sb_boletos)) state.sb_boletos = [];
+    state.sb_boletos.unshift(insertBoleto.data);
+
+    render();
+    toast('Despesa salva!', 'ok');
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao salvar despesa', 'er');
+  }
 }
 
 async function addAP() {
-  const desc=document.getElementById('ap-desc').value, forn=document.getElementById('ap-forn').value, val=+document.getElementById('ap-val').value, venc=document.getElementById('ap-venc').value;
-  if(!desc||!val) return toast('Preencha os campos','te');
-  const obj={desc,fornecedor:forn,valor:val,venc,status:'pendente'};
-  const id=await window.dbAdd('apagar',obj); state.apagar.push({...obj,_id:id}); render(); toast('Conta salva!');
+  const desc = document.getElementById('ap-desc').value.trim();
+  const forn = document.getElementById('ap-forn').value.trim();
+  const val = +document.getElementById('ap-val').value;
+  const venc = document.getElementById('ap-venc').value;
+
+  if (!desc || !val) return toast('Preencha os campos', 'te');
+
+  try {
+    let fornecedor_id = null;
+
+    if (forn) {
+      const nomeNormalizado = forn.toLowerCase().trim();
+
+      const vinc = await supabase.rpc('buscar_vinculo', {
+        p_entidade: 'fornecedor',
+        p_nome: nomeNormalizado,
+        p_firebase_id: null,
+        p_supabase_id: null
+      });
+
+      if (vinc.data && vinc.data.length && vinc.data[0].supabase_id) {
+        fornecedor_id = vinc.data[0].supabase_id;
+      } else {
+        const insFornecedor = await supabase
+          .from('fornecedores')
+          .insert([{ nome: forn }])
+          .select()
+          .single();
+
+        if (insFornecedor.error) throw insFornecedor.error;
+
+        fornecedor_id = insFornecedor.data.id;
+
+        await supabase.rpc('registrar_vinculo', {
+          p_entidade: 'fornecedor',
+          p_firebase_id: null,
+          p_supabase_id: fornecedor_id,
+          p_nome: forn
+        });
+      }
+    }
+
+    const insertBoleto = await supabase
+      .from('boletos')
+      .insert([{
+        fornecedor_id,
+        descricao: desc,
+        valor: val,
+        data_vencimento: venc || null,
+        status: 'pendente'
+      }])
+      .select()
+      .single();
+
+    if (insertBoleto.error) throw insertBoleto.error;
+
+    if (!Array.isArray(state.sb_boletos)) state.sb_boletos = [];
+    state.sb_boletos.unshift(insertBoleto.data);
+
+    render();
+    toast('Conta salva!', 'ok');
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao salvar conta', 'er');
+  }
 }
 
 async function fecharMes() {
   const mes=MESES[getSelMes()], tr=tR()+tReceb(), td=tD()+tRetir(), lb=tr-td, imp=Math.round(Math.max(lb,0)*0.06), liq=lb-imp;
   const obj={mes:`${mes} ${getSelAno()}`,receita:tr,despesa:td,lucroB:lb,imp,lucro:liq,margem:pct(lb,tr),data:new Date().toISOString(),retiradas:tRetir()};
-  const id=await window.dbAdd('fechamentos',obj); state.fechamentos.unshift({...obj,_id:id});
+  try{
+  const insertFech = await supabase
+    .from('fechamentos')
+    .insert([{
+      mes: `${mes} ${getSelAno()}`,
+      receita: tr,
+      despesa: td,
+      lucro_bruto: lb,
+      imposto: imp,
+      lucro_liquido: liq,
+      margem: pct(lb,tr),
+      data: new Date().toISOString(),
+      retiradas: tRetir()
+    }])
+    .select()
+    .single();
+
+  if(insertFech.error) throw insertFech.error;
+
+  if(!Array.isArray(state.fechamentos)) state.fechamentos = [];
+  state.fechamentos.unshift(insertFech.data);
+
+}catch(e){
+  console.error(e);
+  toast('Erro ao salvar fechamento','er');
+  return;
+}
   state.historico.push({mes:MC[getSelMes()],r:tr,d:td}); if(state.historico.length>8) state.historico.shift();
   toast(`${mes} fechado! Lucro Líquido: ${fmt(liq)}`); render();
 }
@@ -1033,7 +1381,7 @@ window.addLancSB = async function() {
   const desc=document.getElementById('sl-desc').value, forn=document.getElementById('sl-forn').value, item=document.getElementById('sl-item').value, val=+document.getElementById('sl-val').value, emissao=document.getElementById('sl-emissao').value, venc=document.getElementById('sl-venc').value, status=document.getElementById('sl-status').value, obs=document.getElementById('sl-obs').value;
   if(!desc||!val) return toast('Preencha descrição e valor','te');
   try {
-    const row = { descricao: desc, valentia: val, status, data_emissao: emissao||null, data_vencimento: venc||null, status_de_observacao: obs||null };
+    const row = { descricao: desc, valor: val, status, data_emissao: emissao||null, data_vencimento: venc||null, status_de_observacao: obs||null };
     if(forn) row.fornecedor_id = +forn; if(item) row.item_id = +item;
     const data = await SB.insert('lancamentos', row); state.sb_lancamentos.unshift(data); render(); toast('Lançamento criado!');
   } catch(e) { toast('Erro: '+e.message, 'te'); }
@@ -1051,7 +1399,7 @@ window.addBolSB = async function() {
   const forn=document.getElementById('sb-forn').value, desc=document.getElementById('sb-desc').value, val=+document.getElementById('sb-val').value, venc=document.getElementById('sb-venc').value;
   if(!val) return toast('Informe o valor','te');
   try {
-    const row = { valentia: val, data_vencimento: venc||null, status: 'pendente', descricao: desc||null };
+    const row = { valor: val, data_vencimento: venc||null, status: 'pendente', descricao: desc||null };
     if(forn) row.fornecedor_id = +forn;
     const data = await SB.insert('boletos', row); state.sb_boletos.unshift(data); render(); toast('Boleto criado!');
   } catch(e) { toast('Erro: '+e.message,'te'); }
@@ -1060,7 +1408,7 @@ window.pagarBolSB = async function(id) {
   try {
     await SB.update('boletos', id, { status: 'pago' });
     const bol = state.sb_boletos.find(b => b.id === id);
-    if(bol) { bol.status='pago'; await SB.insert('pagamentos', { boleto_id: id, valentia: bol.valentia, 'pagamento de dados': new Date().toISOString().slice(0,10) }); state.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false }); }
+    if(bol) { bol.status='pago'; await SB.insert('pagamentos', { boleto_id: id, valor: bol.valor, 'pagamento de dados': new Date().toISOString().slice(0,10) }); state.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false }); }
     render(); toast('Boleto pago!');
   } catch(e) { toast('Erro: '+e.message,'te'); }
 };
@@ -1073,7 +1421,7 @@ window.showRenegociar = function(id) {
   <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
     <div class="modal-box">
       <div class="modal-title">🔄 Renegociar Boleto #${id}</div>
-      <div style="font-size:12px;color:var(--txt2);margin-bottom:12px">${bol.descricao||'Boleto'} — ${fmt(bol.valentia)}</div>
+      <div style="font-size:12px;color:var(--txt2);margin-bottom:12px">${bol.descricao||'Boleto'} — ${fmt(bol.valor)}</div>
       <div class="fg c2">
         <div class="fl"><label>Nova Data de Vencimento</label><input id="renego-data" type="date"/></div>
         <div class="fl"><label>Observação</label><input id="renego-obs" placeholder="Motivo da renegociação"/></div>
@@ -1103,7 +1451,7 @@ window.addCompSB = async function() {
   const forn=document.getElementById('sco-forn').value, desc=document.getElementById('sco-desc').value, val=+document.getElementById('sco-val').value, data=document.getElementById('sco-data').value;
   if(!val) return toast('Informe o valor','te');
   try {
-    const row = { descricao: desc||null, valentia: val, data_compra: data||null };
+    const row = { descricao: desc||null, valor: val, data_compra: data||null };
     if(forn) row.fornecedor_id = +forn;
     const d = await SB.insert('compras', row); state.sb_compras.unshift(d); render(); toast('Compra registrada (histórico)!');
   } catch(e) { toast('Erro: '+e.message,'te'); }
@@ -1113,7 +1461,7 @@ window.addPagSB = async function() {
   const bol=document.getElementById('sp-bol').value, val=+document.getElementById('sp-val').value, data=document.getElementById('sp-data').value;
   if(!val) return toast('Informe o valor','te');
   try {
-    const row = { valentia: val, 'pagamento de dados': data||new Date().toISOString().slice(0,10) };
+    const row = { valor: val, 'pagamento de dados': data||new Date().toISOString().slice(0,10) };
     if(bol) { row.boleto_id=+bol; await SB.update('boletos', +bol, { status: 'pago' }); const b=state.sb_boletos.find(x=>x.id===+bol); if(b) b.status='pago'; }
     const d = await SB.insert('pagamentos', row); state.sb_pagamentos.unshift(d); render(); toast('Pagamento registrado!');
   } catch(e) { toast('Erro: '+e.message,'te'); }
@@ -1164,18 +1512,61 @@ async function confirmarPDF(i) {
     const obj={desc:item.descricao,valor:item.valor||0,data:item.vencimento||today,forma:item.forma_pagamento||'',origem:'pdf'};
     const id=await window.dbAdd('recebimentos',obj); state.recebimentos.push({...obj,_id:id});
   } else {
-    const obj={desc:item.descricao,cat:item.categoria||'Outros',fornecedor:item.fornecedor||'',valor:item.valor||0,data:item.vencimento||today,status:'pendente',forma:item.forma_pagamento||'',origem:'pdf'};
-    const id=await window.dbAdd('despesas',obj); state.despesas.push({...obj,_id:id});
-    if(window.supabase && item.vencimento) {
-      try {
-        let fornId = null;
-        if(item.fornecedor) { const ex=state.sb_fornecedores.find(f=>f.nome.toLowerCase()===item.fornecedor.toLowerCase()); if(ex) fornId=ex.id; else { const nf=await SB.insert('fornecedores',{nome:item.fornecedor}); state.sb_fornecedores.push(nf); fornId=nf.id; } }
-        const bolRow = { valentia:item.valor||0, data_vencimento:item.vencimento, status:'pendente', descricao:item.descricao };
-        if(fornId) bolRow.fornecedor_id = fornId;
-        const nb = await SB.insert('boletos', bolRow); state.sb_boletos.unshift(nb);
-      } catch(e) { console.error('SB sync:', e); }
+  try {
+    let fornecedor_id = null;
+
+    if (item.fornecedor) {
+      const vinc = await supabase.rpc('buscar_vinculo', {
+        p_entidade: 'fornecedor',
+        p_nome: item.fornecedor,
+        p_firebase_id: null,
+        p_supabase_id: null
+      });
+
+      if (vinc.data && vinc.data.length && vinc.data[0].supabase_id) {
+        fornecedor_id = vinc.data[0].supabase_id;
+      } else {
+        const insFornecedor = await supabase
+          .from('fornecedores')
+          .insert([{ nome: item.fornecedor }])
+          .select()
+          .single();
+
+        if (insFornecedor.error) throw insFornecedor.error;
+
+        fornecedor_id = insFornecedor.data.id;
+
+        await supabase.rpc('registrar_vinculo', {
+          p_entidade: 'fornecedor',
+          p_firebase_id: null,
+          p_supabase_id: fornecedor_id,
+          p_nome: item.fornecedor
+        });
+      }
     }
+
+    const insertBoleto = await supabase
+      .from('boletos')
+      .insert([{
+        fornecedor_id,
+        descricao: item.descricao,
+        valor: item.valor || 0,
+        data_vencimento: item.vencimento || today,
+        status: 'pendente'
+      }])
+      .select()
+      .single();
+
+    if (insertBoleto.error) throw insertBoleto.error;
+
+    if (!Array.isArray(state.sb_boletos)) state.sb_boletos = [];
+    state.sb_boletos.unshift(insertBoleto.data);
+
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao lançar despesa do PDF', 'er');
   }
+}
   state.pdfPendentes.splice(i,1); render(); toast('Lançado!');
 }
 function rejeitarPDF(i) { state.pdfPendentes.splice(i,1); render(); toast('Descartado.'); }
@@ -1205,12 +1596,56 @@ Extrato: ${txt.slice(0,6000)}`;
 }
 window.confirmarExtrato = async function(i) {
   const item=state.extratoPendentes[i]; const today=new Date().toISOString().slice(0,10);
-  if(item.tipo==='recebimento') {
-    const obj={desc:item.descricao,valor:item.valor,data:item.data||today,forma:'Extrato',origem:'extrato'};
-    const id=await window.dbAdd('recebimentos',obj); state.recebimentos.push({...obj,_id:id});
+  if (item.tipo === 'recebimento') {
+  try {
+    const insertReceb = await supabase
+      .from('recebimentos')
+      .insert([{
+        descricao: item.descricao || 'Recebimento',
+        valor: item.valor || 0,
+        data: item.data || today,
+        forma: 'Extrato',
+        origem: 'extrato',
+        observacao: null
+      }])
+      .select()
+      .single();
+
+    if (insertReceb.error) throw insertReceb.error;
+
+    if (!Array.isArray(state.recebimentos)) state.recebimentos = [];
+    state.recebimentos.unshift(insertReceb.data);
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao lançar recebimento do extrato', 'er');
+    return;
+  }
+}
   } else {
-    const obj={desc:item.descricao,cat:item.categoria||'Outros',valor:item.valor,data:item.data||today,status:'pago',forma:'Extrato',origem:'extrato'};
-    const id=await window.dbAdd('despesas',obj); state.despesas.push({...obj,_id:id});
+  try {
+    const insertBoleto = await supabase
+      .from('boletos')
+      .insert([{
+        fornecedor_id: null,
+        descricao: item.descricao,
+        valor: item.valor || 0,
+        data_vencimento: item.data || today,
+        status: 'pago'
+      }])
+      .select()
+      .single();
+
+    if (insertBoleto.error) throw insertBoleto.error;
+
+    if (!Array.isArray(state.sb_boletos)) state.sb_boletos = [];
+    state.sb_boletos.unshift(insertBoleto.data);
+
+  } catch (e) {
+    console.error(e);
+    toast('Erro ao lançar despesa do extrato', 'er');
+    return;
+  }
+}
   }
   state.extratoPendentes.splice(i,1); render(); toast('Lançado!');
 };
@@ -1231,7 +1666,7 @@ async function analisarIA(tipo) {
     lucro:`Lucro R$${dados.l}. Receitas R$${dados.r}+R$${dados.rec}. Despesas R$${dados.d}+R$${dados.ret}. Sugira 4 ações. Português.`,
     despesas:`Despesas R$${dados.d}, retiradas R$${dados.ret}, compras R$${dados.comp}. Fornecedores: ${dados.forn}. Sugira cortes. Português.`,
     previsao:`Receitas R$${dados.r}, despesas R$${dados.d}, retiradas R$${dados.ret}. Previsão otimista/realista/pessimista. Português.`,
-    fluxo:`Entradas R$${dados.r+dados.rec}, boletos pendentes R$${state.sb_boletos.filter(b=>b.status!=='pago').reduce((s,b)=>s+Number(b.valentia||0),0)}. Caixa saudável? Português.`
+    fluxo:`Entradas R$${dados.r+dados.rec}, boletos pendentes R$${state.sb_boletos.filter(b=>b.status!=='pago').reduce((s,b)=>s+Number(b.valor||0),0)}. Caixa saudável? Português.`
   };
   try {
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:ps[tipo]}]})});
@@ -1241,5 +1676,3 @@ async function analisarIA(tipo) {
 
 render();
 </script>
-</body>
-</html>
