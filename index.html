@@ -26,10 +26,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .logo-title{font-size:15px;font-weight:600;letter-spacing:-0.3px}
 .logo-sub{font-size:11px;color:var(--txt3);margin-top:2px}
 .sync-row{display:flex;align-items:center;gap:6px;margin-top:8px}
-.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--txt3);flex-shrink:0}
+.sync-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .sync-dot.online{background:var(--green);animation:pulse 2s infinite}
 .sync-dot.saving{background:var(--amber);animation:pulse 0.5s infinite}
-.sync-dot.error{background:var(--red)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .sync-txt{font-size:10px;color:var(--txt3)}
 .nav{flex:1;padding:8px 0;overflow-y:auto}
@@ -63,28 +62,19 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--txt)}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(255,255,255,0.02)}
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:500}
-.bg{background:var(--green-bg);color:var(--green-txt)}
-.br{background:var(--red-bg);color:var(--red-txt)}
-.bb{background:var(--blue-bg);color:var(--blue-txt)}
-.ba{background:var(--amber-bg);color:var(--amber-txt)}
-.bp{background:var(--purple-bg);color:var(--purple-txt)}
-.bt{background:var(--teal-bg);color:var(--teal)}
+.bg{background:var(--green-bg);color:var(--green-txt)}.br{background:var(--red-bg);color:var(--red-txt)}.bb{background:var(--blue-bg);color:var(--blue-txt)}.ba{background:var(--amber-bg);color:var(--amber-txt)}.bp{background:var(--purple-bg);color:var(--purple-txt)}.bt{background:var(--teal-bg);color:var(--teal)}
 .btn{padding:7px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.15s;border:1px solid transparent}
-.btn-p{background:#6366f1;color:#fff;border-color:#6366f1}
-.btn-p:hover{background:#4f46e5}
-.btn-g{background:transparent;border-color:var(--border2);color:var(--txt2)}
-.btn-g:hover{background:var(--bg3);color:var(--txt)}
+.btn-p{background:#6366f1;color:#fff;border-color:#6366f1}.btn-p:hover{background:#4f46e5}
+.btn-g{background:transparent;border-color:var(--border2);color:var(--txt2)}.btn-g:hover{background:var(--bg3);color:var(--txt)}
 .btn-d{background:var(--red-bg);color:var(--red-txt);border-color:rgba(248,113,113,0.2)}
 .btn-s{background:var(--green-bg);color:var(--green-txt);border-color:rgba(52,211,153,0.2)}
+.btn-a{background:var(--amber-bg);color:var(--amber-txt);border-color:rgba(251,191,36,0.2)}
 .btn-sm{padding:4px 10px;font-size:11px;border-radius:5px}
 .ar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
 .fc{background:var(--bg2);border:1px solid rgba(99,102,241,0.3);border-radius:var(--radius-lg);padding:16px;margin-bottom:14px}
 .ft{font-size:13px;font-weight:600;margin-bottom:12px}
 .fg{display:grid;gap:10px;margin-bottom:12px}
-.fg.c2{grid-template-columns:1fr 1fr}
-.fg.c3{grid-template-columns:1fr 1fr 1fr}
-.fg.c4{grid-template-columns:1fr 1fr 1fr 1fr}
-.fg.c5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
+.fg.c2{grid-template-columns:1fr 1fr}.fg.c3{grid-template-columns:1fr 1fr 1fr}.fg.c4{grid-template-columns:1fr 1fr 1fr 1fr}.fg.c5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
 .fl label{display:block;font-size:11px;color:var(--txt2);margin-bottom:4px;font-weight:500}
 .fl input,.fl select,.fl textarea{width:100%;font-size:12px;padding:7px 10px;border:1px solid var(--border2);border-radius:7px;background:var(--bg3);color:var(--txt);font-family:'DM Sans',sans-serif}
 .fl input:focus,.fl select:focus{outline:none;border-color:#6366f1}
@@ -93,9 +83,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .aip-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:13px;font-weight:600;color:var(--purple-txt)}
 .aip-bd{font-size:13px;color:var(--txt2);line-height:1.7;min-height:36px}
 .ail{display:flex;align-items:center;gap:8px;color:var(--txt3);font-size:12px;font-style:italic}
-.aid span{animation:blink 1.4s infinite;display:inline-block}
-.aid span:nth-child(2){animation-delay:0.2s}
-.aid span:nth-child(3){animation-delay:0.4s}
+.aid span{animation:blink 1.4s infinite;display:inline-block}.aid span:nth-child(2){animation-delay:0.2s}.aid span:nth-child(3){animation-delay:0.4s}
 @keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
 .pdf-drop{border:2px dashed var(--border2);border-radius:var(--radius-lg);padding:28px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg3)}
 .pdf-drop:hover,.pdf-drop.drag{border-color:#6366f1;background:rgba(99,102,241,0.05)}
@@ -109,1371 +97,786 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .shd{font-size:13px;font-weight:600;margin-bottom:11px;display:flex;align-items:center;justify-content:space-between}
 .div{height:1px;background:var(--border);margin:12px 0}
 .sc{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:12px}
-.sr{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)}
-.sr:last-child{border-bottom:none}
-.sl{font-size:13px;font-weight:500}
-.ss{font-size:11px;color:var(--txt3);margin-top:2px}
-.ki{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:7px 10px;font-size:12px;color:var(--txt);font-family:'DM Mono',monospace;width:280px}
-.ki:focus{outline:none;border-color:#6366f1}
+.sr{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)}.sr:last-child{border-bottom:none}
+.sl{font-size:13px;font-weight:500}.ss{font-size:11px;color:var(--txt3);margin-top:2px}
+.ki{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:7px 10px;font-size:12px;color:var(--txt);font-family:'DM Mono',monospace;width:280px}.ki:focus{outline:none;border-color:#6366f1}
 .toast{position:fixed;bottom:18px;right:18px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:11px 16px;font-size:13px;color:var(--txt);z-index:1000;transform:translateX(130%);transition:transform 0.3s;box-shadow:0 8px 24px rgba(0,0,0,0.5)}
-.toast.show{transform:translateX(0)}
-.toast.ts{border-color:rgba(52,211,153,0.4)}
-.toast.te{border-color:rgba(248,113,113,0.4)}
+.toast.show{transform:translateX(0)}.toast.ts{border-color:rgba(52,211,153,0.4)}.toast.te{border-color:rgba(248,113,113,0.4)}
 .lov{position:fixed;inset:0;background:rgba(10,11,16,0.92);display:flex;align-items:center;justify-content:center;z-index:998;flex-direction:column;gap:14px}
 .lsp{width:38px;height:38px;border:3px solid var(--border);border-top-color:#6366f1;border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ltx{font-size:13px;color:var(--txt2)}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
 .bar-chart{display:flex;align-items:flex-end;gap:6px;height:90px;padding:0 2px}
 .bg-w{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%}
 .bars-w{display:flex;align-items:flex-end;gap:2px;height:78px}
 .bar{width:13px;border-radius:3px 3px 0 0;transition:height 0.5s cubic-bezier(0.34,1.56,0.64,1)}
 .bar-lbl{font-size:9px;color:var(--txt3)}
-.supabase-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(52,211,153,0.15);color:var(--green);font-weight:500;vertical-align:middle}
-.firebase-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(251,191,36,0.15);color:var(--amber);font-weight:500;vertical-align:middle}
-.dual-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(99,102,241,0.15);color:#818cf8;font-weight:500;vertical-align:middle}
-.tab-bar{display:flex;gap:2px;background:var(--bg3);border-radius:8px;padding:3px;margin-bottom:12px}
-.tab-btn{flex:1;padding:7px 12px;border:none;background:transparent;color:var(--txt3);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;border-radius:6px;font-weight:500;transition:all 0.15s}
-.tab-btn.active{background:var(--bg2);color:var(--txt);box-shadow:0 1px 3px rgba(0,0,0,0.3)}
+.alert-box{border-radius:var(--radius-lg);padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:10px;font-size:12px}
+.alert-red{background:rgba(248,113,113,0.12);border:1px solid rgba(248,113,113,0.3);color:var(--red)}
+.alert-amber{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);color:var(--amber)}
+.alert-green{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.3);color:var(--green)}
+.alert-icon{font-size:18px;flex-shrink:0}.alert-body{flex:1}.alert-title{font-weight:600;font-size:13px;margin-bottom:2px}.alert-sub{font-size:11px;opacity:0.8}
+.clock-bar{display:flex;align-items:center;justify-content:space-between;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:10px 16px;margin-bottom:14px}
+.clock-left{display:flex;align-items:center;gap:12px}.clock-time{font-size:20px;font-weight:600;font-family:'DM Mono',monospace;letter-spacing:-0.5px}.clock-date{font-size:12px;color:var(--txt2)}
+.clock-right{font-size:11px;color:var(--txt3);display:flex;align-items:center;gap:6px}
+.price-up{color:var(--red);font-weight:600}.price-down{color:var(--green);font-weight:600}.price-same{color:var(--txt3)}
+.modal-overlay{position:fixed;inset:0;background:rgba(10,11,16,0.85);display:flex;align-items:center;justify-content:center;z-index:999}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;width:400px;max-width:90vw}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:16px}
 </style>
 </head>
 <body>
-
-<div id="lov" class="lov">
-  <div class="lsp"></div>
-  <div class="ltx" id="ltx">Conectando...</div>
-</div>
-
+<div id="lov" class="lov"><div class="lsp"></div><div id="ltx" style="font-size:13px;color:var(--txt2)">Conectando...</div></div>
 <div class="app">
   <div class="sidebar">
     <div class="logo">
       <div class="logo-icon">💰</div>
       <div class="logo-title">FinanceAI</div>
       <div class="logo-sub">Agente Financeiro Inteligente</div>
-      <div class="sync-row">
-        <div class="sync-dot" id="sdot"></div>
-        <span class="sync-txt" id="stxt">Conectando...</span>
-      </div>
+      <div class="sync-row"><div class="sync-dot" id="sdot"></div><span class="sync-txt" id="stxt">Conectando...</span></div>
     </div>
     <nav class="nav" id="nav">
       <div class="nav-sec">Principal</div>
-      <div class="nav-item active" data-page="dashboard">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        Dashboard
-      </div>
-      <div class="nav-item" data-page="pdf">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Importar PDF
-        <span class="nav-badge" id="badge-pdf" style="display:none">!</span>
-      </div>
+      <div class="nav-item active" data-page="dashboard"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Dashboard</div>
+      <div class="nav-item" data-page="pdf"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Importar PDF <span class="nav-badge" id="badge-pdf" style="display:none">!</span></div>
+      <div class="nav-item" data-page="extrato"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg> Extrato Bancário</div>
       <div class="nav-sec">Financeiro</div>
-      <div class="nav-item" data-page="receitas">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Receitas
-      </div>
-      <div class="nav-item" data-page="despesas">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>Despesas
-      </div>
-      <div class="nav-item" data-page="lancamentos">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Lançamentos <span class="supabase-tag">SB</span>
-      </div>
-      <div class="nav-item" data-page="produtos">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Itens / Produtos
-      </div>
-      <div class="nav-item" data-page="fornecedores">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Fornecedores
-      </div>
-      <div class="nav-item" data-page="categorias">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Categorias <span class="supabase-tag">SB</span>
-      </div>
+      <div class="nav-item" data-page="recebimentos"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> Recebimentos</div>
+      <div class="nav-item" data-page="despesas"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg> Despesas</div>
+      <div class="nav-item" data-page="lancamentos"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Lançamentos</div>
+      <div class="nav-item" data-page="itens"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg> Itens / Produtos</div>
+      <div class="nav-item" data-page="fornecedores"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Fornecedores</div>
+      <div class="nav-item" data-page="categorias"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg> Categorias</div>
       <div class="nav-sec">Gestão</div>
-      <div class="nav-item" data-page="boletos">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Boletos <span class="supabase-tag">SB</span>
-      </div>
-      <div class="nav-item" data-page="compras">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Compras <span class="supabase-tag">SB</span>
-      </div>
-      <div class="nav-item" data-page="pagamentos">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Pagamentos <span class="supabase-tag">SB</span>
-      </div>
-      <div class="nav-item" data-page="apagar">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        A Pagar <span class="nav-badge" id="badge-apagar">0</span>
-      </div>
-      <div class="nav-item" data-page="areceber">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        A Receber <span class="nav-badge" id="badge-areceber">0</span>
-      </div>
-      <div class="nav-item" data-page="fechamento">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Fechamento
-      </div>
-      <div class="nav-item" data-page="dre">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>DRE Completo
-      </div>
-      <div class="nav-item" data-page="relatorio">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Relatório IA
-      </div>
-      <div class="nav-item" data-page="config">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Configurações
-      </div>
+      <div class="nav-item" data-page="boletos"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> Boletos <span class="nav-badge" id="badge-bol">0</span></div>
+      <div class="nav-item" data-page="compras"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Compras</div>
+      <div class="nav-item" data-page="pagamentos"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Pagamentos</div>
+      <div class="nav-item" data-page="precos"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Comparar Preços</div>
+      <div class="nav-item" data-page="retirada"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Retirada Diretor</div>
+      <div class="nav-sec">Relatórios</div>
+      <div class="nav-item" data-page="fechamento"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Fechamento</div>
+      <div class="nav-item" data-page="dre"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> DRE</div>
+      <div class="nav-item" data-page="relatorio"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Relatório IA</div>
+      <div class="nav-item" data-page="config"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Configurações</div>
     </nav>
-    <div class="sidebar-footer">
-      <div class="ai-pill"><div class="ai-dot"></div><div class="ai-pill-txt" id="ai-status">Iniciando...</div></div>
-    </div>
+    <div class="sidebar-footer"><div class="ai-pill"><div class="ai-dot"></div><div class="ai-pill-txt" id="ai-status">Iniciando...</div></div></div>
   </div>
   <div class="main">
     <div class="topbar">
       <div class="page-title" id="page-title">Dashboard</div>
-      <div class="topbar-right">
-        <select id="mes-sel"><option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option><option value="3">Abril</option><option value="4">Maio</option><option value="5" selected>Junho</option><option value="6">Julho</option><option value="7">Agosto</option><option value="8">Setembro</option><option value="9">Outubro</option><option value="10">Novembro</option><option value="11">Dezembro</option></select>
-        <select id="ano-sel"><option>2026</option><option>2025</option><option selected>2024</option><option>2023</option></select>
-      </div>
+      <div class="topbar-right"><select id="mes-sel"></select><select id="ano-sel"></select><button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button></div>
     </div>
     <div class="content" id="content"></div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
+<div id="modal-root"></div>
 <input type="file" id="pdf-input" accept=".pdf" style="display:none" onchange="handlePDF(event)">
+<input type="file" id="extrato-input" accept=".pdf,.csv,.ofx,.txt" style="display:none" onchange="handleExtrato(event)">
 
 <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import{getFirestore,collection,addDoc,getDocs,deleteDoc,doc,updateDoc}from'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import{createClient}from'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// ===== FIREBASE CONFIG =====
-const firebaseConfig = {
-  apiKey: "AIzaSyDcIFCq1ujGP-0KR6AJaM0s7f5wkT9ea4E",
-  authDomain: "financeiro-ia-58343.firebaseapp.com",
-  projectId: "financeiro-ia-58343",
-  storageBucket: "financeiro-ia-58343.firebasestorage.app",
-  messagingSenderId: "312584896401",
-  appId: "1:312584896401:web:99ae11d48593bbf5c7e430"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const app=initializeApp({apiKey:"AIzaSyDcIFCq1ujGP-0KR6AJaM0s7f5wkT9ea4E",authDomain:"financeiro-ia-58343.firebaseapp.com",projectId:"financeiro-ia-58343",storageBucket:"financeiro-ia-58343.firebasestorage.app",messagingSenderId:"312584896401",appId:"1:312584896401:web:99ae11d48593bbf5c7e430"});
+const db=getFirestore(app);
+const SB_URL=localStorage.getItem('financeai_supabase_url')||'';
+const SB_KEY=localStorage.getItem('financeai_supabase_anon_key')||'';
+const supabase=(SB_URL&&SB_KEY)?createClient(SB_URL,SB_KEY):null;
+window.db=db;window.supabase=supabase;window.FB={collection,addDoc,getDocs,deleteDoc,doc,updateDoc};
 
-// ===== SUPABASE CONFIG =====
-const SUPABASE_URL = localStorage.getItem('financeai_supabase_url') || '';
-const SUPABASE_ANON_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
-const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY) ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-
-window.db = db;
-window.supabase = supabase;
-window.supabaseReady = !!supabase;
-window.FB = { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy };
-
-// ===== SUPABASE DIRECT TABLE ACCESS =====
-// Generic CRUD for all Supabase tables
-window.SB = {
-  async list(table, opts = {}) {
-    if (!supabase) return [];
-    let q = supabase.from(table).select(opts.select || '*');
-    if (opts.order) q = q.order(opts.order, { ascending: opts.asc !== false });
-    if (opts.limit) q = q.limit(opts.limit);
-    if (opts.filter) { for (const [col, val] of Object.entries(opts.filter)) q = q.eq(col, val); }
-    const { data, error } = await q;
-    if (error) { console.error(`SB.list ${table}:`, error); return []; }
-    return data || [];
-  },
-  async get(table, id) {
-    if (!supabase) return null;
-    const { data, error } = await supabase.from(table).select('*').eq('id', id).single();
-    if (error) return null;
-    return data;
-  },
-  async insert(table, row) {
-    if (!supabase) throw new Error('Supabase não configurado');
-    const { data, error } = await supabase.from(table).insert(row).select().single();
-    if (error) throw error;
-    return data;
-  },
-  async update(table, id, changes) {
-    if (!supabase) throw new Error('Supabase não configurado');
-    const { data, error } = await supabase.from(table).update(changes).eq('id', id).select().single();
-    if (error) throw error;
-    return data;
-  },
-  async remove(table, id) {
-    if (!supabase) throw new Error('Supabase não configurado');
-    const { error } = await supabase.from(table).delete().eq('id', id);
-    if (error) throw error;
-  },
-  async rpc(fn, params) {
-    if (!supabase) throw new Error('Supabase não configurado');
-    const { data, error } = await supabase.rpc(fn, params);
-    if (error) throw error;
-    return data;
-  }
+// === SUPABASE CRUD ===
+window.SB={
+  async list(t,o={}){if(!supabase)return[];let q=supabase.from(t).select(o.select||'*');if(o.order)q=q.order(o.order,{ascending:o.asc!==false});if(o.limit)q=q.limit(o.limit);if(o.filter)for(const[c,v]of Object.entries(o.filter))q=q.eq(c,v);const{data,error}=await q;if(error){console.error(`SB ${t}:`,error);return[];}return data||[];},
+  async ins(t,r){if(!supabase)throw new Error('SB off');const{data,error}=await supabase.from(t).insert(r).select().single();if(error)throw error;return data;},
+  async upd(t,id,c){if(!supabase)throw new Error('SB off');const{data,error}=await supabase.from(t).update(c).eq('id',id).select().single();if(error)throw error;return data;},
+  async del(t,id){if(!supabase)throw new Error('SB off');const{error}=await supabase.from(t).delete().eq('id',id);if(error)throw error;},
 };
 
-// ===== INIT =====
-document.getElementById('lov').style.display = 'none';
-document.getElementById('sdot').className = 'sync-dot online';
-document.getElementById('stxt').textContent = supabase ? 'Online — Firebase + Supabase' : 'Online — Firebase (Supabase não configurado)';
-document.getElementById('ai-status').textContent = supabase ? 'Firebase + Supabase ✓' : 'Firebase ativo';
-window.firebaseReady = true;
+document.getElementById('lov').style.display='none';
+document.getElementById('sdot').className='sync-dot online';
+document.getElementById('stxt').textContent=supabase?'Online — Sincronizado':'Online — Firebase';
+document.getElementById('ai-status').textContent=supabase?'Sincronizado ✓':'Firebase ativo';
 
-// ===== LOAD ALL DATA =====
-async function loadAll() {
-  // Firebase
-  const fbCols = ['receitas','despesas','produtos','fornecedores','apagar','areceber','fechamentos'];
-  for (const col of fbCols) {
-    try {
-      const snap = await getDocs(collection(db, col));
-      window.state[col] = snap.docs.map(d => ({...d.data(), _id: d.id}));
-    } catch(e) { window.state[col] = []; }
+// ============================================================
+// [10] UNIFIED DATA LAYER (U)
+// All data lives in U.* — single normalized arrays
+// Each record has: _uid (unique), _src ('fb'|'sb'|'both'), _fb_id, _sb_id
+// ============================================================
+window.U = {
+  fornecedores:[], itens:[], categorias:[],
+  despesas:[], recebimentos:[], retiradas:[],
+  lancamentos:[], boletos:[], compras:[], pagamentos:[],
+  fechamentos:[], pdfPendentes:[], extratoPendentes:[],
+  historico:[{mes:'Jan',r:11200,d:7800},{mes:'Fev',r:9800,d:8200},{mes:'Mar',r:13500,d:9100},{mes:'Abr',r:10200,d:7600},{mes:'Mai',r:14800,d:8900},{mes:'Jun',r:13500,d:8700}]
+};
+
+// Normalizer: takes FB array + SB array, merges by matchKey
+function mergeArrays(fbArr, sbArr, matchFn, normFb, normSb) {
+  const result = [];
+  const sbUsed = new Set();
+  // First pass: try to match each FB record to an SB record
+  for (const fb of fbArr) {
+    const nfb = normFb(fb);
+    let matched = false;
+    for (let i = 0; i < sbArr.length; i++) {
+      if (sbUsed.has(i)) continue;
+      const nsb = normSb(sbArr[i]);
+      if (matchFn(nfb, nsb)) {
+        // Merge: SB is source of truth, keep both IDs
+        result.push({ ...nfb, ...nsb, _src:'both', _fb_id: fb._id, _sb_id: sbArr[i].id, _uid: 'b_'+fb._id+'_'+sbArr[i].id });
+        sbUsed.add(i);
+        matched = true;
+        break;
+      }
+    }
+    if (!matched) {
+      result.push({ ...nfb, _src:'fb', _fb_id: fb._id, _sb_id: null, _uid: 'f_'+fb._id });
+    }
   }
-  // Supabase tables
-  if (supabase) {
-    try {
-      state.sb_fornecedores = await SB.list('fornecedores', { order: 'criado_em' });
-      state.sb_categorias = await SB.list('categorias', { order: 'criado_em' });
-      state.sb_itens = await SB.list('itens', { order: 'criado_em' });
-      state.sb_lancamentos = await SB.list('lancamentos', { order: 'criado_em', asc: false });
-      state.sb_boletos = await SB.list('boletos', { order: 'criado_em', asc: false });
-      state.sb_compras = await SB.list('compras', { order: 'criado_em', asc: false });
-      state.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false });
-      state.sb_documentos = await SB.list('documentos', { order: 'criado_em', asc: false });
-      console.log('Supabase loaded:', {
-        fornecedores: state.sb_fornecedores.length,
-        categorias: state.sb_categorias.length,
-        itens: state.sb_itens.length,
-        lancamentos: state.sb_lancamentos.length,
-        boletos: state.sb_boletos.length,
-        compras: state.sb_compras.length,
-        pagamentos: state.sb_pagamentos.length
-      });
-    } catch(e) { console.error('Supabase load error:', e); }
+  // Add remaining SB records
+  for (let i = 0; i < sbArr.length; i++) {
+    if (!sbUsed.has(i)) {
+      const nsb = normSb(sbArr[i]);
+      result.push({ ...nsb, _src:'sb', _fb_id: null, _sb_id: sbArr[i].id, _uid: 's_'+sbArr[i].id });
+    }
   }
-  window.render();
-  window.updateBadges();
+  return result;
 }
 
-// Firebase helpers
-window.dbAdd = async (col, data) => { setSaving(); const ref = await addDoc(collection(db, col), {...data, ts: Date.now()}); setOnline(); return ref.id; };
-window.dbDel = async (col, id) => { setSaving(); await deleteDoc(doc(db, col, id)); setOnline(); };
-window.dbUpd = async (col, id, data) => { setSaving(); await updateDoc(doc(db, col, id), data); setOnline(); };
+// Normalize key for matching
+const nk = s => (s||'').toLowerCase().trim().replace(/\s+/g,' ');
 
-function setSaving() { document.getElementById('sdot').className='sync-dot saving'; document.getElementById('stxt').textContent='Salvando...'; }
-function setOnline() { document.getElementById('sdot').className='sync-dot online'; document.getElementById('stxt').textContent='Salvo ✓'; setTimeout(()=>{ document.getElementById('stxt').textContent = supabase ? 'Online — Firebase + Supabase' : 'Online — Firebase'; },2000); }
+// === MERGE FUNCTIONS PER ENTITY ===
+function buildUnified(raw) {
+  // FORNECEDORES: match by normalized name
+  U.fornecedores = mergeArrays(raw.fb_fornecedores||[], raw.sb_fornecedores||[],
+    (a,b) => nk(a.nome) === nk(b.nome),
+    fb => ({ nome:fb.nome||'', contato:fb.tel||fb.email||'', obs:fb.obs||'', cat:fb.cat||'' }),
+    sb => ({ nome:sb.nome||'', contato:sb.contato||'', obs:sb.observacao||'' })
+  );
 
-// RPC helper
-window.executarAgenteFinanceiro = async (acao, payload = {}) => {
-  return await SB.rpc('executar_agente_financeiro', { p_acao: acao, p_payload: payload });
-};
+  // ITENS/PRODUTOS: match by normalized name
+  U.itens = mergeArrays(raw.fb_produtos||[], raw.sb_itens||[],
+    (a,b) => nk(a.nome) === nk(b.nome),
+    fb => ({ nome:fb.nome||'', cat:fb.cat||'', custo:fb.custo||0, preco:fb.preco||0, estoque:fb.estoque||0, unidade:fb.unidade||'', detalhe:fb.detalhe||'' }),
+    sb => ({ nome:sb.nome||'', qualidade:sb['Ótimo']||sb.otimo||'', aliases:sb.aliases||'' })
+  );
 
+  // CATEGORIAS: only from SB
+  U.categorias = (raw.sb_categorias||[]).map(c => ({ ...c, _src:'sb', _sb_id:c.id, _uid:'s_'+c.id }));
+
+  // DESPESAS: FB despesas + SB lancamentos (both are "saídas")
+  const fbDesp = (raw.fb_despesas||[]).map(d => ({
+    desc: d.desc||'', cat: d.cat||'', fornecedor: d.fornecedor||'', valor: d.valor||0,
+    data: d.data||'', status: d.status||'', forma: d.forma||'', obs: d.obs||'', origem: d.origem||'manual',
+    _src:'fb', _fb_id: d._id, _sb_id:null, _uid:'f_'+d._id
+  }));
+  const sbLanc = (raw.sb_lancamentos||[]).map(l => ({
+    desc: l.descricao||'', cat:'', fornecedor: getFornName(l.fornecedor_id, raw.sb_fornecedores||[]),
+    valor: Number(l.valentia||0), data: l.data_emissao||'', data_venc: l.data_vencimento||'',
+    status: l.status||'', forma:'', obs: l.status_de_observacao||'', origem:'supabase',
+    item_id: l.item_id, fornecedor_id: l.fornecedor_id,
+    _src:'sb', _fb_id:null, _sb_id: l.id, _uid:'s_'+l.id
+  }));
+  // Merge by desc+valor+date proximity
+  U.despesas = deduplicateByKey([...fbDesp, ...sbLanc], r => nk(r.desc)+'|'+r.valor+'|'+(r.data||'').slice(0,7));
+
+  // RECEBIMENTOS: only FB for now
+  U.recebimentos = (raw.fb_recebimentos||[]).map(r => ({
+    desc:r.desc||'', valor:r.valor||0, data:r.data||'', forma:r.forma||'', origem:r.origem||'', obs:r.obs||'',
+    _src:'fb', _fb_id:r._id, _uid:'f_'+r._id
+  }));
+
+  // RETIRADAS: only FB
+  U.retiradas = (raw.fb_retiradas||[]).map(r => ({
+    valor:r.valor||0, data:r.data||'', obs:r.obs||'',
+    _src:'fb', _fb_id:r._id, _uid:'f_'+r._id
+  }));
+
+  // BOLETOS: FB apagar + SB boletos
+  const fbAP = (raw.fb_apagar||[]).map(a => ({
+    desc: a.desc||'', fornecedor: a.fornecedor||'', valor: a.valor||0,
+    vencimento: a.venc||'', status: a.status||'pendente', forma: a.forma||'', cod: a.cod||'',
+    _src:'fb', _fb_id: a._id, _sb_id:null, _uid:'f_'+a._id
+  }));
+  const sbBol = (raw.sb_boletos||[]).map(b => ({
+    desc: b.descricao||'', fornecedor: getFornName(b.fornecedor_id, raw.sb_fornecedores||[]),
+    fornecedor_id: b.fornecedor_id, valor: Number(b.valentia||0),
+    vencimento: b.data_vencimento||'', status: b.status||'pendente',
+    novo_vencimento: b.novo_vencimento||'', obs_renego: b.status_de_observacao||'',
+    _src:'sb', _fb_id:null, _sb_id: b.id, _uid:'s_'+b.id
+  }));
+  U.boletos = deduplicateByKey([...fbAP, ...sbBol], r => nk(r.desc)+'|'+r.valor+'|'+r.vencimento);
+
+  // COMPRAS: only SB
+  U.compras = (raw.sb_compras||[]).map(c => ({
+    desc: c.descricao||'', fornecedor: getFornName(c.fornecedor_id, raw.sb_fornecedores||[]),
+    fornecedor_id: c.fornecedor_id, valor: Number(c.valentia||0),
+    data: c.data_compra||'', mes_ref: c.mes_referencia||'',
+    _src:'sb', _sb_id:c.id, _uid:'s_'+c.id
+  }));
+
+  // PAGAMENTOS: only SB
+  U.pagamentos = (raw.sb_pagamentos||[]).map(p => ({
+    boleto_id: p.boleto_id, valor: Number(p.valentia||0),
+    data: p['pagamento de dados']||p.pagamento_de_dados||'',
+    _src:'sb', _sb_id:p.id, _uid:'s_'+p.id
+  }));
+
+  // FECHAMENTOS: only FB
+  U.fechamentos = (raw.fb_fechamentos||[]).map(f => ({ ...f, _src:'fb', _uid:'f_'+f._id }));
+}
+
+function getFornName(id, sbForn) {
+  if (!id) return '—';
+  const f = (sbForn||[]).find(f => f.id === id);
+  return f ? f.nome : '—';
+}
+
+// Deduplicate: keep first occurrence of each key, mark dupes
+function deduplicateByKey(arr, keyFn) {
+  const seen = new Map();
+  const result = [];
+  for (const item of arr) {
+    const k = keyFn(item);
+    if (seen.has(k)) {
+      // Skip dupe — the first one (already in result) stays
+      const existing = seen.get(k);
+      if (item._sb_id && !existing._sb_id) { existing._sb_id = item._sb_id; existing._src = 'both'; }
+      if (item._fb_id && !existing._fb_id) { existing._fb_id = item._fb_id; existing._src = 'both'; }
+      continue;
+    }
+    seen.set(k, item);
+    result.push(item);
+  }
+  return result;
+}
+
+// Helper to get unified fornecedor name
+window.uForn = (id) => { const f = U.fornecedores.find(f => f._sb_id === id); return f ? f.nome : '—'; };
+
+// === RAW DATA STORE ===
+const raw = {};
+
+window.lastUpdate = null;
+function stamp() { window.lastUpdate = new Date(); }
+
+async function loadAll() {
+  // Firebase
+  for (const col of ['despesas','produtos','fornecedores','apagar','fechamentos']) {
+    try { const s=await getDocs(collection(db,col)); raw['fb_'+col]=s.docs.map(d=>({...d.data(),_id:d.id})); } catch(e) { raw['fb_'+col]=[]; }
+  }
+  try { const s=await getDocs(collection(db,'recebimentos')); raw.fb_recebimentos=s.docs.map(d=>({...d.data(),_id:d.id})); } catch(e) { raw.fb_recebimentos=[]; }
+  try { const s=await getDocs(collection(db,'retiradas')); raw.fb_retiradas=s.docs.map(d=>({...d.data(),_id:d.id})); } catch(e) { raw.fb_retiradas=[]; }
+
+  // Supabase
+  if (supabase) {
+    try {
+      raw.sb_fornecedores=await SB.list('fornecedores',{order:'criado_em'});
+      raw.sb_categorias=await SB.list('categorias',{order:'criado_em'});
+      raw.sb_itens=await SB.list('itens',{order:'criado_em'});
+      raw.sb_lancamentos=await SB.list('lancamentos',{order:'criado_em',asc:false});
+      raw.sb_boletos=await SB.list('boletos',{order:'criado_em',asc:false});
+      raw.sb_compras=await SB.list('compras',{order:'criado_em',asc:false});
+      raw.sb_pagamentos=await SB.list('pagamentos',{order:'criado_em',asc:false});
+    } catch(e) { console.error('SB load:',e); }
+  }
+
+  // Build unified layer
+  buildUnified(raw);
+  // Auto-mark overdue
+  const today = new Date().toISOString().slice(0,10);
+  U.boletos.forEach(b => {
+    if (b.status==='pendente' && b.vencimento && b.vencimento < today) {
+      b.status='atrasado';
+      if(b._sb_id) try{SB.upd('boletos',b._sb_id,{status:'atrasado'})}catch(e){}
+      if(b._fb_id) try{window.dbUpd('apagar',b._fb_id,{status:'atrasado'})}catch(e){}
+    }
+  });
+  stamp();
+  window.render();
+}
+
+window.reloadAllData = async()=>{ toast('Recarregando...'); await loadAll(); toast('Dados atualizados!'); };
+window.dbAdd=async(c,d)=>{ss();const r=await addDoc(collection(db,c),{...d,ts:Date.now()});so();return r.id;};
+window.dbDel=async(c,id)=>{ss();await deleteDoc(doc(db,c,id));so();};
+window.dbUpd=async(c,id,d)=>{ss();await updateDoc(doc(db,c,id),d);so();};
+function ss(){document.getElementById('sdot').className='sync-dot saving';document.getElementById('stxt').textContent='Salvando...';}
+function so(){document.getElementById('sdot').className='sync-dot online';document.getElementById('stxt').textContent='Salvo ✓';setTimeout(()=>{document.getElementById('stxt').textContent=supabase?'Online — Sincronizado':'Online — Firebase';},2000);}
 loadAll();
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+let API_KEY=localStorage.getItem('financeai_key')||'';
+const MESES=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MC=['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const _now=new Date(),_cm=_now.getMonth(),_cy=_now.getFullYear();
+const mesSel=document.getElementById('mes-sel'),anoSel=document.getElementById('ano-sel');
+MESES.forEach((m,i)=>{const o=document.createElement('option');o.value=i;o.textContent=m;if(i===_cm)o.selected=true;mesSel.appendChild(o);});
+[2026,2025,2024,2023].forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;if(y===_cy)o.selected=true;anoSel.appendChild(o);});
 
-let API_KEY = localStorage.getItem('financeai_key') || '';
-const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-const MC = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+// === PERIOD FILTER ===
+const gM=()=>+mesSel.value, gY=()=>+anoSel.value;
+const mp=d=>{if(!d)return false;const x=new Date(d+'T00:00:00');return x.getMonth()===gM()&&x.getFullYear()===gY();};
+const fp=(a,f)=>a.filter(i=>mp(i[f]));
 
-window.state = {
-  page:'dashboard', mes:5,
-  receitas:[], despesas:[], produtos:[], fornecedores:[],
-  apagar:[], areceber:[], fechamentos:[], pdfPendentes:[],
-  // Supabase tables
-  sb_fornecedores:[], sb_categorias:[], sb_itens:[],
-  sb_lancamentos:[], sb_boletos:[], sb_compras:[],
-  sb_pagamentos:[], sb_documentos:[],
-  historico:[
-    {mes:'Jan',r:11200,d:7800},{mes:'Fev',r:9800,d:8200},{mes:'Mar',r:13500,d:9100},
-    {mes:'Abr',r:10200,d:7600},{mes:'Mai',r:14800,d:8900},{mes:'Jun',r:13500,d:8700}
-  ]
-};
+// === FILTERED UNIFIED GETTERS ===
+const fDesp=()=>fp(U.despesas,'data');
+const fReceb=()=>fp(U.recebimentos,'data');
+const fRetir=()=>fp(U.retiradas,'data');
+const fBol=()=>U.boletos.filter(b=>mp(b.vencimento));
+const fComp=()=>fp(U.compras,'data');
+const fPag=()=>U.pagamentos.filter(p=>mp(p.data));
 
-const fmt = n => 'R$ '+Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-const pct = (a,b) => b ? Math.round((a/b)*100) : 0;
-const tR = () => state.receitas.reduce((s,r)=>s+(r.valor||0),0);
-const tD = () => state.despesas.reduce((s,d)=>s+(d.valor||0),0);
-const lucro = () => tR()-tD();
-const mediaL = () => state.historico.length ? state.historico.reduce((s,m)=>s+(m.r-m.d),0)/state.historico.length : 0;
+const tD=()=>fDesp().reduce((s,d)=>s+(d.valor||0),0);
+const tReceb=()=>fReceb().reduce((s,r)=>s+(r.valor||0),0);
+const tRetir=()=>fRetir().reduce((s,r)=>s+(r.valor||0),0);
+const tBol=()=>fBol().reduce((s,b)=>s+(b.valor||0),0);
+const tComp=()=>fComp().reduce((s,c)=>s+(c.valor||0),0);
+const lucro=()=>tReceb()-tD()-tRetir();
 
-// Supabase totals
-const tLanc = () => state.sb_lancamentos.reduce((s,l) => s + Number(l.valentia || 0), 0);
-const tBol = () => state.sb_boletos.reduce((s,b) => s + Number(b.valentia || 0), 0);
-const tComp = () => state.sb_compras.reduce((s,c) => s + Number(c.valentia || 0), 0);
+const fmt=n=>'R$ '+Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const pct=(a,b)=>b?Math.round((a/b)*100):0;
 
-// Get fornecedor name by id
-const getFornNome = (id) => { const f = state.sb_fornecedores.find(f => f.id === id); return f ? f.nome : '—'; };
-const getItemNome = (id) => { const i = state.sb_itens.find(i => i.id === id); return i ? i.nome : '—'; };
-const getCatNome = (id) => { const c = state.sb_categorias.find(c => c.id === id); return c ? c.nome : '—'; };
+mesSel.addEventListener('change',()=>render());
+anoSel.addEventListener('change',()=>render());
 
-function toast(msg, type='ts') {
-  const t=document.getElementById('toast');
-  t.textContent=(type==='ts'?'✓ ':type==='te'?'✗ ':'')+msg;
-  t.className=`toast ${type} show`;
-  setTimeout(()=>t.className='toast',3000);
+function toast(msg,type='ts'){const t=document.getElementById('toast');t.textContent=(type==='ts'?'✓ ':type==='te'?'✗ ':'')+msg;t.className=`toast ${type} show`;setTimeout(()=>t.className='toast',3000);}
+
+// === BADGES ===
+function updateBadges(){
+  const n=U.boletos.filter(b=>b.status!=='pago').length;
+  const el=document.getElementById('badge-bol');if(el)el.textContent=n;
+  const pb=document.getElementById('badge-pdf');
+  if(pb){if(U.pdfPendentes.length>0){pb.style.display='';pb.textContent=U.pdfPendentes.length;}else pb.style.display='none';}
 }
 
-window.updateBadges = function() {
-  const ap=state.apagar.filter(a=>a.status==='pendente').length + state.sb_boletos.filter(b=>b.status==='pendente').length;
-  const ar=state.areceber.filter(a=>a.status==='pendente').length;
-  document.getElementById('badge-apagar').textContent=ap;
-  document.getElementById('badge-areceber').textContent=ar;
-  const pb=document.getElementById('badge-pdf');
-  if(state.pdfPendentes.length>0){pb.style.display='';pb.textContent=state.pdfPendentes.length;}
-  else pb.style.display='none';
-};
+// === CLOCK ===
+setInterval(()=>{
+  const el=document.getElementById('dash-clock');if(el)el.textContent=new Date().toLocaleTimeString('pt-BR');
+  const el2=document.getElementById('dash-date');if(el2)el2.textContent=new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const el3=document.getElementById('dash-lastupdate');if(el3&&window.lastUpdate)el3.textContent='Atualizado: '+window.lastUpdate.toLocaleTimeString('pt-BR');
+},1000);
 
-document.getElementById('nav').addEventListener('click', e => {
-  const item=e.target.closest('.nav-item');
-  if(!item||!item.dataset.page) return;
-  state.page=item.dataset.page;
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
-  item.classList.add('active');
-  const titles={dashboard:'Dashboard',pdf:'Importar PDF com IA',receitas:'Receitas',despesas:'Despesas',lancamentos:'Lançamentos (Supabase)',produtos:'Itens / Produtos',fornecedores:'Fornecedores',categorias:'Categorias (Supabase)',boletos:'Boletos (Supabase)',compras:'Compras (Supabase)',pagamentos:'Pagamentos (Supabase)',apagar:'Contas a Pagar',areceber:'Contas a Receber',fechamento:'Fechamento do Mês',dre:'DRE Completo',relatorio:'Relatório IA',config:'Configurações'};
-  document.getElementById('page-title').textContent=titles[item.dataset.page]||item.dataset.page;
-  render();
+// === NAV ===
+document.getElementById('nav').addEventListener('click',e=>{
+  const item=e.target.closest('.nav-item');if(!item||!item.dataset.page)return;
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));item.classList.add('active');
+  const t={dashboard:'Dashboard',pdf:'Importar PDF',extrato:'Extrato Bancário',recebimentos:'Recebimentos',despesas:'Despesas / Lançamentos',lancamentos:'Lançamentos',itens:'Itens / Produtos',fornecedores:'Fornecedores',categorias:'Categorias',boletos:'Boletos / Contas a Pagar',compras:'Compras (Histórico)',pagamentos:'Pagamentos',precos:'Comparar Preços',retirada:'Retirada Diretor',fechamento:'Fechamento',dre:'DRE',relatorio:'Relatório IA',config:'Configurações'};
+  document.getElementById('page-title').textContent=t[item.dataset.page]||'';
+  window._page=item.dataset.page;render();
 });
+window._page='dashboard';
 
-window.render = function() {
-  const pages={
-    dashboard:pgDash, pdf:pgPDF, receitas:pgRec, despesas:pgDesp,
-    lancamentos:pgLanc, produtos:pgProd, fornecedores:pgForn,
-    categorias:pgCat, boletos:pgBol, compras:pgComp, pagamentos:pgPag,
-    apagar:pgAP, areceber:pgAR, fechamento:pgFech, dre:pgDRE,
-    relatorio:pgRel, config:pgConf
-  };
-  document.getElementById('content').innerHTML=(pages[state.page]||pgDash)();
+window.render=function(){
+  const p={dashboard:pgDash,pdf:pgPDF,extrato:pgExtrato,recebimentos:pgReceb,despesas:pgDesp,lancamentos:pgDesp,itens:pgItens,fornecedores:pgForn,categorias:pgCat,boletos:pgBol,compras:pgComp,pagamentos:pgPag,precos:pgPrecos,retirada:pgRet,fechamento:pgFech,dre:pgDRE,relatorio:pgRel,config:pgConf};
+  document.getElementById('content').innerHTML=(p[window._page]||pgDash)();
   updateBadges();
 };
 
-// ===== DASHBOARD =====
-function pgDash() {
-  const tr=tR(),td=tD(),lr=lucro(),ml=mediaL();
-  const sbTotal = tLanc();
-  const bmax=Math.max(...state.historico.map(m=>m.r),1);
-  const bars=state.historico.map(m=>{
-    const rh=Math.round((m.r/bmax)*75),dh=Math.round((m.d/bmax)*75);
-    return `<div class="bg-w"><div class="bars-w"><div class="bar" style="height:${rh}px;background:var(--green)" title="${fmt(m.r)}"></div><div class="bar" style="height:${dh}px;background:rgba(248,113,113,0.5)" title="${fmt(m.d)}"></div></div><div class="bar-lbl">${m.mes}</div></div>`;
-  }).join('');
-  const cats=state.despesas.reduce((a,d)=>{a[d.cat]=(a[d.cat]||0)+(d.valor||0);return a},{});
-  const catbars=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,td)}%;background:var(--blue)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('');
+// === ALERTS ===
+function getAlertas(){
+  const today=new Date().toISOString().slice(0,10),wk=new Date(Date.now()+7*864e5).toISOString().slice(0,10);
+  const open=U.boletos.filter(b=>b.status!=='pago');
+  return{atrasadas:open.filter(c=>c.vencimento&&c.vencimento<today),hoje:open.filter(c=>c.vencimento===today),semana:open.filter(c=>c.vencimento&&c.vencimento>today&&c.vencimento<=wk)};
+}
+function htmlAlertas(){
+  const{atrasadas,hoje,semana}=getAlertas();let h='';
+  if(atrasadas.length)h+=`<div class="alert-box alert-red"><div class="alert-icon">🚨</div><div class="alert-body"><div class="alert-title">${atrasadas.length} ATRASADA(S) — ${fmt(atrasadas.reduce((s,c)=>s+c.valor,0))}</div><div class="alert-sub">${atrasadas.map(c=>c.desc).join(', ')}</div></div></div>`;
+  if(hoje.length)h+=`<div class="alert-box alert-amber"><div class="alert-icon">⚠️</div><div class="alert-body"><div class="alert-title">${hoje.length} vence(m) HOJE — ${fmt(hoje.reduce((s,c)=>s+c.valor,0))}</div></div></div>`;
+  if(semana.length)h+=`<div class="alert-box alert-amber" style="border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.08);color:var(--blue)"><div class="alert-icon">📅</div><div class="alert-body"><div class="alert-title">${semana.length} esta SEMANA — ${fmt(semana.reduce((s,c)=>s+c.valor,0))}</div></div></div>`;
+  if(!h)h=`<div class="alert-box alert-green"><div class="alert-icon">✅</div><div class="alert-body"><div class="alert-title">Nenhuma pendência nos próximos 7 dias</div></div></div>`;
+  return h;
+}
+
+// ===== PAGES =====
+function pgDash(){
+  const td=tD(),tr=tReceb(),tret=tRetir(),lr=lucro(),ent=tr,sai=td+tret;
+  const cats=fDesp().reduce((a,d)=>{a[d.cat||'Outros']=(a[d.cat||'Outros']||0)+d.valor;return a},{});
+  const catH=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,td)}%;background:var(--blue)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('');
   return `
+  <div class="clock-bar"><div class="clock-left"><div class="clock-time" id="dash-clock">--:--:--</div><div class="clock-date" id="dash-date"></div></div><div class="clock-right"><span class="dot dg"></span><span id="dash-lastupdate">${window.lastUpdate?'Atualizado: '+window.lastUpdate.toLocaleTimeString('pt-BR'):'...'}</span><button class="btn btn-g btn-sm" onclick="reloadAllData()" style="margin-left:6px">↻</button></div></div>
+  ${htmlAlertas()}
   <div class="g4">
-    <div class="mc"><div class="mc-lbl">Receitas do Mês</div><div class="mc-val" style="color:var(--green)">${fmt(tr)}</div><div class="mc-sub"><span class="badge bg">${state.receitas.length} entradas</span></div></div>
-    <div class="mc"><div class="mc-lbl">Despesas do Mês</div><div class="mc-val" style="color:var(--red)">${fmt(td)}</div><div class="mc-sub"><span class="badge br">${state.despesas.length} lançamentos</span></div></div>
-    <div class="mc"><div class="mc-lbl">Lucro Bruto</div><div class="mc-val" style="color:${lr>=0?'var(--green)':'var(--red)'}">${fmt(lr)}</div><div class="mc-sub"><span class="badge ${lr>=0?'bg':'br'}">${pct(lr,tr)}% margem</span></div></div>
-    <div class="mc"><div class="mc-lbl">Lançamentos Supabase</div><div class="mc-val" style="color:var(--purple)">${fmt(sbTotal)}</div><div class="mc-sub"><span class="badge bp">${state.sb_lancamentos.length} registros</span></div></div>
+    <div class="mc"><div class="mc-lbl">Recebimentos</div><div class="mc-val" style="color:var(--green)">${fmt(ent)}</div><div class="mc-sub"><span class="badge bg">${fReceb().length} entradas</span></div></div>
+    <div class="mc"><div class="mc-lbl">Despesas + Retiradas</div><div class="mc-val" style="color:var(--red)">${fmt(sai)}</div><div class="mc-sub"><span class="badge br">${fDesp().length} desp + ${fRetir().length} ret</span></div></div>
+    <div class="mc"><div class="mc-lbl">Resultado</div><div class="mc-val" style="color:${lr>=0?'var(--green)':'var(--red)'}">${fmt(lr)}</div></div>
+    <div class="mc"><div class="mc-lbl">Boletos do Mês</div><div class="mc-val" style="color:var(--purple)">${fmt(tBol())}</div><div class="mc-sub"><span class="badge bp">${fBol().length}</span></div></div>
   </div>
   <div class="g4">
-    <div class="mc" style="border-left:2px solid var(--green)"><div class="mc-lbl">Fornecedores <span class="supabase-tag">SB</span></div><div class="mc-val">${state.sb_fornecedores.length}</div></div>
-    <div class="mc" style="border-left:2px solid var(--blue)"><div class="mc-lbl">Boletos <span class="supabase-tag">SB</span></div><div class="mc-val">${state.sb_boletos.length}</div><div class="mc-sub">${fmt(tBol())}</div></div>
-    <div class="mc" style="border-left:2px solid var(--amber)"><div class="mc-lbl">Compras <span class="supabase-tag">SB</span></div><div class="mc-val">${state.sb_compras.length}</div><div class="mc-sub">${fmt(tComp())}</div></div>
-    <div class="mc" style="border-left:2px solid var(--teal)"><div class="mc-lbl">Itens <span class="supabase-tag">SB</span></div><div class="mc-val">${state.sb_itens.length}</div></div>
+    <div class="mc" style="border-left:2px solid var(--green)"><div class="mc-lbl">Fornecedores</div><div class="mc-val">${U.fornecedores.length}</div></div>
+    <div class="mc" style="border-left:2px solid var(--blue)"><div class="mc-lbl">Compras do Mês</div><div class="mc-val">${fComp().length}</div><div class="mc-sub">${fmt(tComp())}</div></div>
+    <div class="mc" style="border-left:2px solid var(--amber)"><div class="mc-lbl">Retiradas Diretor</div><div class="mc-val" style="color:var(--amber)">${fmt(tRetir())}</div></div>
+    <div class="mc" style="border-left:2px solid var(--teal)"><div class="mc-lbl">Itens / Produtos</div><div class="mc-val">${U.itens.length}</div></div>
   </div>
   <div class="g2">
-    <div class="card"><div class="shd">Receitas vs Despesas <span style="font-size:10px;color:var(--txt3);display:flex;gap:8px"><span style="color:var(--green)">■</span>Receita <span style="color:rgba(248,113,113,0.6)">■</span>Despesa</span></div><div class="bar-chart">${bars}</div></div>
-    <div class="card"><div class="shd">Despesas por Categoria</div>${catbars||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}</div>
-  </div>
-  <div class="g2">
-    <div class="card"><div class="shd">Últimos Lançamentos <span class="supabase-tag">Supabase</span></div>
-      ${state.sb_lancamentos.slice(0,5).map(l=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${l.status==='pago'?'dg':'da'}"></span>${l.descricao||'—'}</span><span style="color:var(--red);font-weight:500">${fmt(l.valentia)}</span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum lançamento</div>'}
-    </div>
-    <div class="card"><div class="shd">Últimos Boletos <span class="supabase-tag">Supabase</span></div>
-      ${state.sb_boletos.slice(0,5).map(b=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${b.status==='pago'?'dg':'da'}"></span>${b.descricao||'Boleto #'+b.id}</span><span style="display:flex;gap:8px;align-items:center"><span class="badge ba">${(b.data_vencimento||'').slice(5)}</span><span style="color:var(--red);font-weight:500">${fmt(b.valentia)}</span></span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum boleto</div>'}
-    </div>
+    <div class="card"><div class="shd">Despesas por Categoria</div>${catH||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}</div>
+    <div class="card"><div class="shd">Últimos Boletos</div>${fBol().slice(0,5).map(b=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${b.status==='pago'?'dg':b.status==='atrasado'?'dr':'da'}"></span>${b.desc||'Boleto'}</span><span style="display:flex;gap:6px;align-items:center"><span class="badge ${b.status==='atrasado'?'br':'ba'}">${(b.vencimento||'').slice(5)}</span><span style="color:var(--red);font-weight:500">${fmt(b.valor)}</span></span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum boleto</div>'}</div>
   </div>`;
 }
 
-// ===== LANÇAMENTOS (SUPABASE) =====
-function pgLanc() {
-  const total = tLanc();
-  const pendentes = state.sb_lancamentos.filter(l => l.status === 'pendente');
-  const pagos = state.sb_lancamentos.filter(l => l.status === 'pago');
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('flanc')">+ Novo Lançamento</button>
-    <span class="badge br" style="padding:5px 11px">Total: ${fmt(total)}</span>
-    <span class="badge ba" style="padding:5px 11px">${pendentes.length} pendentes</span>
-    <span class="badge bg" style="padding:5px 11px">${pagos.length} pagos</span>
-    <button class="btn btn-g btn-sm" onclick="reloadSB('lancamentos')">↻ Atualizar</button>
-  </div>
-  <div id="flanc" class="fc" style="display:none">
-    <div class="ft">Novo Lançamento no Supabase</div>
-    <div class="fg c4">
-      <div class="fl"><label>Descrição</label><input id="sl-desc" placeholder="Descrição do lançamento"/></div>
-      <div class="fl"><label>Fornecedor</label><select id="sl-forn"><option value="">Selecionar...</option>${state.sb_fornecedores.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
-      <div class="fl"><label>Item</label><select id="sl-item"><option value="">Selecionar...</option>${state.sb_itens.map(i=>`<option value="${i.id}">${i.nome}</option>`).join('')}</select></div>
-      <div class="fl"><label>Valor (R$)</label><input id="sl-val" type="number" step="0.01" placeholder="0,00"/></div>
-    </div>
-    <div class="fg c5">
-      <div class="fl"><label>Qtd</label><input id="sl-qty" type="number" step="1" value="1"/></div>
-      <div class="fl"><label>Data Emissão</label><input id="sl-emissao" type="date"/></div>
-      <div class="fl"><label>Data Vencimento</label><input id="sl-venc" type="date"/></div>
-      <div class="fl"><label>Status</label><select id="sl-status"><option value="pendente">Pendente</option><option value="pago">Pago</option><option value="agendado">Agendado</option></select></div>
-      <div class="fl"><label>Observação</label><input id="sl-obs" placeholder="Opcional"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addLancSB()">Salvar no Supabase</button><button class="btn btn-g btn-sm" onclick="toggleForm('flanc')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Descrição</th><th>Fornecedor</th><th>Item</th><th>Qtd</th><th>Emissão</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${state.sb_lancamentos.length?state.sb_lancamentos.map(l=>`<tr>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${l.id}</td>
-      <td style="font-weight:500">${l.descricao||'—'}</td>
-      <td style="color:var(--txt2);font-size:11px">${getFornNome(l.fornecedor_id)}</td>
-      <td style="color:var(--txt2);font-size:11px">${getItemNome(l.item_id)}</td>
-      <td style="color:var(--txt3);font-size:11px">${l['Ó']||l.qty||'—'}</td>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${l.data_emissao||'—'}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${l.data_vencimento||'—'}</td>
-      <td><span class="badge ${l.status==='pago'?'bg':l.status==='pendente'?'ba':'bb'}">${l.status||'—'}</span></td>
-      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(l.valentia)}</td>
-      <td style="display:flex;gap:4px">
-        ${l.status==='pendente'?`<button class="btn btn-s btn-sm" onclick="pagarLancSB(${l.id})">✓</button>`:''}
-        <button class="btn btn-d btn-sm" onclick="delSB('lancamentos',${l.id})">×</button>
-      </td>
-    </tr>`).join(''):'<tr><td colspan="10" style="text-align:center;color:var(--txt3);padding:24px">Nenhum lançamento no Supabase</td></tr>'}</tbody>
-  </table></div>`;
+// DESPESAS / LANÇAMENTOS — unified view
+function pgDesp(){
+  const lista=fDesp();const total=lista.reduce((s,d)=>s+d.valor,0);
+  return `<div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('fdesp')">+ Nova Despesa</button><span class="badge br" style="padding:5px 11px">Total: ${fmt(total)}</span><span class="badge bp" style="padding:5px 11px">${lista.length} registros</span><button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button></div>
+  <div id="fdesp" class="fc" style="display:none"><div class="ft">Nova Despesa</div><div class="fg c5"><div class="fl"><label>Descrição</label><input id="d-desc"/></div><div class="fl"><label>Categoria</label><select id="d-cat"><option>Fixo</option><option>Pessoal</option><option>Estoque</option><option>Ouro/Metais</option><option>Marketing</option><option>Impostos</option><option>Outros</option></select></div><div class="fl"><label>Fornecedor</label><select id="d-forn"><option value="">—</option>${U.fornecedores.map(f=>`<option value="${f.nome}">${f.nome}</option>`).join('')}</select></div><div class="fl"><label>Valor (R$)</label><input id="d-val" type="number" step="0.01"/></div><div class="fl"><label>Data</label><input id="d-data" type="date" value="${new Date().toISOString().slice(0,10)}"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addDesp()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fdesp')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>Descrição</th><th>Categoria</th><th>Fornecedor</th><th>Data</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+  <tbody>${lista.length?lista.map(d=>`<tr><td style="font-weight:500">${d.desc}</td><td><span class="badge bb">${d.cat||'—'}</span></td><td style="color:var(--txt2);font-size:11px">${d.fornecedor||'—'}</td><td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${d.data||'—'}</td><td><span class="dot ${d.status==='pago'?'dg':d.status==='atrasado'?'dr':'da'}"></span>${d.status||'—'}</td><td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(d.valor)}</td><td>${d._fb_id?`<button class="btn btn-d btn-sm" onclick="delU('despesas','${d._uid}')">×</button>`:d._sb_id?`<button class="btn btn-d btn-sm" onclick="delU('despesas','${d._uid}')">×</button>`:''}</td></tr>`).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum registro neste mês</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== CATEGORIAS (SUPABASE) =====
-function pgCat() {
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fcat')">+ Nova Categoria</button>
-    <span class="badge bp" style="padding:5px 11px">${state.sb_categorias.length} categorias</span>
-    <button class="btn btn-g btn-sm" onclick="reloadSB('categorias')">↻ Atualizar</button>
-  </div>
-  <div id="fcat" class="fc" style="display:none">
-    <div class="ft">Nova Categoria</div>
-    <div class="fg c3">
-      <div class="fl"><label>Nome</label><input id="sc-nome" placeholder="Ex: Ouro/Metais"/></div>
-      <div class="fl"><label>Tipo</label><select id="sc-tipo"><option>despesa</option><option>receita</option><option>ambos</option></select></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addCatSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcat')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Nome</th><th>Tipo</th><th>Criado em</th><th></th></tr></thead>
-    <tbody>${state.sb_categorias.length?state.sb_categorias.map(c=>`<tr>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${c.id}</td>
-      <td style="font-weight:500">${c.nome||'—'}</td>
-      <td><span class="badge ${c.tipo==='receita'?'bg':c.tipo==='despesa'?'br':'bb'}">${c.tipo||'—'}</span></td>
-      <td style="color:var(--txt3);font-size:11px">${c.criado_em ? new Date(c.criado_em).toLocaleDateString('pt-BR') : '—'}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('categorias',${c.id})">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma categoria</td></tr>'}</tbody>
-  </table></div>`;
+function pgReceb(){
+  const lista=fReceb(),total=tReceb();
+  return `<div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('freceb')">+ Novo Recebimento</button><span class="badge bg" style="padding:5px 11px">Total: ${fmt(total)}</span></div>
+  <div id="freceb" class="fc" style="display:none"><div class="ft">Registrar Recebimento</div><div class="fg c4"><div class="fl"><label>Descrição</label><input id="rb-desc"/></div><div class="fl"><label>Valor (R$)</label><input id="rb-val" type="number" step="0.01"/></div><div class="fl"><label>Data</label><input id="rb-data" type="date" value="${new Date().toISOString().slice(0,10)}"/></div><div class="fl"><label>Forma</label><select id="rb-forma"><option>PIX</option><option>Dinheiro</option><option>Transferência</option><option>Cartão</option><option>Cheque</option></select></div></div><div class="fg c2"><div class="fl"><label>Origem/Cliente</label><input id="rb-origem"/></div><div class="fl"><label>Obs</label><input id="rb-obs"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addReceb()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('freceb')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>Descrição</th><th>Origem</th><th>Data</th><th>Forma</th><th style="text-align:right">Valor</th><th></th></tr></thead><tbody>${lista.length?lista.map(r=>`<tr><td style="font-weight:500">${r.desc}</td><td style="color:var(--txt2)">${r.origem||'—'}</td><td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${r.data}</td><td style="font-size:11px">${r.forma||'—'}</td><td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(r.valor)}</td><td><button class="btn btn-d btn-sm" onclick="delU('recebimentos','${r._uid}')">×</button></td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum recebimento</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== BOLETOS (SUPABASE) =====
-function pgBol() {
-  const total = tBol();
-  const pendentes = state.sb_boletos.filter(b => b.status === 'pendente' || !b.status);
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fbol')">+ Novo Boleto</button>
-    <span class="badge br" style="padding:5px 11px">Total: ${fmt(total)}</span>
-    <span class="badge ba" style="padding:5px 11px">${pendentes.length} pendentes</span>
-    <button class="btn btn-g btn-sm" onclick="reloadSB('boletos')">↻ Atualizar</button>
-  </div>
-  <div id="fbol" class="fc" style="display:none">
-    <div class="ft">Novo Boleto</div>
-    <div class="fg c4">
-      <div class="fl"><label>Fornecedor</label><select id="sb-forn"><option value="">Selecionar...</option>${state.sb_fornecedores.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
-      <div class="fl"><label>Compra Ref.</label><select id="sb-compra"><option value="">Nenhuma</option>${state.sb_compras.map(c=>`<option value="${c.id}">#${c.id} - ${c.descricao||fmt(c.valentia)}</option>`).join('')}</select></div>
-      <div class="fl"><label>Descrição</label><input id="sb-desc" placeholder="Descrição do boleto"/></div>
-      <div class="fl"><label>Valor (R$)</label><input id="sb-val" type="number" step="0.01" placeholder="0,00"/></div>
-    </div>
-    <div class="fg c3">
-      <div class="fl"><label>Data Vencimento</label><input id="sb-venc" type="date"/></div>
-      <div class="fl"><label>Status</label><select id="sb-status"><option value="pendente">Pendente</option><option value="pago">Pago</option><option value="vencido">Vencido</option></select></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addBolSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fbol')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Fornecedor</th><th>Compra</th><th>Descrição</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${state.sb_boletos.length?state.sb_boletos.map(b=>`<tr>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${b.id}</td>
-      <td style="font-weight:500">${getFornNome(b.fornecedor_id)}</td>
-      <td style="color:var(--txt3);font-size:11px">${b.compra_id ? '#'+b.compra_id : '—'}</td>
-      <td style="color:var(--txt2)">${b.descricao||'—'}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${b.data_vencimento||'—'}</td>
-      <td><span class="badge ${b.status==='pago'?'bg':b.status==='vencido'?'br':'ba'}">${b.status||'pendente'}</span></td>
-      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(b.valentia)}</td>
-      <td style="display:flex;gap:4px">
-        ${(b.status||'pendente')!=='pago'?`<button class="btn btn-s btn-sm" onclick="pagarBolSB(${b.id})">✓ Pagar</button>`:''}
-        <button class="btn btn-d btn-sm" onclick="delSB('boletos',${b.id})">×</button>
-      </td>
-    </tr>`).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhum boleto</td></tr>'}</tbody>
-  </table></div>`;
+function pgRet(){
+  const lista=fRetir(),total=tRetir(),tg=U.retiradas.reduce((s,r)=>s+r.valor,0);
+  return `<div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('fret')">+ Nova Retirada</button><span class="badge ba" style="padding:5px 11px">Mês: ${fmt(total)}</span><span class="badge bp" style="padding:5px 11px">Total: ${fmt(tg)}</span></div>
+  <div id="fret" class="fc" style="display:none"><div class="ft">Nova Retirada do Diretor</div><div class="fg c3"><div class="fl"><label>Valor</label><input id="ret-val" type="number" step="0.01"/></div><div class="fl"><label>Data</label><input id="ret-data" type="date" value="${new Date().toISOString().slice(0,10)}"/></div><div class="fl"><label>Obs</label><input id="ret-obs"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addRetirada()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fret')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>Data</th><th>Observação</th><th style="text-align:right">Valor</th><th></th></tr></thead><tbody>${lista.length?lista.map(r=>`<tr><td style="font-family:'DM Mono',monospace;font-size:11px">${r.data}</td><td>${r.obs||'Retirada'}</td><td style="text-align:right;font-weight:600;color:var(--amber);font-family:'DM Mono',monospace">${fmt(r.valor)}</td><td><button class="btn btn-d btn-sm" onclick="delU('retiradas','${r._uid}')">×</button></td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma retirada</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== COMPRAS (SUPABASE) =====
-function pgComp() {
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fcomp')">+ Nova Compra</button>
-    <span class="badge bb" style="padding:5px 11px">Total: ${fmt(tComp())}</span>
-    <button class="btn btn-g btn-sm" onclick="reloadSB('compras')">↻ Atualizar</button>
-  </div>
-  <div id="fcomp" class="fc" style="display:none">
-    <div class="ft">Nova Compra</div>
-    <div class="fg c4">
-      <div class="fl"><label>Fornecedor</label><select id="sco-forn"><option value="">Selecionar...</option>${state.sb_fornecedores.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
-      <div class="fl"><label>Descrição</label><input id="sco-desc" placeholder="Descrição da compra"/></div>
-      <div class="fl"><label>Valor (R$)</label><input id="sco-val" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Data Compra</label><input id="sco-data" type="date"/></div>
-    </div>
-    <div class="fg c2">
-      <div class="fl"><label>Mês Referência</label><input id="sco-mes" type="date" placeholder="YYYY-MM-DD"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addCompSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcomp')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Fornecedor</th><th>Descrição</th><th>Data</th><th>Mês Ref.</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${state.sb_compras.length?state.sb_compras.map(c=>`<tr>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${c.id}</td>
-      <td style="font-weight:500">${getFornNome(c.fornecedor_id)}</td>
-      <td style="color:var(--txt2)">${c.descricao||'—'}</td>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${c.data_compra||'—'}</td>
-      <td style="color:var(--txt3);font-size:11px">${c.mes_referencia||'—'}</td>
-      <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valentia)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('compras',${c.id})">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra</td></tr>'}</tbody>
-  </table></div>`;
+function pgBol(){
+  const lista=fBol(),total=tBol(),pend=lista.filter(b=>b.status!=='pago');
+  return `<div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('fbol')">+ Novo Boleto</button><span class="badge br" style="padding:5px 11px">Total: ${fmt(total)}</span><span class="badge ba" style="padding:5px 11px">${pend.length} pendentes</span><button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button></div>
+  <div id="fbol" class="fc" style="display:none"><div class="ft">Novo Boleto</div><div class="fg c4"><div class="fl"><label>Fornecedor</label><select id="sb-forn"><option value="">—</option>${U.fornecedores.filter(f=>f._sb_id).map(f=>`<option value="${f._sb_id}">${f.nome}</option>`).join('')}</select></div><div class="fl"><label>Descrição</label><input id="sb-desc"/></div><div class="fl"><label>Valor</label><input id="sb-val" type="number" step="0.01"/></div><div class="fl"><label>Vencimento</label><input id="sb-venc" type="date"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addBol()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fbol')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>Descrição</th><th>Fornecedor</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th>Ações</th></tr></thead>
+  <tbody>${U.boletos.length?U.boletos.map(b=>`<tr><td style="font-weight:500">${b.desc||'Boleto'}</td><td style="color:var(--txt2);font-size:11px">${b.fornecedor||'—'}</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${b.vencimento||'—'}</td><td><span class="badge ${b.status==='pago'?'bg':b.status==='atrasado'?'br':b.status==='renegociado'?'bp':'ba'}">${b.status}</span></td><td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(b.valor)}</td><td style="display:flex;gap:4px;flex-wrap:wrap">${b.status!=='pago'?`<button class="btn btn-s btn-sm" onclick="pagarBol('${b._uid}')">✓ Pagar</button>${b._sb_id?`<button class="btn btn-a btn-sm" onclick="showRenego(${b._sb_id})">🔄</button>`:''}`:''}${b._sb_id?`<button class="btn btn-d btn-sm" onclick="delBolSB(${b._sb_id})">×</button>`:b._fb_id?`<button class="btn btn-d btn-sm" onclick="delU('boletos','${b._uid}')">×</button>`:''}</td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum boleto</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== PAGAMENTOS (SUPABASE) =====
-function pgPag() {
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fpag')">+ Novo Pagamento</button>
-    <span class="badge bg" style="padding:5px 11px">${state.sb_pagamentos.length} pagamentos</span>
-    <button class="btn btn-g btn-sm" onclick="reloadSB('pagamentos')">↻ Atualizar</button>
-  </div>
-  <div id="fpag" class="fc" style="display:none">
-    <div class="ft">Registrar Pagamento</div>
-    <div class="fg c3">
-      <div class="fl"><label>Boleto</label><select id="sp-bol"><option value="">Selecionar boleto...</option>${state.sb_boletos.filter(b=>b.status!=='pago').map(b=>`<option value="${b.id}">#${b.id} - ${b.descricao||getFornNome(b.fornecedor_id)} (${fmt(b.valentia)})</option>`).join('')}</select></div>
-      <div class="fl"><label>Valor (R$)</label><input id="sp-val" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Data Pagamento</label><input id="sp-data" type="date"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addPagSB()">Registrar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fpag')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Boleto</th><th>Data Pagamento</th><th style="text-align:right">Valor</th><th>Criado em</th><th></th></tr></thead>
-    <tbody>${state.sb_pagamentos.length?state.sb_pagamentos.map(p=>`<tr>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${p.id}</td>
-      <td style="font-weight:500">Boleto #${p.boleto_id||'—'}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green)">${p['pagamento de dados']||p.pagamento_de_dados||'—'}</td>
-      <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(p.valentia)}</td>
-      <td style="color:var(--txt3);font-size:11px">${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '—'}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('pagamentos',${p.id})">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum pagamento</td></tr>'}</tbody>
-  </table></div>`;
+function pgComp(){
+  const lista=fComp();
+  return `<div class="aip" style="border-color:rgba(96,165,250,0.25)"><div class="aip-hd" style="color:var(--blue)">📦 Compras = Histórico</div><div class="aip-bd">Compras ficam como registro. Para gerar conta a pagar, cadastre um <strong>Boleto</strong>.</div></div>
+  <div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('fcomp')">+ Nova Compra</button><span class="badge bb" style="padding:5px 11px">${fmt(tComp())}</span><button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button></div>
+  <div id="fcomp" class="fc" style="display:none"><div class="ft">Nova Compra</div><div class="fg c4"><div class="fl"><label>Fornecedor</label><select id="sco-forn"><option value="">—</option>${U.fornecedores.filter(f=>f._sb_id).map(f=>`<option value="${f._sb_id}">${f.nome}</option>`).join('')}</select></div><div class="fl"><label>Descrição</label><input id="sco-desc"/></div><div class="fl"><label>Valor</label><input id="sco-val" type="number" step="0.01"/></div><div class="fl"><label>Data</label><input id="sco-data" type="date" value="${new Date().toISOString().slice(0,10)}"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addComp()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcomp')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>Fornecedor</th><th>Descrição</th><th>Data</th><th style="text-align:right">Valor</th><th></th></tr></thead><tbody>${lista.length?lista.map(c=>`<tr><td style="font-weight:500">${c.fornecedor||'—'}</td><td style="color:var(--txt2)">${c.desc||'—'}</td><td style="font-family:'DM Mono',monospace;font-size:11px">${c.data||'—'}</td><td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valor)}</td><td>${c._sb_id?`<button class="btn btn-d btn-sm" onclick="delSBdirect('compras',${c._sb_id})">×</button>`:''}</td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== FORNECEDORES (DUAL) =====
-function pgForn() {
-  const gastoForn = state.despesas.reduce((a,d)=>{if(d.fornecedor){a[d.fornecedor]=(a[d.fornecedor]||0)+(d.valor||0);}return a},{});
-  return `
-  <div class="tab-bar">
-    <button class="tab-btn active" onclick="state._fornTab='supabase';render()" id="forn-tab-sb">Supabase (${state.sb_fornecedores.length})</button>
-    <button class="tab-btn" onclick="state._fornTab='firebase';render()" id="forn-tab-fb">Firebase (${state.fornecedores.length})</button>
-  </div>
-  ${(!state._fornTab || state._fornTab==='supabase') ? `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fforn-sb')">+ Novo Fornecedor (Supabase)</button>
-    <button class="btn btn-g btn-sm" onclick="reloadSB('fornecedores')">↻ Atualizar</button>
-  </div>
-  <div id="fforn-sb" class="fc" style="display:none">
-    <div class="ft">Novo Fornecedor — Supabase</div>
-    <div class="fg c3">
-      <div class="fl"><label>Nome</label><input id="sf-nome" placeholder="Nome do fornecedor"/></div>
-      <div class="fl"><label>Contato</label><input id="sf-contato" placeholder="Tel/Email"/></div>
-      <div class="fl"><label>Observação</label><input id="sf-obs" placeholder="Opcional"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addFornSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fforn-sb')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Nome</th><th>Contato</th><th>Observação</th><th>Criado em</th><th></th></tr></thead>
-    <tbody>${state.sb_fornecedores.length?state.sb_fornecedores.map(f=>`<tr>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${f.id}</td>
-      <td style="font-weight:500">${f.nome||'—'}</td>
-      <td style="color:var(--txt2)">${f.contato||'—'}</td>
-      <td style="color:var(--txt3);font-size:11px">${f.observacao||'—'}</td>
-      <td style="color:var(--txt3);font-size:11px">${f.criado_em ? new Date(f.criado_em).toLocaleDateString('pt-BR') : '—'}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('fornecedores',${f.id})">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum fornecedor no Supabase</td></tr>'}</tbody>
-  </table></div>` : `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fforn')">+ Novo Fornecedor (Firebase)</button>
-  </div>
-  <div id="fforn" class="fc" style="display:none">
-    <div class="ft">Novo Fornecedor — Firebase</div>
-    <div class="fg c4">
-      <div class="fl"><label>Nome</label><input id="f-nome" placeholder="Razão social ou nome"/></div>
-      <div class="fl"><label>Categoria</label><select id="f-cat"><option>Ouro/Metais</option><option>Insumos</option><option>Serviços</option><option>Outros</option></select></div>
-      <div class="fl"><label>CNPJ/CPF</label><input id="f-doc" placeholder="00.000.000/0001-00"/></div>
-      <div class="fl"><label>Telefone</label><input id="f-tel" placeholder="(11) 99999-9999"/></div>
-    </div>
-    <div class="fg c3">
-      <div class="fl"><label>Email</label><input id="f-email" placeholder="email@fornecedor.com"/></div>
-      <div class="fl"><label>Prazo Pagto</label><select id="f-prazo"><option>À vista</option><option>7 dias</option><option>15 dias</option><option>30 dias</option><option>60 dias</option></select></div>
-      <div class="fl"><label>Observação</label><input id="f-obs" placeholder="Opcional"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addForn()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fforn')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Nome</th><th>Categoria</th><th>CNPJ/CPF</th><th>Telefone</th><th>Prazo</th><th style="text-align:right">Total Compras</th><th></th></tr></thead>
-    <tbody>${state.fornecedores.length?state.fornecedores.map(f=>`<tr>
-      <td style="font-weight:500">${f.nome||''}</td>
-      <td><span class="badge bp">${f.cat||''}</span></td>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${f.doc||'—'}</td>
-      <td style="color:var(--txt2)">${f.tel||'—'}</td>
-      <td><span class="badge bt">${f.prazo||'—'}</span></td>
-      <td style="text-align:right;font-weight:600;color:var(--purple);font-family:'DM Mono',monospace">${fmt(gastoForn[f.nome]||0)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delItem('fornecedores','${f._id}')">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum fornecedor no Firebase</td></tr>'}</tbody>
-  </table></div>`}`;
+function pgPag(){
+  const lista=fPag();
+  return `<div class="ar"><span class="badge bg" style="padding:5px 11px">${lista.length} pagamentos no mês</span><button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button></div>
+  <div class="tw"><table><thead><tr><th>Boleto</th><th>Data</th><th style="text-align:right">Valor</th></tr></thead><tbody>${lista.length?lista.map(p=>`<tr><td>Boleto #${p.boleto_id||'—'}</td><td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green)">${p.data||'—'}</td><td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(p.valor)}</td></tr>`).join(''):'<tr><td colspan="3" style="text-align:center;color:var(--txt3);padding:24px">Nenhum pagamento</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== ITENS / PRODUTOS (DUAL) =====
-function pgProd() {
-  return `
-  <div class="tab-bar">
-    <button class="tab-btn ${(!state._prodTab||state._prodTab==='supabase')?'active':''}" onclick="state._prodTab='supabase';render()">Itens Supabase (${state.sb_itens.length})</button>
-    <button class="tab-btn ${state._prodTab==='firebase'?'active':''}" onclick="state._prodTab='firebase';render()">Produtos Firebase (${state.produtos.length})</button>
-  </div>
-  ${(!state._prodTab||state._prodTab==='supabase') ? `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fitem')">+ Novo Item</button>
-    <button class="btn btn-g btn-sm" onclick="reloadSB('itens')">↻ Atualizar</button>
-  </div>
-  <div id="fitem" class="fc" style="display:none">
-    <div class="ft">Novo Item — Supabase</div>
-    <div class="fg c3">
-      <div class="fl"><label>Nome</label><input id="si-nome" placeholder="Ex: Ouro 18k"/></div>
-      <div class="fl"><label>Ótimo (qualidade)</label><input id="si-otimo" placeholder="Ex: 750, 18k"/></div>
-      <div class="fl"><label>Aliases</label><input id="si-alias" placeholder="Ex: ouro18k, gold18"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addItemSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fitem')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Nome</th><th>Qualidade</th><th>Aliases</th><th>Criado em</th><th></th></tr></thead>
-    <tbody>${state.sb_itens.length?state.sb_itens.map(i=>`<tr>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${i.id}</td>
-      <td style="font-weight:500">${i.nome||'—'}</td>
-      <td style="color:var(--txt2)">${i['Ótimo']||i.otimo||'—'}</td>
-      <td style="color:var(--txt3);font-size:11px">${i.aliases||'—'}</td>
-      <td style="color:var(--txt3);font-size:11px">${i.criado_em ? new Date(i.criado_em).toLocaleDateString('pt-BR') : '—'}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('itens',${i.id})">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum item no Supabase</td></tr>'}</tbody>
-  </table></div>` : `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fprod')">+ Novo Produto</button>
-  </div>
-  <div id="fprod" class="fc" style="display:none">
-    <div class="ft">Novo Produto — Firebase</div>
-    <div class="fg c4">
-      <div class="fl"><label>Nome</label><input id="p-nome" placeholder="Ex: Ouro 18k"/></div>
-      <div class="fl"><label>Categoria</label><input id="p-cat" placeholder="Ex: Ouro, Prata"/></div>
-      <div class="fl"><label>Fornecedor</label><input id="p-forn" placeholder="Nome do fornecedor"/></div>
-      <div class="fl"><label>Unidade</label><select id="p-un"><option>grama</option><option>quilate</option><option>peça</option><option>kg</option><option>unidade</option></select></div>
-    </div>
-    <div class="fg c4">
-      <div class="fl"><label>Custo (R$)</label><input id="p-custo" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Preço Venda (R$)</label><input id="p-preco" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Estoque</label><input id="p-est" type="number" step="0.001" placeholder="0"/></div>
-      <div class="fl"><label>Pureza/Detalhe</label><input id="p-det" placeholder="Ex: 750, 18k, 925"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addProd()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fprod')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Produto</th><th>Categoria</th><th>Custo</th><th>Preço Venda</th><th>Margem</th><th>Estoque</th><th></th></tr></thead>
-    <tbody>${state.produtos.length?state.produtos.map(p=>{
-      const m=Math.round(((p.preco-p.custo)/Math.max(p.preco,1))*100);
-      return `<tr>
-        <td style="font-weight:500">${p.nome||''}</td>
-        <td><span class="badge bp">${p.cat||''}</span></td>
-        <td style="font-family:'DM Mono',monospace;color:var(--txt2)">${fmt(p.custo)}</td>
-        <td style="font-family:'DM Mono',monospace;color:var(--green);font-weight:600">${fmt(p.preco)}</td>
-        <td><span class="badge ${m>50?'bg':m>30?'ba':'br'}">${m}%</span></td>
-        <td>${p.estoque||0} ${p.unidade||''}</td>
-        <td><button class="btn btn-d btn-sm" onclick="delItem('produtos','${p._id}')">×</button></td>
-      </tr>`;
-    }).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum produto no Firebase</td></tr>'}</tbody>
-  </table></div>`}`;
+function pgForn(){
+  return `<div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('fforn')">+ Novo Fornecedor</button><span class="badge bp" style="padding:5px 11px">${U.fornecedores.length} fornecedores</span><button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button></div>
+  <div id="fforn" class="fc" style="display:none"><div class="ft">Novo Fornecedor</div><div class="fg c3"><div class="fl"><label>Nome</label><input id="sf-nome"/></div><div class="fl"><label>Contato</label><input id="sf-contato"/></div><div class="fl"><label>Obs</label><input id="sf-obs"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addForn()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fforn')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>Nome</th><th>Contato</th><th>Observação</th><th></th></tr></thead><tbody>${U.fornecedores.length?U.fornecedores.map(f=>`<tr><td style="font-weight:500">${f.nome}</td><td style="color:var(--txt2)">${f.contato||'—'}</td><td style="color:var(--txt3);font-size:11px">${f.obs||'—'}</td><td>${f._sb_id?`<button class="btn btn-d btn-sm" onclick="delSBdirect('fornecedores',${f._sb_id})">×</button>`:''}</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--txt3);padding:24px">Nenhum</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== PDF =====
-function pgPDF() {
-  return `
-  <div class="aip"><div class="aip-hd">✦ IA de Leitura de Documentos</div><div class="aip-bd">Envie nota fiscal, boleto, extrato, cheque ou comprovante PIX. A IA identifica automaticamente: fornecedor, produtos, valores, vencimentos e categoria — lançando tudo no sistema (Firebase + Supabase).</div></div>
-  <div class="pdf-drop" id="pdf-drop" onclick="document.getElementById('pdf-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
-    <div style="font-size:32px;margin-bottom:8px">📄</div>
-    <div style="font-size:14px;font-weight:500;margin-bottom:4px">Arraste o PDF aqui ou clique para selecionar</div>
-    <div style="font-size:12px;color:var(--txt3)">Nota Fiscal · Boleto · Extrato · Cheque · Comprovante PIX · Fatura</div>
-  </div>
-  <div id="pdf-proc" style="display:none" class="card" style="margin-top:12px">
-    <div class="ail">Lendo e analisando o documento<div class="aid"><span>.</span><span>.</span><span>.</span></div></div>
-  </div>
-  <div id="pdf-results"></div>
-  ${state.pdfPendentes.length>0?`
-  <div style="margin-top:14px">
-    <div class="shd">Aguardando Confirmação <span class="badge ba">${state.pdfPendentes.length} itens</span></div>
-    ${state.pdfPendentes.map((item,i)=>`
-    <div class="card" style="margin-bottom:10px">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px">
-        <div><div style="font-size:13px;font-weight:600">${item.descricao||'Documento'}</div><div style="font-size:11px;color:var(--txt3);margin-top:2px">📄 ${item.arquivo}</div></div>
-        <span class="badge ${item.tipo==='despesa'?'br':item.tipo==='receita'?'bg':'bb'}">${item.tipo||'documento'}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px">
-        ${item.fornecedor?`<div><div style="font-size:10px;color:var(--txt3)">Fornecedor</div><div style="font-size:12px;font-weight:500">${item.fornecedor}</div></div>`:''}
-        ${item.valor?`<div><div style="font-size:10px;color:var(--txt3)">Valor</div><div style="font-size:12px;font-weight:500;color:var(--green)">${fmt(item.valor)}</div></div>`:''}
-        ${item.vencimento?`<div><div style="font-size:10px;color:var(--txt3)">Vencimento</div><div style="font-size:12px;font-weight:500">${item.vencimento}</div></div>`:''}
-        ${item.categoria?`<div><div style="font-size:10px;color:var(--txt3)">Categoria</div><div><span class="badge bp">${item.categoria}</span></div></div>`:''}
-      </div>
-      ${item.produtos&&item.produtos.length>0?`<div style="background:var(--bg3);border-radius:8px;padding:10px;margin-bottom:10px"><div style="font-size:10px;color:var(--txt3);margin-bottom:6px">PRODUTOS IDENTIFICADOS</div>${item.produtos.map(p=>`<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid var(--border)"><span>${p.nome}</span><span style="color:var(--amber)">${p.qtd||1}x ${fmt(p.preco||0)}</span></div>`).join('')}</div>`:''}
-      <div style="font-size:11px;color:var(--txt3);padding:8px;background:var(--bg3);border-radius:6px;line-height:1.5;margin-bottom:10px">${item.resumo||''}</div>
-      <div style="display:flex;gap:8px">
-        <button class="btn btn-s btn-sm" onclick="confirmarPDF(${i})">✓ Confirmar e Lançar</button>
-        <button class="btn btn-g btn-sm" onclick="rejeitarPDF(${i})">Descartar</button>
-      </div>
-    </div>`).join('')}
-  </div>`:''}`;
+function pgItens(){
+  return `<div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('fitem')">+ Novo Item</button><span class="badge bt" style="padding:5px 11px">${U.itens.length} itens</span><button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button></div>
+  <div id="fitem" class="fc" style="display:none"><div class="ft">Novo Item</div><div class="fg c3"><div class="fl"><label>Nome</label><input id="si-nome"/></div><div class="fl"><label>Qualidade</label><input id="si-qual"/></div><div class="fl"><label>Aliases</label><input id="si-alias"/></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addItem()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fitem')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>Nome</th><th>Qualidade</th><th>Custo</th><th>Preço Venda</th><th>Estoque</th><th></th></tr></thead><tbody>${U.itens.length?U.itens.map(i=>`<tr><td style="font-weight:500">${i.nome}</td><td style="color:var(--txt2)">${i.qualidade||i.detalhe||'—'}</td><td style="font-family:'DM Mono',monospace">${i.custo?fmt(i.custo):'—'}</td><td style="font-family:'DM Mono',monospace;color:var(--green)">${i.preco?fmt(i.preco):'—'}</td><td>${i.estoque||'—'} ${i.unidade||''}</td><td>${i._sb_id?`<button class="btn btn-d btn-sm" onclick="delSBdirect('itens',${i._sb_id})">×</button>`:''}</td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== RECEITAS =====
-function pgRec() {
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('frec')">+ Nova Receita</button>
-    <span class="badge bg" style="padding:5px 11px">Total: ${fmt(tR())}</span>
-  </div>
-  <div id="frec" class="fc" style="display:none">
-    <div class="ft">Nova Receita</div>
-    <div class="fg c4">
-      <div class="fl"><label>Descrição</label><input id="r-desc" placeholder="Ex: Venda ouro 18k"/></div>
-      <div class="fl"><label>Categoria</label><select id="r-cat"><option>Vendas</option><option>Serviços</option><option>Comissão</option><option>Ouro/Metais</option><option>Outros</option></select></div>
-      <div class="fl"><label>Cliente</label><input id="r-cli" placeholder="Nome do cliente"/></div>
-      <div class="fl"><label>Valor (R$)</label><input id="r-val" type="number" step="0.01" placeholder="0,00"/></div>
-    </div>
-    <div class="fg c3">
-      <div class="fl"><label>Data</label><input id="r-data" type="date"/></div>
-      <div class="fl"><label>Status</label><select id="r-status"><option value="recebido">Recebido</option><option value="pendente">Pendente</option></select></div>
-      <div class="fl"><label>Observação</label><input id="r-obs" placeholder="Opcional"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addRec()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('frec')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Descrição</th><th>Categoria</th><th>Cliente</th><th>Data</th><th>Origem</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${state.receitas.length?state.receitas.map(r=>`<tr>
-      <td style="font-weight:500">${r.desc||''}</td>
-      <td><span class="badge bg">${r.cat||''}</span></td>
-      <td style="color:var(--txt2)">${r.cliente||'—'}</td>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${r.data||''}</td>
-      <td>${r.origem==='pdf'?'<span class="badge bp">PDF</span>':'<span class="badge bt">Manual</span>'}</td>
-      <td><span class="dot ${r.status==='recebido'?'dg':'da'}"></span>${r.status||''}</td>
-      <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(r.valor)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delItem('receitas','${r._id}')">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma receita cadastrada</td></tr>'}</tbody>
-  </table></div>`;
+function pgCat(){
+  return `<div class="ar"><button class="btn btn-p btn-sm" onclick="toggleForm('fcat')">+ Nova Categoria</button><span class="badge bp" style="padding:5px 11px">${U.categorias.length}</span></div>
+  <div id="fcat" class="fc" style="display:none"><div class="ft">Nova Categoria</div><div class="fg c2"><div class="fl"><label>Nome</label><input id="sc-nome"/></div><div class="fl"><label>Tipo</label><select id="sc-tipo"><option>despesa</option><option>receita</option><option>ambos</option></select></div></div><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addCat()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcat')">Cancelar</button></div></div>
+  <div class="tw"><table><thead><tr><th>Nome</th><th>Tipo</th><th></th></tr></thead><tbody>${U.categorias.length?U.categorias.map(c=>`<tr><td style="font-weight:500">${c.nome||'—'}</td><td><span class="badge ${c.tipo==='receita'?'bg':c.tipo==='despesa'?'br':'bb'}">${c.tipo||'—'}</span></td><td><button class="btn btn-d btn-sm" onclick="delSBdirect('categorias',${c._sb_id})">×</button></td></tr>`).join(''):'<tr><td colspan="3" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma</td></tr>'}</tbody></table></div>`;
 }
 
-// ===== DESPESAS =====
-function pgDesp() {
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fdesp')">+ Nova Despesa</button>
-    <span class="badge br" style="padding:5px 11px">Total: ${fmt(tD())}</span>
-  </div>
-  <div id="fdesp" class="fc" style="display:none">
-    <div class="ft">Nova Despesa</div>
-    <div class="fg c5">
-      <div class="fl"><label>Descrição</label><input id="d-desc" placeholder="Ex: Compra ouro"/></div>
-      <div class="fl"><label>Categoria</label><select id="d-cat"><option>Fixo</option><option>Pessoal</option><option>Estoque</option><option>Ouro/Metais</option><option>Marketing</option><option>Impostos</option><option>Outros</option></select></div>
-      <div class="fl"><label>Fornecedor</label><input id="d-forn" placeholder="Nome"/></div>
-      <div class="fl"><label>Valor (R$)</label><input id="d-val" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Data</label><input id="d-data" type="date"/></div>
-    </div>
-    <div class="fg c3">
-      <div class="fl"><label>Status</label><select id="d-status"><option value="pago">Pago</option><option value="pendente">Pendente</option></select></div>
-      <div class="fl"><label>Forma Pagto</label><select id="d-forma"><option>PIX</option><option>Boleto</option><option>Cheque</option><option>Transferência</option><option>Dinheiro</option><option>Cartão</option></select></div>
-      <div class="fl"><label>Observação</label><input id="d-obs" placeholder="Opcional"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addDesp()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fdesp')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Descrição</th><th>Categoria</th><th>Fornecedor</th><th>Data</th><th>Forma</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${state.despesas.length?state.despesas.map(d=>`<tr>
-      <td style="font-weight:500">${d.desc||''}</td>
-      <td><span class="badge bb">${d.cat||''}</span></td>
-      <td style="color:var(--txt2)">${d.fornecedor||'—'}</td>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${d.data||''}</td>
-      <td style="color:var(--txt3);font-size:11px">${d.forma||'—'}</td>
-      <td><span class="dot ${d.status==='pago'?'dg':'da'}"></span>${d.status||''}</td>
-      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(d.valor)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delItem('despesas','${d._id}')">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma despesa cadastrada</td></tr>'}</tbody>
-  </table></div>`;
+function pgPrecos(){
+  const pm={};
+  U.compras.forEach(c=>{const d=nk(c.desc);if(!d||!c.valor)return;if(!pm[d])pm[d]=[];pm[d].push({valor:c.valor,forn:c.fornecedor,data:c.data});});
+  const items=Object.entries(pm).filter(([k,v])=>v.length>=2);
+  let h=`<div class="aip"><div class="aip-hd">✦ Comparação de Preços</div><div class="aip-bd">Analisa compras e compara preços entre fornecedores.</div></div>`;
+  if(!items.length)return h+'<div class="card"><div style="color:var(--txt3);text-align:center;padding:20px">Precisa de 2+ compras do mesmo produto.</div></div>';
+  items.forEach(([prod,cs])=>{
+    cs.sort((a,b)=>(a.data||'').localeCompare(b.data||''));
+    const ult=cs[cs.length-1],pen=cs.length>=2?cs[cs.length-2]:null;
+    const diff=pen?((ult.valor-pen.valor)/pen.valor*100):0;
+    const byF={};cs.forEach(c=>{if(!byF[c.forn])byF[c.forn]=[];byF[c.forn].push(c);});
+    const fp=Object.entries(byF).map(([f,x])=>({forn:f,ultimo:x[x.length-1].valor})).sort((a,b)=>a.ultimo-b.ultimo);
+    h+=`<div class="card" style="margin-bottom:10px"><div class="shd"><span style="text-transform:capitalize">${prod}</span> <span class="${diff>0?'price-up':diff<0?'price-down':'price-same'}" style="font-size:12px">${diff>0?'▲':diff<0?'▼':'='} ${Math.abs(diff).toFixed(1)}%</span></div>
+    <div style="display:flex;gap:16px;margin-bottom:8px"><div><div style="font-size:10px;color:var(--txt3)">ÚLTIMO</div><div style="font-size:15px;font-weight:600;font-family:'DM Mono',monospace">${fmt(ult.valor)}</div><div style="font-size:10px;color:var(--txt3)">${ult.forn} — ${ult.data||'—'}</div></div>${pen?`<div><div style="font-size:10px;color:var(--txt3)">ANTERIOR</div><div style="font-size:15px;color:var(--txt2);font-family:'DM Mono',monospace">${fmt(pen.valor)}</div></div>`:''}</div>
+    ${fp.length>1?`<div style="background:var(--bg3);border-radius:8px;padding:10px;font-size:12px"><div style="font-size:10px;color:var(--txt3);margin-bottom:4px">POR FORNECEDOR</div>${fp.map((f,i)=>`<div style="display:flex;justify-content:space-between;padding:2px 0;${i===0?'color:var(--green);font-weight:600':i===fp.length-1?'color:var(--red)':''}">${i===0?'🏆 ':''}${f.forn} <span>${fmt(f.ultimo)}</span></div>`).join('')}</div>`:''}</div>`;
+  });
+  return h;
 }
 
-// ===== A PAGAR =====
-function pgAP() {
-  const pend=state.apagar.filter(a=>a.status==='pendente');
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fap')">+ Nova Conta</button>
-    <span class="badge br" style="padding:5px 11px">Pendente: ${fmt(pend.reduce((s,a)=>s+(a.valor||0),0))}</span>
-  </div>
-  <div id="fap" class="fc" style="display:none">
-    <div class="ft">Nova Conta a Pagar</div>
-    <div class="fg c5">
-      <div class="fl"><label>Descrição</label><input id="ap-desc" placeholder="Ex: Boleto fornecedor"/></div>
-      <div class="fl"><label>Categoria</label><select id="ap-cat"><option>Fixo</option><option>Estoque</option><option>Impostos</option><option>Pessoal</option><option>Outros</option></select></div>
-      <div class="fl"><label>Fornecedor</label><input id="ap-forn" placeholder="Opcional"/></div>
-      <div class="fl"><label>Valor (R$)</label><input id="ap-val" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Vencimento</label><input id="ap-venc" type="date"/></div>
-    </div>
-    <div class="fg c3">
-      <div class="fl"><label>Forma Pagto</label><select id="ap-forma"><option>Boleto</option><option>PIX</option><option>Cheque</option><option>Transferência</option></select></div>
-      <div class="fl"><label>Nº Doc / Código</label><input id="ap-cod" placeholder="Opcional"/></div>
-      <div class="fl"><label>Observação</label><input id="ap-obs" placeholder="Opcional"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addAP()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fap')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Descrição</th><th>Categoria</th><th>Fornecedor</th><th>Vencimento</th><th>Forma</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${state.apagar.length?state.apagar.map(a=>`<tr>
-      <td style="font-weight:500">${a.desc||''}</td>
-      <td><span class="badge bb">${a.cat||''}</span></td>
-      <td style="color:var(--txt2);font-size:11px">${a.fornecedor||'—'}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--txt2)">${a.venc||''}</td>
-      <td style="color:var(--txt3);font-size:11px">${a.forma||'—'}</td>
-      <td><span class="dot ${a.status==='pago'?'dg':'da'}"></span>${a.status||''}</td>
-      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(a.valor)}</td>
-      <td style="display:flex;gap:4px">
-        ${a.status==='pendente'?`<button class="btn btn-s btn-sm" onclick="pagarC('${a._id}')">✓</button>`:''}
-        <button class="btn btn-d btn-sm" onclick="delItem('apagar','${a._id}')">×</button>
-      </td>
-    </tr>`).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma conta cadastrada</td></tr>'}</tbody>
-  </table></div>`;
+function pgFech(){
+  const ent=tReceb(),sai=tD()+tRetir(),lr=ent-sai,imp=Math.round(Math.max(lr,0)*0.06),liq=lr-imp;
+  return `<div class="g3"><div class="mc"><div class="mc-lbl">Entradas</div><div class="mc-val" style="color:var(--green)">${fmt(ent)}</div></div><div class="mc"><div class="mc-lbl">Saídas</div><div class="mc-val" style="color:var(--red)">${fmt(sai)}</div></div><div class="mc"><div class="mc-lbl">Resultado</div><div class="mc-val" style="color:var(--blue)">${fmt(lr)}</div></div></div>
+  <div class="card"><div class="shd">DRE — ${MESES[gM()]} ${gY()}</div><table><tbody>
+  <tr><td style="font-weight:500">Recebimentos</td><td style="text-align:right;color:var(--green);font-weight:600;font-family:'DM Mono',monospace">${fmt(ent)}</td></tr>
+  <tr><td style="color:var(--txt3);padding-left:16px">(-) Despesas</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">(${fmt(tD())})</td></tr>
+  <tr><td style="color:var(--txt3);padding-left:16px">(-) Retiradas</td><td style="text-align:right;color:var(--amber);font-family:'DM Mono',monospace">(${fmt(tRetir())})</td></tr>
+  <tr style="background:var(--bg3)"><td style="font-weight:600;padding:9px 14px">= Lucro Bruto</td><td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace;padding:9px 14px">${fmt(lr)}</td></tr>
+  <tr><td style="color:var(--txt3);padding-left:16px">(-) Impostos 6%</td><td style="text-align:right;color:var(--amber);font-family:'DM Mono',monospace">(${fmt(imp)})</td></tr>
+  <tr style="background:rgba(52,211,153,0.05)"><td style="font-weight:700;color:var(--green);padding:10px 14px">= LUCRO LÍQUIDO</td><td style="text-align:right;font-size:17px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;padding:10px 14px">${fmt(liq)}</td></tr>
+  </tbody></table><div class="div"></div><button class="btn btn-p" style="width:100%" onclick="fecharMes()">✓ Confirmar Fechamento</button></div>`;
 }
 
-// ===== A RECEBER =====
-function pgAR() {
-  const pend=state.areceber.filter(a=>a.status==='pendente');
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('far')">+ Novo</button>
-    <span class="badge bg" style="padding:5px 11px">Pendente: ${fmt(pend.reduce((s,a)=>s+(a.valor||0),0))}</span>
-  </div>
-  <div id="far" class="fc" style="display:none">
-    <div class="ft">Novo A Receber</div>
-    <div class="fg c4">
-      <div class="fl"><label>Descrição</label><input id="ar-desc" placeholder="Ex: Venda cliente"/></div>
-      <div class="fl"><label>Cliente</label><input id="ar-cli" placeholder="Nome do cliente"/></div>
-      <div class="fl"><label>Valor (R$)</label><input id="ar-val" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Vencimento</label><input id="ar-venc" type="date"/></div>
-    </div>
-    <div class="fg c3">
-      <div class="fl"><label>Forma</label><select id="ar-forma"><option>PIX</option><option>Boleto</option><option>Cheque</option><option>Transferência</option><option>Dinheiro</option></select></div>
-      <div class="fl"><label>Nº Parcela</label><input id="ar-parc" placeholder="Ex: 1/3"/></div>
-      <div class="fl"><label>Observação</label><input id="ar-obs" placeholder="Opcional"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addAR()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('far')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Descrição</th><th>Cliente</th><th>Vencimento</th><th>Forma</th><th>Parcela</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${state.areceber.length?state.areceber.map(a=>`<tr>
-      <td style="font-weight:500">${a.desc||''}</td>
-      <td style="color:var(--txt2)">${a.cliente||'—'}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--txt2)">${a.venc||''}</td>
-      <td style="color:var(--txt3);font-size:11px">${a.forma||'—'}</td>
-      <td style="color:var(--txt3);font-size:11px">${a.parcela||'—'}</td>
-      <td><span class="dot ${a.status==='recebido'?'dg':'da'}"></span>${a.status||''}</td>
-      <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(a.valor)}</td>
-      <td style="display:flex;gap:4px">
-        ${a.status==='pendente'?`<button class="btn btn-s btn-sm" onclick="receberC('${a._id}')">✓</button>`:''}
-        <button class="btn btn-d btn-sm" onclick="delItem('areceber','${a._id}')">×</button>
-      </td>
-    </tr>`).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhum lançamento</td></tr>'}</tbody>
-  </table></div>`;
+function pgDRE(){
+  const catD=fDesp().reduce((a,d)=>{a[d.cat||'Outros']=(a[d.cat||'Outros']||0)+d.valor;return a},{});
+  const ent=tReceb(),sai=tD()+tRetir(),lr=ent-sai,imp=Math.round(Math.max(lr,0)*0.06),liq=lr-imp;
+  return `<div class="card"><div class="shd">DRE Consolidado — ${MESES[gM()]} ${gY()}</div><table><tbody>
+  <tr><td>Recebimentos</td><td style="text-align:right;color:var(--green);font-family:'DM Mono',monospace">${fmt(ent)}</td></tr>
+  <tr><td style="color:var(--txt2)">(-) Despesas</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">(${fmt(tD())})</td></tr>
+  ${Object.entries(catD).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td style="padding-left:16px;color:var(--txt3);font-size:11px">${k}</td><td style="text-align:right;color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">(${fmt(v)})</td></tr>`).join('')}
+  <tr><td style="color:var(--txt2)">(-) Retiradas Diretor</td><td style="text-align:right;color:var(--amber);font-family:'DM Mono',monospace">(${fmt(tRetir())})</td></tr>
+  <tr style="background:var(--bg3)"><td style="font-weight:600;padding:8px 14px">= Lucro Bruto</td><td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace;padding:8px 14px">${fmt(lr)}</td></tr>
+  <tr><td style="color:var(--txt3);padding-left:16px">(-) Impostos 6%</td><td style="text-align:right;color:var(--amber);font-family:'DM Mono',monospace">(${fmt(imp)})</td></tr>
+  <tr style="background:rgba(52,211,153,0.05)"><td style="font-weight:700;color:var(--green);padding:8px 14px">= LUCRO LÍQUIDO</td><td style="text-align:right;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;font-size:15px;padding:8px 14px">${fmt(liq)}</td></tr>
+  </tbody></table></div>`;
 }
 
-// ===== FECHAMENTO =====
-function pgFech() {
-  const tr=tR(),td=tD(),lr=lucro(),ml=mediaL(),imp=Math.round(lr*0.06),liq=lr-imp;
-  return `
-  <div class="g3">
-    <div class="mc"><div class="mc-lbl">Total Receitas</div><div class="mc-val" style="color:var(--green)">${fmt(tr)}</div></div>
-    <div class="mc"><div class="mc-lbl">Total Despesas</div><div class="mc-val" style="color:var(--red)">${fmt(td)}</div></div>
-    <div class="mc"><div class="mc-lbl">Lucro Bruto</div><div class="mc-val" style="color:var(--blue)">${fmt(lr)}</div></div>
-  </div>
-  <div class="g2">
-    <div class="card">
-      <div class="shd">DRE do Mês</div>
-      <table><tbody>
-        <tr><td style="font-weight:500">Receita Bruta</td><td style="text-align:right;color:var(--green);font-weight:600;font-family:'DM Mono',monospace">${fmt(tr)}</td></tr>
-        <tr><td style="color:var(--txt3);padding-left:16px">(-) Despesas</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">(${fmt(td)})</td></tr>
-        <tr style="background:var(--bg3)"><td style="font-weight:600;padding:9px 14px">= Lucro Bruto</td><td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace;padding:9px 14px">${fmt(lr)}</td></tr>
-        <tr><td style="color:var(--txt3);padding-left:16px">(-) Impostos Est. 6%</td><td style="text-align:right;color:var(--amber);font-family:'DM Mono',monospace">(${fmt(imp)})</td></tr>
-        <tr style="background:rgba(52,211,153,0.05)"><td style="font-weight:700;padding:10px 14px;color:var(--green)">= LUCRO LÍQUIDO</td><td style="text-align:right;font-size:17px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;padding:10px 14px">${fmt(liq)}</td></tr>
-      </tbody></table>
-      <div class="div"></div>
-      <button class="btn btn-p" style="width:100%" onclick="fecharMes()">✓ Confirmar Fechamento do Mês</button>
-    </div>
-    <div class="card">
-      <div class="shd">Indicadores</div>
-      <div class="hbr"><div class="hbl">Receitas</div><div class="hbt"><div class="hbf" style="width:100%;background:var(--green)"></div></div><div class="hbv">${fmt(tr)}</div></div>
-      <div class="hbr"><div class="hbl">Despesas</div><div class="hbt"><div class="hbf" style="width:${pct(td,tr)}%;background:var(--red)"></div></div><div class="hbv">${fmt(td)}</div></div>
-      <div class="hbr"><div class="hbl">Impostos</div><div class="hbt"><div class="hbf" style="width:${pct(imp,tr)}%;background:var(--amber)"></div></div><div class="hbv">${fmt(imp)}</div></div>
-      <div class="hbr"><div class="hbl">Lucro Líq.</div><div class="hbt"><div class="hbf" style="width:${pct(liq,tr)}%;background:var(--blue)"></div></div><div class="hbv">${fmt(liq)}</div></div>
-    </div>
-  </div>
-  ${state.fechamentos.length?`<div class="tw"><table><thead><tr><th>Mês</th><th>Receita</th><th>Despesas</th><th>Lucro Bruto</th><th>Impostos</th><th>Lucro Líquido</th><th>Margem</th></tr></thead><tbody>${state.fechamentos.map(f=>`<tr><td style="font-weight:500">${f.mes}</td><td style="color:var(--green);font-family:'DM Mono',monospace">${fmt(f.receita)}</td><td style="color:var(--red);font-family:'DM Mono',monospace">${fmt(f.despesa)}</td><td style="font-family:'DM Mono',monospace">${fmt(f.lucroB)}</td><td style="color:var(--amber);font-family:'DM Mono',monospace">${fmt(f.imp)}</td><td style="font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(f.lucro)}</td><td><span class="badge ${f.margem>40?'bg':f.margem>20?'ba':'br'}">${f.margem}%</span></td></tr>`).join('')}</tbody></table></div>`:''}`;
+function pgPDF(){return `<div class="aip"><div class="aip-hd">✦ Importar PDF</div><div class="aip-bd">Envie nota fiscal, boleto, extrato ou comprovante.</div></div><div class="pdf-drop" id="pdf-drop" onclick="document.getElementById('pdf-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)"><div style="font-size:32px;margin-bottom:8px">📄</div><div style="font-size:14px;font-weight:500">Arraste ou clique</div></div><div id="pdf-proc" style="display:none" class="card"><div class="ail">Lendo...<div class="aid"><span>.</span><span>.</span><span>.</span></div></div></div>${U.pdfPendentes.length?`<div style="margin-top:14px"><div class="shd">Pendentes <span class="badge ba">${U.pdfPendentes.length}</span></div>${U.pdfPendentes.map((it,i)=>`<div class="card" style="margin-bottom:10px"><div style="font-weight:600;margin-bottom:6px">${it.descricao||'Doc'} <span class="badge ${it.tipo==='despesa'?'br':'bg'}">${it.tipo}</span></div><div style="display:flex;gap:12px;margin-bottom:8px;font-size:12px">${it.fornecedor?`<span>${it.fornecedor}</span>`:''}<span style="color:var(--green)">${fmt(it.valor)}</span>${it.vencimento?`<span>${it.vencimento}</span>`:''}</div><div style="display:flex;gap:8px"><button class="btn btn-s btn-sm" onclick="confirmarPDF(${i})">✓</button><button class="btn btn-g btn-sm" onclick="rejeitarPDF(${i})">×</button></div></div>`).join('')}</div>`:''}`;}
+
+function pgExtrato(){return `<div class="aip"><div class="aip-hd">✦ Extrato Bancário</div><div class="aip-bd">Envie extrato (PDF/CSV/TXT/OFX). A IA separa pagamentos e recebimentos.</div></div><div class="pdf-drop" onclick="document.getElementById('extrato-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleExtratoDrop(event)"><div style="font-size:32px;margin-bottom:8px">🏦</div><div style="font-size:14px;font-weight:500">Arraste ou clique</div></div><div id="extrato-proc" style="display:none" class="card"><div class="ail">Lendo...<div class="aid"><span>.</span><span>.</span><span>.</span></div></div></div>${U.extratoPendentes.length?`<div style="margin-top:14px"><div class="shd">Lançamentos <span class="badge ba">${U.extratoPendentes.length}</span></div><div class="tw"><table><thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th style="text-align:right">Valor</th><th></th></tr></thead><tbody>${U.extratoPendentes.map((it,i)=>`<tr><td style="font-family:'DM Mono',monospace;font-size:11px">${it.data||'—'}</td><td>${it.descricao||'—'}</td><td><span class="badge ${it.tipo==='recebimento'?'bg':'br'}">${it.tipo}</span></td><td style="text-align:right;font-weight:600;color:${it.tipo==='recebimento'?'var(--green)':'var(--red)'};font-family:'DM Mono',monospace">${fmt(it.valor)}</td><td style="display:flex;gap:4px"><button class="btn btn-s btn-sm" onclick="confirmarExtrato(${i})">✓</button><button class="btn btn-d btn-sm" onclick="rejeitarExtrato(${i})">×</button></td></tr>`).join('')}</tbody></table></div><button class="btn btn-p" onclick="confirmarTodosExtrato()">✓ Todos</button></div>`:''}`;}
+
+function pgRel(){return `<div class="aip"><div class="aip-hd">✦ Relatório IA</div><div class="aip-bd" id="ai-body">Escolha uma análise.</div></div><div class="ar" style="margin-bottom:16px"><button class="btn btn-g btn-sm" onclick="analisarIA('geral')">📊 Geral</button><button class="btn btn-g btn-sm" onclick="analisarIA('lucro')">💰 Lucro</button><button class="btn btn-g btn-sm" onclick="analisarIA('despesas')">✂️ Despesas</button><button class="btn btn-g btn-sm" onclick="analisarIA('previsao')">🔮 Previsão</button></div>`;}
+
+function pgConf(){
+  const sbOk=!!(window.supabase&&SB_URL&&SB_KEY);
+  return `<div class="sc"><div class="shd">Integrações</div>
+  <div class="sr"><div><div class="sl">Anthropic API Key</div></div><div style="display:flex;gap:8px;align-items:center"><input class="ki" type="password" id="key-input" value="${API_KEY}" placeholder="sk-ant-..."/><button class="btn btn-p btn-sm" onclick="salvarKey()">Salvar</button></div></div>
+  <div class="sr"><div><div class="sl">Firebase</div></div><span class="badge bg">✓ Conectado</span></div>
+  <div class="sr" style="align-items:flex-start"><div><div class="sl">Supabase</div><div class="ss">Cérebro unificado</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end"><input class="ki" id="sb-url" value="${localStorage.getItem('financeai_supabase_url')||''}" placeholder="https://xxx.supabase.co" style="width:400px"/><input class="ki" id="sb-key" type="password" value="${localStorage.getItem('financeai_supabase_anon_key')||''}" placeholder="eyJ..." style="width:400px"/><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="localStorage.setItem('financeai_supabase_url',document.getElementById('sb-url').value.trim());localStorage.setItem('financeai_supabase_anon_key',document.getElementById('sb-key').value.trim());toast('Salvo! Recarregue.')">Salvar</button><button class="btn btn-g btn-sm" onclick="testarSB()">Testar</button></div></div></div>
+  <div class="sr"><div><div class="sl">Status</div></div><span class="badge ${sbOk?'bg':'ba'}">${sbOk?'✓ Unificado':'Configurar'}</span></div></div>
+  <div class="sc"><div class="shd">Dados Unificados</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">${['fornecedores','itens','categorias','despesas','boletos','compras','recebimentos','retiradas'].map(t=>`<div style="background:var(--bg3);border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:var(--txt3);text-transform:uppercase">${t}</div><div style="font-size:18px;font-weight:600;margin-top:4px">${U[t]?.length||0}</div></div>`).join('')}</div></div>
+  <div class="sc"><div class="shd">Dados</div><div class="sr"><div><div class="sl">Exportar</div></div><button class="btn btn-g btn-sm" onclick="exportar()">JSON</button></div></div>`;
 }
 
-// ===== DRE =====
-function pgDRE() {
-  const catR=state.receitas.reduce((a,r)=>{a[r.cat]=(a[r.cat]||0)+(r.valor||0);return a},{});
-  const catD=state.despesas.reduce((a,d)=>{a[d.cat]=(a[d.cat]||0)+(d.valor||0);return a},{});
-  const tr=tR(),td=tD(),lr=lucro(),imp=Math.round(lr*0.06),liq=lr-imp;
-  return `
-  <div class="g2">
-    <div class="card"><div class="shd">Receitas por Categoria</div>${Object.entries(catR).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,tr)}%;background:var(--green)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}</div>
-    <div class="card"><div class="shd">Despesas por Categoria</div>${Object.entries(catD).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,td)}%;background:var(--red)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}</div>
-  </div>
-  <div class="card">
-    <div class="shd">DRE Consolidado</div>
-    <table><tbody>
-      <tr><td>Receita Bruta</td><td style="text-align:right;color:var(--green);font-family:'DM Mono',monospace">${fmt(tr)}</td></tr>
-      ${Object.entries(catR).map(([k,v])=>`<tr><td style="padding-left:16px;color:var(--txt3);font-size:11px">${k}</td><td style="text-align:right;color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${fmt(v)}</td></tr>`).join('')}
-      <tr><td style="color:var(--txt2)">(-) Despesas Totais</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">(${fmt(td)})</td></tr>
-      ${Object.entries(catD).map(([k,v])=>`<tr><td style="padding-left:16px;color:var(--txt3);font-size:11px">${k}</td><td style="text-align:right;color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">(${fmt(v)})</td></tr>`).join('')}
-      <tr style="background:var(--bg3)"><td style="font-weight:600;padding:8px 14px">= Lucro Bruto</td><td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace;padding:8px 14px">${fmt(lr)}</td></tr>
-      <tr><td style="color:var(--txt3);padding-left:16px">(-) Impostos 6%</td><td style="text-align:right;color:var(--amber);font-family:'DM Mono',monospace">(${fmt(imp)})</td></tr>
-      <tr style="background:rgba(52,211,153,0.05)"><td style="font-weight:700;color:var(--green);padding:8px 14px">= LUCRO LÍQUIDO</td><td style="text-align:right;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;font-size:15px;padding:8px 14px">${fmt(liq)}</td></tr>
-    </tbody></table>
-  </div>`;
-}
+// ===== UNIFIED ACTIONS =====
+const nk=s=>(s||'').toLowerCase().trim().replace(/\s+/g,' ');
+function toggleForm(id){const el=document.getElementById(id);if(el)el.style.display=el.style.display==='none'?'block':'none';}
 
-// ===== RELATÓRIO IA =====
-function pgRel() {
-  return `
-  <div class="aip">
-    <div class="aip-hd">✦ Assistente IA — Análise Financeira Inteligente</div>
-    <div class="aip-bd" id="ai-body">Escolha um tipo de análise. A IA examina todos os seus dados (Firebase + Supabase) e gera insights personalizados.</div>
-  </div>
-  <div class="ar" style="margin-bottom:16px">
-    <button class="btn btn-g btn-sm" onclick="analisarIA('geral')">📊 Análise Geral</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('lucro')">💰 Otimizar Lucro</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('despesas')">✂️ Cortar Despesas</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('supabase')">🧠 Análise Supabase</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('previsao')">🔮 Previsão</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('fluxo')">💧 Fluxo de Caixa</button>
-  </div>
-  <div class="g2">
-    <div class="card">
-      <div class="shd">Firebase</div>
-      <table><tbody>
-        <tr><td>Receitas</td><td style="text-align:right;color:var(--green);font-weight:600;font-family:'DM Mono',monospace">${fmt(tR())}</td></tr>
-        <tr><td>Despesas</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">${fmt(tD())}</td></tr>
-        <tr><td>Lucro</td><td style="text-align:right;color:var(--blue);font-weight:600;font-family:'DM Mono',monospace">${fmt(lucro())}</td></tr>
-      </tbody></table>
-    </div>
-    <div class="card">
-      <div class="shd">Supabase</div>
-      <table><tbody>
-        <tr><td>Lançamentos</td><td style="text-align:right;font-weight:600;font-family:'DM Mono',monospace">${state.sb_lancamentos.length} → ${fmt(tLanc())}</td></tr>
-        <tr><td>Boletos</td><td style="text-align:right;font-family:'DM Mono',monospace">${state.sb_boletos.length} → ${fmt(tBol())}</td></tr>
-        <tr><td>Compras</td><td style="text-align:right;font-family:'DM Mono',monospace">${state.sb_compras.length} → ${fmt(tComp())}</td></tr>
-        <tr><td>Fornecedores</td><td style="text-align:right"><span class="badge bp">${state.sb_fornecedores.length}</span></td></tr>
-        <tr><td>Itens</td><td style="text-align:right"><span class="badge bt">${state.sb_itens.length}</span></td></tr>
-      </tbody></table>
-    </div>
-  </div>`;
-}
-
-// ===== CONFIG =====
-function pgConf() {
-  const SB_URL = localStorage.getItem('financeai_supabase_url') || '';
-  const SB_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
-  const sbOk = !!(window.supabase && SB_URL && SB_KEY);
-  return `
-  <div class="sc">
-    <div class="shd">API & Integrações</div>
-    <div class="sr">
-      <div><div class="sl">Anthropic API Key</div><div class="ss">Necessária para leitura de PDF e análises de IA</div></div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input class="ki" type="password" id="key-input" value="${API_KEY}" placeholder="sk-ant-api03-..."/>
-        <button class="btn btn-p btn-sm" onclick="salvarKey()">Salvar</button>
-        <button class="btn btn-g btn-sm" onclick="testarKey()">Testar</button>
-      </div>
-    </div>
-    <div class="sr">
-      <div><div class="sl">Firebase</div><div class="ss">Banco de dados da interface visual</div></div>
-      <span class="badge bg">✓ Conectado</span>
-    </div>
-    <div class="sr" style="align-items:flex-start">
-      <div>
-        <div class="sl">Supabase (Cérebro financeiro)</div>
-        <div class="ss">Tabelas: fornecedores, itens, categorias, lancamentos, boletos, compras, pagamentos, documentos</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:420px">
-        <input class="ki" id="supabase-url-input" value="${SB_URL}" placeholder="https://xxxxx.supabase.co" style="width:420px"/>
-        <input class="ki" id="supabase-key-input" type="password" value="${SB_KEY}" placeholder="eyJhbGciOi..." style="width:420px"/>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-p btn-sm" onclick="salvarSupabaseConfig()">Salvar</button>
-          <button class="btn btn-g btn-sm" onclick="testarSupabase()">Testar Conexão</button>
-        </div>
-      </div>
-    </div>
-    <div class="sr">
-      <div><div class="sl">Status Supabase</div></div>
-      <span class="badge ${sbOk ? 'bg' : 'ba'}">${sbOk ? '✓ Ativo — Acesso direto a todas as tabelas' : 'Configurar URL e chave'}</span>
-    </div>
-  </div>
-  <div class="sc">
-    <div class="shd">Tabelas Supabase Conectadas</div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 0">
-      ${['fornecedores','itens','categorias','lancamentos','boletos','compras','pagamentos','documentos'].map(t=>{
-        const count = state['sb_'+t]?.length || 0;
-        return `<div style="background:var(--bg3);border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px">${t}</div><div style="font-size:18px;font-weight:600;margin-top:4px">${count}</div></div>`;
-      }).join('')}
-    </div>
-  </div>
-  <div class="sc">
-    <div class="shd">Dados</div>
-    <div class="sr">
-      <div><div class="sl">Exportar tudo (Firebase + Supabase)</div></div>
-      <button class="btn btn-g btn-sm" onclick="exportar()">Exportar JSON</button>
-    </div>
-    <div class="sr">
-      <div><div class="sl">Limpar dados Firebase</div></div>
-      <button class="btn btn-d btn-sm" onclick="if(confirm('Apagar tudo do Firebase?'))limparTudo()">Limpar Firebase</button>
-    </div>
-  </div>`;
-}
-
-// ===== ACTIONS — FIREBASE =====
-function toggleForm(id) { const el=document.getElementById(id); if(el) el.style.display=el.style.display==='none'?'block':'none'; }
-
-async function delItem(col, id) { if(!id) return; await window.dbDel(col, id); state[col]=state[col].filter(i=>i._id!==id); render(); toast('Removido.'); }
-
-async function pagarC(id) { await window.dbUpd('apagar', id, {status:'pago'}); const a=state.apagar.find(x=>x._id===id); if(a) a.status='pago'; render(); toast('Conta paga!'); }
-async function receberC(id) { await window.dbUpd('areceber', id, {status:'recebido'}); const a=state.areceber.find(x=>x._id===id); if(a) a.status='recebido'; render(); toast('Recebido!'); }
-
-async function addRec() {
-  const desc=document.getElementById('r-desc').value, cat=document.getElementById('r-cat').value, cli=document.getElementById('r-cli').value, val=+document.getElementById('r-val').value, data=document.getElementById('r-data').value, status=document.getElementById('r-status').value, obs=document.getElementById('r-obs').value;
-  if(!desc||!val) return toast('Preencha descrição e valor','te');
-  const obj={desc,cat,cliente:cli,valor:val,data,status,obs,origem:'manual'};
-  const id=await window.dbAdd('receitas',obj); state.receitas.push({...obj,_id:id}); render(); toast('Receita salva!');
-}
-
-async function addDesp() {
-  const desc=document.getElementById('d-desc').value, cat=document.getElementById('d-cat').value, forn=document.getElementById('d-forn').value, val=+document.getElementById('d-val').value, data=document.getElementById('d-data').value, status=document.getElementById('d-status').value, forma=document.getElementById('d-forma').value, obs=document.getElementById('d-obs').value;
-  if(!desc||!val) return toast('Preencha os campos','te');
-  const obj={desc,cat,fornecedor:forn,valor:val,data,status,forma,obs,origem:'manual'};
-  const id=await window.dbAdd('despesas',obj); state.despesas.push({...obj,_id:id}); render(); toast('Despesa salva!');
-}
-
-async function addProd() {
-  const nome=document.getElementById('p-nome').value, cat=document.getElementById('p-cat').value, forn=document.getElementById('p-forn').value, un=document.getElementById('p-un').value, custo=+document.getElementById('p-custo').value, preco=+document.getElementById('p-preco').value, est=+document.getElementById('p-est').value, det=document.getElementById('p-det').value;
-  if(!nome||!custo||!preco) return toast('Preencha os campos','te');
-  const obj={nome,cat,fornecedor:forn,unidade:un,custo,preco,estoque:est,detalhe:det};
-  const id=await window.dbAdd('produtos',obj); state.produtos.push({...obj,_id:id}); render(); toast('Produto salvo!');
-}
-
-async function addForn() {
-  const nome=document.getElementById('f-nome').value, cat=document.getElementById('f-cat').value, doc=document.getElementById('f-doc').value, tel=document.getElementById('f-tel').value, email=document.getElementById('f-email').value, prazo=document.getElementById('f-prazo').value, obs=document.getElementById('f-obs').value;
-  if(!nome) return toast('Informe o nome','te');
-  const obj={nome,cat,doc,tel,email,prazo,obs};
-  const id=await window.dbAdd('fornecedores',obj); state.fornecedores.push({...obj,_id:id}); render(); toast('Fornecedor salvo!');
-}
-
-async function addAP() {
-  const desc=document.getElementById('ap-desc').value, cat=document.getElementById('ap-cat').value, forn=document.getElementById('ap-forn').value, val=+document.getElementById('ap-val').value, venc=document.getElementById('ap-venc').value, forma=document.getElementById('ap-forma').value, cod=document.getElementById('ap-cod').value, obs=document.getElementById('ap-obs').value;
-  if(!desc||!val) return toast('Preencha os campos','te');
-  const obj={desc,cat,fornecedor:forn,valor:val,venc,forma,cod,obs,status:'pendente'};
-  const id=await window.dbAdd('apagar',obj); state.apagar.push({...obj,_id:id}); render(); toast('Conta salva!');
-}
-
-async function addAR() {
-  const desc=document.getElementById('ar-desc').value, cli=document.getElementById('ar-cli').value, val=+document.getElementById('ar-val').value, venc=document.getElementById('ar-venc').value, forma=document.getElementById('ar-forma').value, parc=document.getElementById('ar-parc').value, obs=document.getElementById('ar-obs').value;
-  if(!desc||!val) return toast('Preencha os campos','te');
-  const obj={desc,cliente:cli,valor:val,venc,forma,parcela:parc,obs,status:'pendente'};
-  const id=await window.dbAdd('areceber',obj); state.areceber.push({...obj,_id:id}); render(); toast('Lançado!');
-}
-
-async function fecharMes() {
-  const mes=MESES[state.mes], tr=tR(), td=tD(), lb=lucro(), imp=Math.round(lb*0.06), liq=lb-imp;
-  const obj={mes,receita:tr,despesa:td,lucroB:lb,imp,lucro:liq,margem:pct(lb,tr),data:new Date().toISOString()};
-  const id=await window.dbAdd('fechamentos',obj);
-  state.fechamentos.unshift({...obj,_id:id});
-  state.historico.push({mes:MC[state.mes],r:tr,d:td});
-  if(state.historico.length>8) state.historico.shift();
-  toast(`${mes} fechado! Lucro Líquido: ${fmt(liq)}`); render();
-}
-
-// ===== ACTIONS — SUPABASE =====
-window.reloadSB = async function(table) {
-  if (!window.supabase) return toast('Supabase não configurado','te');
-  try {
-    state['sb_'+table] = await SB.list(table, { order: 'criado_em', asc: false });
-    render(); toast(`${table} atualizado!`);
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
+// Delete from unified layer
+window.delU=async function(type,uid){
+  const item=U[type].find(x=>x._uid===uid);if(!item)return;
+  if(item._fb_id){
+    const fbCol={despesas:'despesas',recebimentos:'recebimentos',retiradas:'retiradas',boletos:'apagar'}[type];
+    if(fbCol)try{await window.dbDel(fbCol,item._fb_id);}catch(e){}
+  }
+  if(item._sb_id){
+    const sbTbl={despesas:'lancamentos',boletos:'boletos',compras:'compras'}[type];
+    if(sbTbl)try{await SB.del(sbTbl,item._sb_id);}catch(e){}
+  }
+  U[type]=U[type].filter(x=>x._uid!==uid);
+  render();toast('Removido.');
 };
 
-window.delSB = async function(table, id) {
-  if (!window.supabase) return toast('Supabase não configurado','te');
-  try {
-    await SB.remove(table, id);
-    state['sb_'+table] = state['sb_'+table].filter(i => i.id !== id);
-    render(); toast('Removido do Supabase.');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
+window.delSBdirect=async function(table,id){
+  try{await SB.del(table,id);await reloadAllData();}catch(e){toast('Erro: '+e.message,'te');}
 };
 
-window.addLancSB = async function() {
-  const desc=document.getElementById('sl-desc').value, forn=document.getElementById('sl-forn').value, item=document.getElementById('sl-item').value, val=+document.getElementById('sl-val').value, qty=+document.getElementById('sl-qty').value, emissao=document.getElementById('sl-emissao').value, venc=document.getElementById('sl-venc').value, status=document.getElementById('sl-status').value, obs=document.getElementById('sl-obs').value;
-  if(!desc||!val) return toast('Preencha descrição e valor','te');
-  try {
-    const row = { descricao: desc, valentia: val, status, data_emissao: emissao||null, data_vencimento: venc||null, status_de_observacao: obs||null };
-    if(forn) row.fornecedor_id = +forn;
-    if(item) row.item_id = +item;
-    if(qty) row['Ó'] = qty;
-    const data = await SB.insert('lancamentos', row);
-    state.sb_lancamentos.unshift(data);
-    render(); toast('Lançamento criado no Supabase!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
+window.delBolSB=async function(id){
+  try{await SB.del('boletos',id);U.boletos=U.boletos.filter(b=>b._sb_id!==id);render();toast('Removido.');}catch(e){toast('Erro','te');}
 };
 
-window.pagarLancSB = async function(id) {
-  try {
-    await SB.update('lancamentos', id, { status: 'pago', pagamento_de_dados: new Date().toISOString().slice(0,10) });
-    const l = state.sb_lancamentos.find(x => x.id === id); if(l) l.status = 'pago';
-    render(); toast('Lançamento pago!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
+// ADD — dual write: Firebase + Supabase when possible
+window.addDesp=async function(){
+  const desc=document.getElementById('d-desc').value,cat=document.getElementById('d-cat').value,forn=document.getElementById('d-forn').value,val=+document.getElementById('d-val').value,data=document.getElementById('d-data').value;
+  if(!desc||!val)return toast('Preencha','te');
+  // Firebase
+  const obj={desc,cat,fornecedor:forn,valor:val,data,status:'pago',origem:'manual'};
+  const fbId=await window.dbAdd('despesas',obj);
+  // Supabase lancamento
+  let sbId=null;
+  if(window.supabase){
+    try{
+      const row={descricao:desc,valentia:val,status:'pago',data_emissao:data};
+      const fObj=U.fornecedores.find(f=>nk(f.nome)===nk(forn));
+      if(fObj&&fObj._sb_id)row.fornecedor_id=fObj._sb_id;
+      const d=await SB.ins('lancamentos',row);sbId=d.id;
+    }catch(e){console.error(e);}
+  }
+  U.despesas.push({desc,cat,fornecedor:forn,valor:val,data,status:'pago',origem:'manual',_src:sbId?'both':'fb',_fb_id:fbId,_sb_id:sbId,_uid:'f_'+fbId});
+  render();toast('Despesa salva!');
 };
 
-window.addCatSB = async function() {
-  const nome=document.getElementById('sc-nome').value, tipo=document.getElementById('sc-tipo').value;
-  if(!nome) return toast('Informe o nome','te');
-  try {
-    const data = await SB.insert('categorias', { nome, tipo });
-    state.sb_categorias.push(data);
-    render(); toast('Categoria criada!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
+window.addReceb=async function(){
+  const desc=document.getElementById('rb-desc').value,val=+document.getElementById('rb-val').value,data=document.getElementById('rb-data').value,forma=document.getElementById('rb-forma').value,origem=document.getElementById('rb-origem').value,obs=document.getElementById('rb-obs').value;
+  if(!val)return toast('Valor','te');
+  const obj={desc:desc||'Recebimento',valor:val,data,forma,origem,obs};
+  const id=await window.dbAdd('recebimentos',obj);
+  U.recebimentos.push({...obj,_src:'fb',_fb_id:id,_uid:'f_'+id});
+  render();toast('Recebimento salvo!');
 };
 
-window.addBolSB = async function() {
-  const forn=document.getElementById('sb-forn').value, compra=document.getElementById('sb-compra').value, desc=document.getElementById('sb-desc').value, val=+document.getElementById('sb-val').value, venc=document.getElementById('sb-venc').value, status=document.getElementById('sb-status').value;
-  if(!val) return toast('Informe o valor','te');
-  try {
-    const row = { valentia: val, data_vencimento: venc||null, status: status||'pendente', descricao: desc||null };
-    if(forn) row.fornecedor_id = +forn;
-    if(compra) row.compra_id = +compra;
-    const data = await SB.insert('boletos', row);
-    state.sb_boletos.unshift(data);
-    render(); toast('Boleto criado!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
+window.addRetirada=async function(){
+  const val=+document.getElementById('ret-val').value,data=document.getElementById('ret-data').value,obs=document.getElementById('ret-obs').value;
+  if(!val)return toast('Valor','te');
+  const obj={valor:val,data,obs:obs||'Retirada Diretor'};
+  const id=await window.dbAdd('retiradas',obj);
+  U.retiradas.push({...obj,_src:'fb',_fb_id:id,_uid:'f_'+id});
+  render();toast('Retirada salva!');
 };
 
-window.pagarBolSB = async function(id) {
-  try {
-    await SB.update('boletos', id, { status: 'pago' });
-    // Also create payment record
-    const bol = state.sb_boletos.find(b => b.id === id);
-    if(bol) {
-      bol.status = 'pago';
-      await SB.insert('pagamentos', { boleto_id: id, valentia: bol.valentia, 'pagamento de dados': new Date().toISOString().slice(0,10) });
-      state.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false });
-    }
-    render(); toast('Boleto pago e pagamento registrado!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
-};
-
-window.addCompSB = async function() {
-  const forn=document.getElementById('sco-forn').value, desc=document.getElementById('sco-desc').value, val=+document.getElementById('sco-val').value, data=document.getElementById('sco-data').value, mes=document.getElementById('sco-mes').value;
-  if(!val) return toast('Informe o valor','te');
-  try {
-    const row = { descricao: desc||null, valentia: val, data_compra: data||null, mes_referencia: mes||null };
-    if(forn) row.fornecedor_id = +forn;
-    const d = await SB.insert('compras', row);
-    state.sb_compras.unshift(d);
-    render(); toast('Compra registrada!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
-};
-
-window.addPagSB = async function() {
-  const bol=document.getElementById('sp-bol').value, val=+document.getElementById('sp-val').value, data=document.getElementById('sp-data').value;
-  if(!val) return toast('Informe o valor','te');
-  try {
-    const row = { valentia: val, 'pagamento de dados': data||new Date().toISOString().slice(0,10) };
-    if(bol) { row.boleto_id = +bol; await SB.update('boletos', +bol, { status: 'pago' }); }
-    const d = await SB.insert('pagamentos', row);
-    state.sb_pagamentos.unshift(d);
-    if(bol) { const b=state.sb_boletos.find(x=>x.id===+bol); if(b) b.status='pago'; }
-    render(); toast('Pagamento registrado!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
-};
-
-window.addFornSB = async function() {
-  const nome=document.getElementById('sf-nome').value, contato=document.getElementById('sf-contato').value, obs=document.getElementById('sf-obs').value;
-  if(!nome) return toast('Informe o nome','te');
-  try {
-    const data = await SB.insert('fornecedores', { nome, contato: contato||null, observacao: obs||null });
-    state.sb_fornecedores.push(data);
-    render(); toast('Fornecedor criado no Supabase!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
-};
-
-window.addItemSB = async function() {
-  const nome=document.getElementById('si-nome').value, otimo=document.getElementById('si-otimo').value, alias=document.getElementById('si-alias').value;
-  if(!nome) return toast('Informe o nome','te');
-  try {
-    const row = { nome };
-    if(otimo) row['Ótimo'] = otimo;
-    if(alias) row.aliases = alias;
-    const data = await SB.insert('itens', row);
-    state.sb_itens.push(data);
-    render(); toast('Item criado no Supabase!');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
-};
-
-// ===== CONFIG ACTIONS =====
-function salvarKey() { API_KEY=document.getElementById('key-input').value.trim(); localStorage.setItem('financeai_key',API_KEY); toast('API Key salva!'); }
-
-async function testarKey() {
-  if(!API_KEY) return toast('Insira a API Key primeiro','te');
-  try {
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:10,messages:[{role:'user',content:'ok'}]})});
-    if(res.ok) toast('API Key funcionando!'); else toast('Chave inválida','te');
-  } catch(e) { toast('Erro de conexão','te'); }
-}
-
-function salvarSupabaseConfig() {
-  localStorage.setItem('financeai_supabase_url', document.getElementById('supabase-url-input').value.trim());
-  localStorage.setItem('financeai_supabase_anon_key', document.getElementById('supabase-key-input').value.trim());
-  toast('Supabase salvo! Recarregue a página.');
-}
-
-async function testarSupabase() {
-  if (!window.supabase) return toast('Salve URL/chave e recarregue','te');
-  try {
-    const fornecedores = await SB.list('fornecedores', { limit: 1 });
-    toast('Supabase conectado! Acesso direto às tabelas ✓');
-  } catch(e) { toast('Erro: '+e.message, 'te'); }
-}
-
-function exportar() {
-  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='financeai-backup.json'; a.click(); toast('Exportado!');
-}
-
-async function limparTudo() {
-  const cols=['receitas','despesas','produtos','fornecedores','apagar','areceber','fechamentos'];
-  for(const col of cols) { for(const item of state[col]) { try { await window.dbDel(col,item._id); } catch(e){} } state[col]=[]; }
-  render(); toast('Firebase limpo!');
-}
-
-// ===== PDF =====
-function handleDrop(e) { e.preventDefault(); document.getElementById('pdf-drop').classList.remove('drag'); const f=e.dataTransfer.files[0]; if(f&&f.type==='application/pdf') processarPDF(f); }
-function handlePDF(e) { const f=e.target.files[0]; if(f) processarPDF(f); }
-
-async function processarPDF(file) {
-  if(!API_KEY) { toast('Configure sua API Key','te'); state.page='config'; render(); return; }
-  document.getElementById('pdf-drop').style.display='none';
-  document.getElementById('pdf-proc').style.display='block';
-  try {
-    const ab=await file.arrayBuffer(); const pdf=await pdfjsLib.getDocument({data:ab}).promise;
-    let txt='';
-    for(let i=1;i<=Math.min(pdf.numPages,6);i++) { const pg=await pdf.getPage(i); const ct=await pg.getTextContent(); txt+=ct.items.map(item=>item.str).join(' ')+'\n'; }
-    const result=await analisarPDFcomIA(txt,file.name);
-    state.pdfPendentes.push({...result,arquivo:file.name});
-    document.getElementById('pdf-proc').style.display='none'; document.getElementById('pdf-drop').style.display='block';
-    render(); toast('PDF analisado!');
-  } catch(err) { document.getElementById('pdf-proc').style.display='none'; document.getElementById('pdf-drop').style.display='block'; toast('Erro: '+err.message,'te'); }
-}
-
-async function analisarPDFcomIA(texto, arquivo) {
-  const prompt=`Você é um assistente financeiro especializado em joalheria, ourivesaria e metais preciosos. Analise o texto deste documento e retorne APENAS JSON válido (sem markdown):
-{"tipo":"despesa" ou "receita" ou "apagar","descricao":"descrição curta","fornecedor":"nome","cliente":"nome se houver","valor":número,"vencimento":"YYYY-MM-DD","categoria":"Fixo|Estoque|Pessoal|Marketing|Impostos|Vendas|Serviços|Ouro/Metais|Outros","forma_pagamento":"Boleto|PIX|Cheque|Transferência|Dinheiro","produtos":[{"nome":"...","qtd":número,"preco":número,"unidade":"grama|quilate|peça"}],"resumo":"resumo em 1 frase"}
-Texto: ${texto.slice(0,4000)}`;
-  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-  const data=await res.json();
-  const txt=data.content?.[0]?.text||'{}';
-  try { return JSON.parse(txt.replace(/```json|```/g,'').trim()); }
-  catch(e) { return {tipo:'despesa',descricao:arquivo,resumo:'Não foi possível extrair dados',valor:0}; }
-}
-
-async function confirmarPDF(i) {
-  const item=state.pdfPendentes[i];
-  const today=new Date().toISOString().slice(0,10);
-  if(item.tipo==='receita') {
-    const obj={desc:item.descricao,cat:item.categoria||'Outros',cliente:item.cliente||'',valor:item.valor||0,data:item.vencimento||today,status:'pendente',forma:item.forma_pagamento||'',origem:'pdf'};
-    const id=await window.dbAdd('receitas',obj); state.receitas.push({...obj,_id:id});
+window.addBol=async function(){
+  const forn=document.getElementById('sb-forn').value,desc=document.getElementById('sb-desc').value,val=+document.getElementById('sb-val').value,venc=document.getElementById('sb-venc').value;
+  if(!val)return toast('Valor','te');
+  // SB first
+  if(window.supabase){
+    try{
+      const row={valentia:val,data_vencimento:venc||null,status:'pendente',descricao:desc||null};
+      if(forn)row.fornecedor_id=+forn;
+      const d=await SB.ins('boletos',row);
+      U.boletos.push({desc:desc||'',fornecedor:uForn(+forn),fornecedor_id:+forn||null,valor:val,vencimento:venc||'',status:'pendente',_src:'sb',_sb_id:d.id,_uid:'s_'+d.id});
+      render();toast('Boleto criado!');
+    }catch(e){toast('Erro: '+e.message,'te');}
   } else {
-    const obj={desc:item.descricao,cat:item.categoria||'Outros',fornecedor:item.fornecedor||'',valor:item.valor||0,data:item.vencimento||today,status:'pendente',forma:item.forma_pagamento||'',origem:'pdf'};
-    const id=await window.dbAdd('despesas',obj); state.despesas.push({...obj,_id:id});
-    // Also create in Supabase lancamentos
-    if(window.supabase) {
-      try {
-        let fornId = null;
-        if(item.fornecedor) {
-          const existing = state.sb_fornecedores.find(f => f.nome.toLowerCase() === item.fornecedor.toLowerCase());
-          if(existing) { fornId = existing.id; }
-          else {
-            const newF = await SB.insert('fornecedores', { nome: item.fornecedor });
-            state.sb_fornecedores.push(newF); fornId = newF.id;
-          }
-        }
-        const lancRow = { descricao: item.descricao, valentia: item.valor||0, status: 'pendente', data_emissao: today, data_vencimento: item.vencimento||null };
-        if(fornId) lancRow.fornecedor_id = fornId;
-        const newLanc = await SB.insert('lancamentos', lancRow);
-        state.sb_lancamentos.unshift(newLanc);
-        // Create boleto if has vencimento
-        if(item.vencimento) {
-          const bolRow = { valentia: item.valor||0, data_vencimento: item.vencimento, status: 'pendente', descricao: item.descricao };
-          if(fornId) bolRow.fornecedor_id = fornId;
-          const newBol = await SB.insert('boletos', bolRow);
-          state.sb_boletos.unshift(newBol);
-        }
-      } catch(e) { console.error('Supabase sync error:', e); }
-    }
-    if(item.fornecedor&&!state.fornecedores.find(f=>f.nome===item.fornecedor)){
-      const o4={nome:item.fornecedor,cat:item.categoria||'Outros',prazo:'A negociar'};
-      const id4=await window.dbAdd('fornecedores',o4); state.fornecedores.push({...o4,_id:id4});
+    const obj={desc:desc||'',fornecedor:'',valor:val,venc,status:'pendente'};
+    const id=await window.dbAdd('apagar',obj);
+    U.boletos.push({...obj,vencimento:venc,_src:'fb',_fb_id:id,_uid:'f_'+id});
+    render();toast('Conta salva!');
+  }
+};
+
+window.pagarBol=async function(uid){
+  const b=U.boletos.find(x=>x._uid===uid);if(!b)return;
+  b.status='pago';
+  if(b._sb_id){try{await SB.upd('boletos',b._sb_id,{status:'pago'});await SB.ins('pagamentos',{boleto_id:b._sb_id,valentia:b.valor,'pagamento de dados':new Date().toISOString().slice(0,10)});}catch(e){}}
+  if(b._fb_id){try{await window.dbUpd('apagar',b._fb_id,{status:'pago'});}catch(e){}}
+  render();toast('Pago!');
+};
+
+window.addComp=async function(){
+  const forn=document.getElementById('sco-forn').value,desc=document.getElementById('sco-desc').value,val=+document.getElementById('sco-val').value,data=document.getElementById('sco-data').value;
+  if(!val)return toast('Valor','te');
+  try{
+    const row={descricao:desc||null,valentia:val,data_compra:data||null};
+    if(forn)row.fornecedor_id=+forn;
+    const d=await SB.ins('compras',row);
+    U.compras.push({desc:desc||'',fornecedor:uForn(+forn),valor:val,data:data||'',_src:'sb',_sb_id:d.id,_uid:'s_'+d.id});
+    render();toast('Compra registrada!');
+  }catch(e){toast('Erro: '+e.message,'te');}
+};
+
+window.addForn=async function(){
+  const nome=document.getElementById('sf-nome').value,contato=document.getElementById('sf-contato').value,obs=document.getElementById('sf-obs').value;
+  if(!nome)return toast('Nome','te');
+  // Dual write
+  const fbId=await window.dbAdd('fornecedores',{nome,tel:contato,obs});
+  let sbId=null;
+  if(window.supabase){try{const d=await SB.ins('fornecedores',{nome,contato:contato||null,observacao:obs||null});sbId=d.id;}catch(e){}}
+  U.fornecedores.push({nome,contato:contato||'',obs:obs||'',_src:sbId?'both':'fb',_fb_id:fbId,_sb_id:sbId,_uid:'f_'+fbId});
+  render();toast('Fornecedor criado!');
+};
+
+window.addItem=async function(){
+  const nome=document.getElementById('si-nome').value,qual=document.getElementById('si-qual').value,alias=document.getElementById('si-alias').value;
+  if(!nome)return toast('Nome','te');
+  const fbId=await window.dbAdd('produtos',{nome,detalhe:qual});
+  let sbId=null;
+  if(window.supabase){try{const row={nome};if(qual)row['Ótimo']=qual;if(alias)row.aliases=alias;const d=await SB.ins('itens',row);sbId=d.id;}catch(e){}}
+  U.itens.push({nome,qualidade:qual||'',aliases:alias||'',_src:sbId?'both':'fb',_fb_id:fbId,_sb_id:sbId,_uid:'f_'+fbId});
+  render();toast('Item criado!');
+};
+
+window.addCat=async function(){
+  const nome=document.getElementById('sc-nome').value,tipo=document.getElementById('sc-tipo').value;
+  if(!nome)return toast('Nome','te');
+  try{const d=await SB.ins('categorias',{nome,tipo});U.categorias.push({...d,_src:'sb',_sb_id:d.id,_uid:'s_'+d.id});render();toast('Categoria criada!');}catch(e){toast('Erro','te');}
+};
+
+window.showRenego=function(id){
+  const b=U.boletos.find(x=>x._sb_id===id);if(!b)return;
+  document.getElementById('modal-root').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal-box"><div class="modal-title">🔄 Renegociar</div><div style="font-size:12px;color:var(--txt2);margin-bottom:12px">${b.desc||'Boleto'} — ${fmt(b.valor)}</div><div class="fg c2"><div class="fl"><label>Nova Data</label><input id="renego-data" type="date"/></div><div class="fl"><label>Obs</label><input id="renego-obs"/></div></div><div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-p btn-sm" onclick="doRenego(${id})">Confirmar</button><button class="btn btn-g btn-sm" onclick="closeModal()">Cancelar</button></div></div></div>`;
+};
+window.closeModal=()=>{document.getElementById('modal-root').innerHTML='';};
+window.doRenego=async function(id){
+  const nd=document.getElementById('renego-data').value,obs=document.getElementById('renego-obs').value;
+  if(!nd)return toast('Data','te');
+  try{await SB.upd('boletos',id,{status:'renegociado',data_vencimento:nd,novo_vencimento:nd,status_de_observacao:'Renegociado: '+obs});const b=U.boletos.find(x=>x._sb_id===id);if(b){b.status='renegociado';b.vencimento=nd;}closeModal();render();toast('Renegociado!');}catch(e){toast('Erro','te');}
+};
+
+window.fecharMes=async function(){
+  const ent=tReceb(),sai=tD()+tRetir(),lb=ent-sai,imp=Math.round(Math.max(lb,0)*0.06),liq=lb-imp;
+  const obj={mes:`${MESES[gM()]} ${gY()}`,receita:ent,despesa:sai,lucroB:lb,imp,lucro:liq,margem:pct(lb,ent),data:new Date().toISOString(),retiradas:tRetir()};
+  await window.dbAdd('fechamentos',obj);U.fechamentos.unshift(obj);
+  U.historico.push({mes:MC[gM()],r:ent,d:sai});if(U.historico.length>8)U.historico.shift();
+  toast(`Fechado! Líquido: ${fmt(liq)}`);render();
+};
+
+// CONFIG helpers
+function salvarKey(){API_KEY=document.getElementById('key-input').value.trim();localStorage.setItem('financeai_key',API_KEY);toast('Key salva!');}
+async function testarSB(){if(!window.supabase)return toast('Salve e recarregue','te');try{await SB.list('fornecedores',{limit:1});toast('Supabase OK!');}catch(e){toast('Erro: '+e.message,'te');}}
+function exportar(){const blob=new Blob([JSON.stringify(U,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='financeai-unified.json';a.click();toast('Exportado!');}
+
+// PDF
+function handleDrop(e){e.preventDefault();document.getElementById('pdf-drop').classList.remove('drag');const f=e.dataTransfer.files[0];if(f&&f.type==='application/pdf')processarPDF(f);}
+function handlePDF(e){const f=e.target.files[0];if(f)processarPDF(f);}
+async function processarPDF(file){
+  if(!API_KEY){toast('API Key','te');return;}
+  document.getElementById('pdf-drop').style.display='none';document.getElementById('pdf-proc').style.display='block';
+  try{
+    const ab=await file.arrayBuffer();const pdf=await pdfjsLib.getDocument({data:ab}).promise;let txt='';
+    for(let i=1;i<=Math.min(pdf.numPages,6);i++){const pg=await pdf.getPage(i);const ct=await pg.getTextContent();txt+=ct.items.map(x=>x.str).join(' ')+'\n';}
+    const r=await iaAnalise(txt,`Analise documento. JSON: {"tipo":"despesa"/"receita","descricao":"","fornecedor":"","valor":0,"vencimento":"YYYY-MM-DD","categoria":"","resumo":""}`);
+    U.pdfPendentes.push({...r,arquivo:file.name});
+    document.getElementById('pdf-proc').style.display='none';document.getElementById('pdf-drop').style.display='block';render();toast('PDF analisado!');
+  }catch(e){document.getElementById('pdf-proc').style.display='none';document.getElementById('pdf-drop').style.display='block';toast('Erro: '+e.message,'te');}
+}
+async function iaAnalise(texto,instrucao){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:instrucao+'\nTexto: '+texto.slice(0,4000)}]})});
+  const data=await res.json();const t=data.content?.[0]?.text||'{}';
+  try{return JSON.parse(t.replace(/```json|```/g,'').trim());}catch(e){return{tipo:'despesa',descricao:'Doc',valor:0};}
+}
+window.confirmarPDF=async function(i){
+  const it=U.pdfPendentes[i];const today=new Date().toISOString().slice(0,10);
+  if(it.tipo==='receita'){
+    const obj={desc:it.descricao,valor:it.valor||0,data:it.vencimento||today,forma:it.forma_pagamento||'',origem:'pdf'};
+    const id=await window.dbAdd('recebimentos',obj);U.recebimentos.push({...obj,_src:'fb',_fb_id:id,_uid:'f_'+id});
+  }else{
+    const obj={desc:it.descricao,cat:it.categoria||'Outros',fornecedor:it.fornecedor||'',valor:it.valor||0,data:it.vencimento||today,status:'pendente',origem:'pdf'};
+    const fbId=await window.dbAdd('despesas',obj);
+    U.despesas.push({...obj,_src:'fb',_fb_id:fbId,_uid:'f_'+fbId});
+    if(window.supabase&&it.vencimento){
+      try{let fid=null;if(it.fornecedor){const ex=U.fornecedores.find(f=>nk(f.nome)===nk(it.fornecedor));if(ex)fid=ex._sb_id;else{const nf=await SB.ins('fornecedores',{nome:it.fornecedor});U.fornecedores.push({nome:it.fornecedor,contato:'',obs:'',_src:'sb',_sb_id:nf.id,_uid:'s_'+nf.id});fid=nf.id;}}
+      const row={valentia:it.valor||0,data_vencimento:it.vencimento,status:'pendente',descricao:it.descricao};if(fid)row.fornecedor_id=fid;
+      const nb=await SB.ins('boletos',row);U.boletos.push({desc:it.descricao,fornecedor:it.fornecedor||'',valor:it.valor||0,vencimento:it.vencimento,status:'pendente',_src:'sb',_sb_id:nb.id,_uid:'s_'+nb.id});
+      }catch(e){console.error(e);}
     }
   }
-  state.pdfPendentes.splice(i,1);
-  render(); toast('Lançado em Firebase + Supabase!');
+  U.pdfPendentes.splice(i,1);render();toast('Lançado!');
+};
+function rejeitarPDF(i){U.pdfPendentes.splice(i,1);render();}
+
+// Extrato
+function handleExtratoDrop(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f)processarExtrato(f);}
+function handleExtrato(e){const f=e.target.files[0];if(f)processarExtrato(f);}
+async function processarExtrato(file){
+  if(!API_KEY)return toast('API Key','te');
+  document.getElementById('extrato-proc')&&(document.getElementById('extrato-proc').style.display='block');
+  try{
+    let txt='';if(file.type==='application/pdf'){const ab=await file.arrayBuffer();const pdf=await pdfjsLib.getDocument({data:ab}).promise;for(let i=1;i<=Math.min(pdf.numPages,10);i++){const pg=await pdf.getPage(i);const ct=await pg.getTextContent();txt+=ct.items.map(x=>x.str).join(' ')+'\n';}}else{txt=await file.text();}
+    const r=await iaAnalise(txt,`Analise extrato bancário. JSON array: [{"data":"YYYY-MM-DD","descricao":"","tipo":"pagamento"/"recebimento","valor":0,"categoria":""}]`);
+    const items=Array.isArray(r)?r:[r];
+    U.extratoPendentes=items.map(i=>({...i,tipo:i.tipo==='recebimento'?'recebimento':'pagamento'}));
+    document.getElementById('extrato-proc')&&(document.getElementById('extrato-proc').style.display='none');
+    render();toast(`${items.length} lançamentos!`);
+  }catch(e){document.getElementById('extrato-proc')&&(document.getElementById('extrato-proc').style.display='none');toast('Erro: '+e.message,'te');}
 }
+window.confirmarExtrato=async function(i){
+  const it=U.extratoPendentes[i];const today=new Date().toISOString().slice(0,10);
+  if(it.tipo==='recebimento'){const obj={desc:it.descricao,valor:it.valor,data:it.data||today,forma:'Extrato',origem:'extrato'};const id=await window.dbAdd('recebimentos',obj);U.recebimentos.push({...obj,_src:'fb',_fb_id:id,_uid:'f_'+id});}
+  else{const obj={desc:it.descricao,cat:it.categoria||'Outros',valor:it.valor,data:it.data||today,status:'pago',forma:'Extrato',origem:'extrato'};const id=await window.dbAdd('despesas',obj);U.despesas.push({...obj,_src:'fb',_fb_id:id,_uid:'f_'+id});}
+  U.extratoPendentes.splice(i,1);render();toast('Lançado!');
+};
+window.rejeitarExtrato=function(i){U.extratoPendentes.splice(i,1);render();};
+window.confirmarTodosExtrato=async function(){while(U.extratoPendentes.length>0)await window.confirmarExtrato(0);toast('Todos confirmados!');};
 
-function rejeitarPDF(i) { state.pdfPendentes.splice(i,1); render(); toast('Descartado.'); }
-
-// ===== IA ANALYSIS =====
-async function analisarIA(tipo) {
-  if(!API_KEY) { toast('Configure a API Key','te'); return; }
-  const el=document.getElementById('ai-body'); if(!el) return;
-  el.innerHTML='<div class="ail">Analisando dados<div class="aid"><span>.</span><span>.</span><span>.</span></div></div>';
-  const dados={r:tR(),d:tD(),l:lucro(),m:pct(lucro(),tR()),ml:Math.round(mediaL()),
-    sbLanc:state.sb_lancamentos.length,sbLancTotal:tLanc(),sbBol:state.sb_boletos.length,sbBolTotal:tBol(),
-    sbComp:state.sb_compras.length,sbCompTotal:tComp(),sbForn:state.sb_fornecedores.map(f=>f.nome).join(', '),
-    sbItens:state.sb_itens.map(i=>i.nome).join(', ')};
-  const ps={
-    geral:`Analise dados de joalheria: receitas R$${dados.r}, despesas R$${dados.d}, lucro R$${dados.l}, margem ${dados.m}%. Supabase: ${dados.sbLanc} lançamentos (R$${dados.sbLancTotal}), ${dados.sbBol} boletos (R$${dados.sbBolTotal}), ${dados.sbComp} compras (R$${dados.sbCompTotal}). Diagnóstico em 5 frases. Português.`,
-    lucro:`Sugira 4 ações para aumentar lucro neste negócio de joalheria. Lucro: R$${dados.l}, margem: ${dados.m}%. Compras Supabase: R$${dados.sbCompTotal}. Português.`,
-    despesas:`Analise despesas R$${dados.d} e compras Supabase R$${dados.sbCompTotal}. Sugira cortes. Fornecedores: ${dados.sbForn}. Português.`,
-    supabase:`Dados Supabase: ${dados.sbLanc} lançamentos (R$${dados.sbLancTotal}), ${dados.sbBol} boletos (R$${dados.sbBolTotal}), ${dados.sbComp} compras (R$${dados.sbCompTotal}). Fornecedores: ${dados.sbForn}. Itens: ${dados.sbItens}. Analise a operação e sugira melhorias. Português.`,
-    previsao:`Histórico Firebase: receitas R$${dados.r}, despesas R$${dados.d}. Volume Supabase: ${dados.sbLanc} lançamentos, ${dados.sbBol} boletos. Faça previsão para próximo mês: cenário otimista, realista, pessimista. Português.`,
-    fluxo:`Fluxo: receitas R$${dados.r}, boletos pendentes R$${state.sb_boletos.filter(b=>b.status!=='pago').reduce((s,b)=>s+Number(b.valentia||0),0)}, lançamentos pendentes R$${state.sb_lancamentos.filter(l=>l.status==='pendente').reduce((s,l)=>s+Number(l.valentia||0),0)}. Caixa saudável? Português.`
-  };
-  try {
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:ps[tipo]}]})});
-    const data=await res.json();
-    el.textContent=data.content?.[0]?.text||'Sem resposta.';
-  } catch(e) { el.textContent='Erro. Verifique a API Key.'; }
+// IA
+async function analisarIA(tipo){
+  if(!API_KEY)return toast('API Key','te');
+  const el=document.getElementById('ai-body');if(!el)return;
+  el.innerHTML='<div class="ail">Analisando<div class="aid"><span>.</span><span>.</span><span>.</span></div></div>';
+  const d={r:tReceb(),d:tD(),ret:tRetir(),l:lucro(),bol:tBol(),comp:tComp(),forn:U.fornecedores.map(f=>f.nome).join(', ')};
+  const ps={geral:`Joalheria: recebimentos R$${d.r}, despesas R$${d.d}, retiradas R$${d.ret}, lucro R$${d.l}, boletos R$${d.bol}. 5 frases. PT-BR.`,lucro:`Lucro R$${d.l}. Sugira 4 ações. PT-BR.`,despesas:`Despesas R$${d.d}, compras R$${d.comp}. Fornecedores: ${d.forn}. Sugira cortes. PT-BR.`,previsao:`Receitas R$${d.r}, despesas R$${d.d}. Previsão. PT-BR.`};
+  try{const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:ps[tipo]}]})});const data=await res.json();el.textContent=data.content?.[0]?.text||'Sem resposta.';}catch(e){el.textContent='Erro.';}
 }
 
 render();
 </script>
 </body>
 </html>
+
