@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FinanceAI — Agente Financeiro</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -46,7 +46,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .topbar{padding:0 22px;height:54px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg2);flex-shrink:0}
 .page-title{font-size:15px;font-weight:600}
 .topbar-right{display:flex;align-items:center;gap:8px}
-.month-sel select{font-size:12px;padding:5px 9px;border:1px solid var(--border2);border-radius:7px;background:var(--bg3);color:var(--txt);margin-left:4px}
+.topbar-right select{font-size:12px;padding:5px 9px;border:1px solid var(--border2);border-radius:7px;background:var(--bg3);color:var(--txt)}
 .content{flex:1;overflow-y:auto;padding:18px 22px}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:14px}
@@ -130,13 +130,19 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .bars-w{display:flex;align-items:flex-end;gap:2px;height:78px}
 .bar{width:13px;border-radius:3px 3px 0 0;transition:height 0.5s cubic-bezier(0.34,1.56,0.64,1)}
 .bar-lbl{font-size:9px;color:var(--txt3)}
+.supabase-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(52,211,153,0.15);color:var(--green);font-weight:500;vertical-align:middle}
+.firebase-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(251,191,36,0.15);color:var(--amber);font-weight:500;vertical-align:middle}
+.dual-tag{display:inline-flex;align-items:center;gap:3px;font-size:9px;padding:1px 5px;border-radius:3px;background:rgba(99,102,241,0.15);color:#818cf8;font-weight:500;vertical-align:middle}
+.tab-bar{display:flex;gap:2px;background:var(--bg3);border-radius:8px;padding:3px;margin-bottom:12px}
+.tab-btn{flex:1;padding:7px 12px;border:none;background:transparent;color:var(--txt3);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;border-radius:6px;font-weight:500;transition:all 0.15s}
+.tab-btn.active{background:var(--bg2);color:var(--txt);box-shadow:0 1px 3px rgba(0,0,0,0.3)}
 </style>
 </head>
 <body>
 
 <div id="lov" class="lov">
   <div class="lsp"></div>
-  <div class="ltx" id="ltx">Conectando ao Firebase...</div>
+  <div class="ltx" id="ltx">Conectando...</div>
 </div>
 
 <div class="app">
@@ -168,13 +174,28 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <div class="nav-item" data-page="despesas">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>Despesas
       </div>
+      <div class="nav-item" data-page="lancamentos">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Lançamentos <span class="supabase-tag">SB</span>
+      </div>
       <div class="nav-item" data-page="produtos">
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Produtos
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>Itens / Produtos
       </div>
       <div class="nav-item" data-page="fornecedores">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Fornecedores
       </div>
+      <div class="nav-item" data-page="categorias">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Categorias <span class="supabase-tag">SB</span>
+      </div>
       <div class="nav-sec">Gestão</div>
+      <div class="nav-item" data-page="boletos">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Boletos <span class="supabase-tag">SB</span>
+      </div>
+      <div class="nav-item" data-page="compras">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Compras <span class="supabase-tag">SB</span>
+      </div>
+      <div class="nav-item" data-page="pagamentos">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Pagamentos <span class="supabase-tag">SB</span>
+      </div>
       <div class="nav-item" data-page="apagar">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         A Pagar <span class="nav-badge" id="badge-apagar">0</span>
@@ -197,7 +218,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       </div>
     </nav>
     <div class="sidebar-footer">
-      <div class="ai-pill"><div class="ai-dot"></div><div class="ai-pill-txt">IA + Nuvem Ativo</div></div>
+      <div class="ai-pill"><div class="ai-dot"></div><div class="ai-pill-txt" id="ai-status">Iniciando...</div></div>
     </div>
   </div>
   <div class="main">
@@ -205,7 +226,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
       <div class="page-title" id="page-title">Dashboard</div>
       <div class="topbar-right">
         <select id="mes-sel"><option value="0">Janeiro</option><option value="1">Fevereiro</option><option value="2">Março</option><option value="3">Abril</option><option value="4">Maio</option><option value="5" selected>Junho</option><option value="6">Julho</option><option value="7">Agosto</option><option value="8">Setembro</option><option value="9">Outubro</option><option value="10">Novembro</option><option value="11">Dezembro</option></select>
-        <select id="ano-sel"><option>2025</option><option selected>2024</option><option>2023</option></select>
+        <select id="ano-sel"><option>2026</option><option>2025</option><option selected>2024</option><option>2023</option></select>
       </div>
     </div>
     <div class="content" id="content"></div>
@@ -220,6 +241,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
+// ===== FIREBASE CONFIG =====
 const firebaseConfig = {
   apiKey: "AIzaSyDcIFCq1ujGP-0KR6AJaM0s7f5wkT9ea4E",
   authDomain: "financeiro-ia-58343.firebaseapp.com",
@@ -228,98 +250,117 @@ const firebaseConfig = {
   messagingSenderId: "312584896401",
   appId: "1:312584896401:web:99ae11d48593bbf5c7e430"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// ===== SUPABASE CONFIG =====
 const SUPABASE_URL = localStorage.getItem('financeai_supabase_url') || '';
 const SUPABASE_ANON_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
-const SUPABASE_DEFAULT_CATEGORIA_ID = localStorage.getItem('financeai_supabase_categoria_id') || '';
-
-const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY)
-  ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  : null;
+const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY) ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 window.db = db;
 window.supabase = supabase;
 window.supabaseReady = !!supabase;
 window.FB = { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy };
 
+// ===== SUPABASE DIRECT TABLE ACCESS =====
+// Generic CRUD for all Supabase tables
+window.SB = {
+  async list(table, opts = {}) {
+    if (!supabase) return [];
+    let q = supabase.from(table).select(opts.select || '*');
+    if (opts.order) q = q.order(opts.order, { ascending: opts.asc !== false });
+    if (opts.limit) q = q.limit(opts.limit);
+    if (opts.filter) { for (const [col, val] of Object.entries(opts.filter)) q = q.eq(col, val); }
+    const { data, error } = await q;
+    if (error) { console.error(`SB.list ${table}:`, error); return []; }
+    return data || [];
+  },
+  async get(table, id) {
+    if (!supabase) return null;
+    const { data, error } = await supabase.from(table).select('*').eq('id', id).single();
+    if (error) return null;
+    return data;
+  },
+  async insert(table, row) {
+    if (!supabase) throw new Error('Supabase não configurado');
+    const { data, error } = await supabase.from(table).insert(row).select().single();
+    if (error) throw error;
+    return data;
+  },
+  async update(table, id, changes) {
+    if (!supabase) throw new Error('Supabase não configurado');
+    const { data, error } = await supabase.from(table).update(changes).eq('id', id).select().single();
+    if (error) throw error;
+    return data;
+  },
+  async remove(table, id) {
+    if (!supabase) throw new Error('Supabase não configurado');
+    const { error } = await supabase.from(table).delete().eq('id', id);
+    if (error) throw error;
+  },
+  async rpc(fn, params) {
+    if (!supabase) throw new Error('Supabase não configurado');
+    const { data, error } = await supabase.rpc(fn, params);
+    if (error) throw error;
+    return data;
+  }
+};
+
+// ===== INIT =====
 document.getElementById('lov').style.display = 'none';
 document.getElementById('sdot').className = 'sync-dot online';
-document.getElementById('stxt').textContent = 'Online — Firebase ativo';
+document.getElementById('stxt').textContent = supabase ? 'Online — Firebase + Supabase' : 'Online — Firebase (Supabase não configurado)';
+document.getElementById('ai-status').textContent = supabase ? 'Firebase + Supabase ✓' : 'Firebase ativo';
 window.firebaseReady = true;
 
-// Load all data from Firestore
+// ===== LOAD ALL DATA =====
 async function loadAll() {
-  const cols = ['receitas','despesas','produtos','fornecedores','apagar','areceber','fechamentos'];
-  for(const col of cols) {
+  // Firebase
+  const fbCols = ['receitas','despesas','produtos','fornecedores','apagar','areceber','fechamentos'];
+  for (const col of fbCols) {
     try {
       const snap = await getDocs(collection(db, col));
       window.state[col] = snap.docs.map(d => ({...d.data(), _id: d.id}));
     } catch(e) { window.state[col] = []; }
   }
+  // Supabase tables
+  if (supabase) {
+    try {
+      state.sb_fornecedores = await SB.list('fornecedores', { order: 'criado_em' });
+      state.sb_categorias = await SB.list('categorias', { order: 'criado_em' });
+      state.sb_itens = await SB.list('itens', { order: 'criado_em' });
+      state.sb_lancamentos = await SB.list('lancamentos', { order: 'criado_em', asc: false });
+      state.sb_boletos = await SB.list('boletos', { order: 'criado_em', asc: false });
+      state.sb_compras = await SB.list('compras', { order: 'criado_em', asc: false });
+      state.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false });
+      state.sb_documentos = await SB.list('documentos', { order: 'criado_em', asc: false });
+      console.log('Supabase loaded:', {
+        fornecedores: state.sb_fornecedores.length,
+        categorias: state.sb_categorias.length,
+        itens: state.sb_itens.length,
+        lancamentos: state.sb_lancamentos.length,
+        boletos: state.sb_boletos.length,
+        compras: state.sb_compras.length,
+        pagamentos: state.sb_pagamentos.length
+      });
+    } catch(e) { console.error('Supabase load error:', e); }
+  }
   window.render();
   window.updateBadges();
 }
 
-window.dbAdd = async (col, data) => {
-  setSaving();
-  const ref = await addDoc(collection(db, col), {...data, ts: Date.now()});
-  setOnline();
-  return ref.id;
-};
-window.dbDel = async (col, id) => {
-  setSaving();
-  await deleteDoc(doc(db, col, id));
-  setOnline();
-};
-window.dbUpd = async (col, id, data) => {
-  setSaving();
-  await updateDoc(doc(db, col, id), data);
-  setOnline();
-};
+// Firebase helpers
+window.dbAdd = async (col, data) => { setSaving(); const ref = await addDoc(collection(db, col), {...data, ts: Date.now()}); setOnline(); return ref.id; };
+window.dbDel = async (col, id) => { setSaving(); await deleteDoc(doc(db, col, id)); setOnline(); };
+window.dbUpd = async (col, id, data) => { setSaving(); await updateDoc(doc(db, col, id), data); setOnline(); };
 
-function setSaving() {
-  document.getElementById('sdot').className = 'sync-dot saving';
-  document.getElementById('stxt').textContent = 'Salvando...';
-}
-function setOnline() {
-  document.getElementById('sdot').className = 'sync-dot online';
-  document.getElementById('stxt').textContent = 'Salvo na nuvem ✓';
-  setTimeout(()=>{ document.getElementById('stxt').textContent = 'Online — Firebase ativo'; }, 2000);
-}
+function setSaving() { document.getElementById('sdot').className='sync-dot saving'; document.getElementById('stxt').textContent='Salvando...'; }
+function setOnline() { document.getElementById('sdot').className='sync-dot online'; document.getElementById('stxt').textContent='Salvo ✓'; setTimeout(()=>{ document.getElementById('stxt').textContent = supabase ? 'Online — Firebase + Supabase' : 'Online — Firebase'; },2000); }
 
+// RPC helper
 window.executarAgenteFinanceiro = async (acao, payload = {}) => {
-  if (!window.supabase) {
-    throw new Error('Supabase não configurado');
-  }
-
-  const { data, error } = await window.supabase.rpc('executar_agente_financeiro', {
-    p_acao: acao,
-    p_payload: payload
-  });
-
-  if (error) throw error;
-  return data;
-};
-
-window.buscarLancamentoSupabase = async ({ descricao, valor, vencimento }) => {
-  if (!window.supabase) return null;
-  const res = await window.executarAgenteFinanceiro('contas_a_pagar');
-  const contas = res?.resultado || [];
-  const alvoDesc = (descricao || '').trim().toLowerCase();
-  const alvoValor = Number(valor || 0);
-  const alvoVenc = vencimento || null;
-
-  const match = [...contas].reverse().find(c => {
-    const descOk = (c.descricao || '').trim().toLowerCase() === alvoDesc;
-    const valorOk = Math.abs(Number(c.valor || 0) - alvoValor) < 0.01;
-    const vencOk = !alvoVenc || c.vencimento === alvoVenc;
-    return descOk && valorOk && vencOk;
-  });
-
-  return match?.id || null;
+  return await SB.rpc('executar_agente_financeiro', { p_acao: acao, p_payload: payload });
 };
 
 loadAll();
@@ -337,6 +378,10 @@ window.state = {
   page:'dashboard', mes:5,
   receitas:[], despesas:[], produtos:[], fornecedores:[],
   apagar:[], areceber:[], fechamentos:[], pdfPendentes:[],
+  // Supabase tables
+  sb_fornecedores:[], sb_categorias:[], sb_itens:[],
+  sb_lancamentos:[], sb_boletos:[], sb_compras:[],
+  sb_pagamentos:[], sb_documentos:[],
   historico:[
     {mes:'Jan',r:11200,d:7800},{mes:'Fev',r:9800,d:8200},{mes:'Mar',r:13500,d:9100},
     {mes:'Abr',r:10200,d:7600},{mes:'Mai',r:14800,d:8900},{mes:'Jun',r:13500,d:8700}
@@ -350,6 +395,16 @@ const tD = () => state.despesas.reduce((s,d)=>s+(d.valor||0),0);
 const lucro = () => tR()-tD();
 const mediaL = () => state.historico.length ? state.historico.reduce((s,m)=>s+(m.r-m.d),0)/state.historico.length : 0;
 
+// Supabase totals
+const tLanc = () => state.sb_lancamentos.reduce((s,l) => s + Number(l.valentia || 0), 0);
+const tBol = () => state.sb_boletos.reduce((s,b) => s + Number(b.valentia || 0), 0);
+const tComp = () => state.sb_compras.reduce((s,c) => s + Number(c.valentia || 0), 0);
+
+// Get fornecedor name by id
+const getFornNome = (id) => { const f = state.sb_fornecedores.find(f => f.id === id); return f ? f.nome : '—'; };
+const getItemNome = (id) => { const i = state.sb_itens.find(i => i.id === id); return i ? i.nome : '—'; };
+const getCatNome = (id) => { const c = state.sb_categorias.find(c => c.id === id); return c ? c.nome : '—'; };
+
 function toast(msg, type='ts') {
   const t=document.getElementById('toast');
   t.textContent=(type==='ts'?'✓ ':type==='te'?'✗ ':'')+msg;
@@ -358,7 +413,7 @@ function toast(msg, type='ts') {
 }
 
 window.updateBadges = function() {
-  const ap=state.apagar.filter(a=>a.status==='pendente').length;
+  const ap=state.apagar.filter(a=>a.status==='pendente').length + state.sb_boletos.filter(b=>b.status==='pendente').length;
   const ar=state.areceber.filter(a=>a.status==='pendente').length;
   document.getElementById('badge-apagar').textContent=ap;
   document.getElementById('badge-areceber').textContent=ar;
@@ -373,13 +428,19 @@ document.getElementById('nav').addEventListener('click', e => {
   state.page=item.dataset.page;
   document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
   item.classList.add('active');
-  const titles={dashboard:'Dashboard',pdf:'Importar PDF com IA',receitas:'Receitas',despesas:'Despesas',produtos:'Produtos / Estoque',fornecedores:'Fornecedores',apagar:'Contas a Pagar',areceber:'Contas a Receber',fechamento:'Fechamento do Mês',dre:'DRE Completo',relatorio:'Relatório IA',config:'Configurações'};
+  const titles={dashboard:'Dashboard',pdf:'Importar PDF com IA',receitas:'Receitas',despesas:'Despesas',lancamentos:'Lançamentos (Supabase)',produtos:'Itens / Produtos',fornecedores:'Fornecedores',categorias:'Categorias (Supabase)',boletos:'Boletos (Supabase)',compras:'Compras (Supabase)',pagamentos:'Pagamentos (Supabase)',apagar:'Contas a Pagar',areceber:'Contas a Receber',fechamento:'Fechamento do Mês',dre:'DRE Completo',relatorio:'Relatório IA',config:'Configurações'};
   document.getElementById('page-title').textContent=titles[item.dataset.page]||item.dataset.page;
   render();
 });
 
 window.render = function() {
-  const pages={dashboard:pgDash,pdf:pgPDF,receitas:pgRec,despesas:pgDesp,produtos:pgProd,fornecedores:pgForn,apagar:pgAP,areceber:pgAR,fechamento:pgFech,dre:pgDRE,relatorio:pgRel,config:pgConf};
+  const pages={
+    dashboard:pgDash, pdf:pgPDF, receitas:pgRec, despesas:pgDesp,
+    lancamentos:pgLanc, produtos:pgProd, fornecedores:pgForn,
+    categorias:pgCat, boletos:pgBol, compras:pgComp, pagamentos:pgPag,
+    apagar:pgAP, areceber:pgAR, fechamento:pgFech, dre:pgDRE,
+    relatorio:pgRel, config:pgConf
+  };
   document.getElementById('content').innerHTML=(pages[state.page]||pgDash)();
   updateBadges();
 };
@@ -387,6 +448,7 @@ window.render = function() {
 // ===== DASHBOARD =====
 function pgDash() {
   const tr=tR(),td=tD(),lr=lucro(),ml=mediaL();
+  const sbTotal = tLanc();
   const bmax=Math.max(...state.historico.map(m=>m.r),1);
   const bars=state.historico.map(m=>{
     const rh=Math.round((m.r/bmax)*75),dh=Math.round((m.d/bmax)*75);
@@ -394,32 +456,356 @@ function pgDash() {
   }).join('');
   const cats=state.despesas.reduce((a,d)=>{a[d.cat]=(a[d.cat]||0)+(d.valor||0);return a},{});
   const catbars=Object.entries(cats).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,td)}%;background:var(--blue)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('');
-  const vp=state.apagar.filter(a=>a.status==='pendente');
-  const rp=state.areceber.filter(a=>a.status==='pendente');
-  const fornGasto=state.despesas.reduce((a,d)=>{if(d.fornecedor){a[d.fornecedor]=(a[d.fornecedor]||0)+(d.valor||0);}return a},{});
-  const topForn=Object.entries(fornGasto).sort((a,b)=>b[1]-a[1]).slice(0,4);
   return `
-  <div class="ar"><button class="btn btn-g btn-sm" onclick="testarSupabase()">🧠 Testar Supabase</button></div>
   <div class="g4">
     <div class="mc"><div class="mc-lbl">Receitas do Mês</div><div class="mc-val" style="color:var(--green)">${fmt(tr)}</div><div class="mc-sub"><span class="badge bg">${state.receitas.length} entradas</span></div></div>
     <div class="mc"><div class="mc-lbl">Despesas do Mês</div><div class="mc-val" style="color:var(--red)">${fmt(td)}</div><div class="mc-sub"><span class="badge br">${state.despesas.length} lançamentos</span></div></div>
     <div class="mc"><div class="mc-lbl">Lucro Bruto</div><div class="mc-val" style="color:${lr>=0?'var(--green)':'var(--red)'}">${fmt(lr)}</div><div class="mc-sub"><span class="badge ${lr>=0?'bg':'br'}">${pct(lr,tr)}% margem</span></div></div>
-    <div class="mc"><div class="mc-lbl">Média Mensal</div><div class="mc-val" style="color:var(--blue)">${fmt(ml)}</div><div class="mc-sub"><span class="badge bb">${state.historico.length} meses</span></div></div>
+    <div class="mc"><div class="mc-lbl">Lançamentos Supabase</div><div class="mc-val" style="color:var(--purple)">${fmt(sbTotal)}</div><div class="mc-sub"><span class="badge bp">${state.sb_lancamentos.length} registros</span></div></div>
+  </div>
+  <div class="g4">
+    <div class="mc" style="border-left:2px solid var(--green)"><div class="mc-lbl">Fornecedores <span class="supabase-tag">SB</span></div><div class="mc-val">${state.sb_fornecedores.length}</div></div>
+    <div class="mc" style="border-left:2px solid var(--blue)"><div class="mc-lbl">Boletos <span class="supabase-tag">SB</span></div><div class="mc-val">${state.sb_boletos.length}</div><div class="mc-sub">${fmt(tBol())}</div></div>
+    <div class="mc" style="border-left:2px solid var(--amber)"><div class="mc-lbl">Compras <span class="supabase-tag">SB</span></div><div class="mc-val">${state.sb_compras.length}</div><div class="mc-sub">${fmt(tComp())}</div></div>
+    <div class="mc" style="border-left:2px solid var(--teal)"><div class="mc-lbl">Itens <span class="supabase-tag">SB</span></div><div class="mc-val">${state.sb_itens.length}</div></div>
   </div>
   <div class="g2">
     <div class="card"><div class="shd">Receitas vs Despesas <span style="font-size:10px;color:var(--txt3);display:flex;gap:8px"><span style="color:var(--green)">■</span>Receita <span style="color:rgba(248,113,113,0.6)">■</span>Despesa</span></div><div class="bar-chart">${bars}</div></div>
     <div class="card"><div class="shd">Despesas por Categoria</div>${catbars||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}</div>
   </div>
   <div class="g2">
-    <div class="card"><div class="shd">A Pagar <span class="badge br">${vp.length} — ${fmt(vp.reduce((s,a)=>s+(a.valor||0),0))}</span></div>${vp.slice(0,4).map(a=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot da"></span>${a.desc}</span><span style="display:flex;align-items:center;gap:7px"><span class="badge ba">${(a.venc||'').slice(5)}</span><span style="color:var(--red);font-weight:500">${fmt(a.valor)}</span></span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhuma conta pendente</div>'}</div>
-    <div class="card"><div class="shd">Top Fornecedores</div>${topForn.map(([f,v])=>`<div class="hbr"><div class="hbl">${f}</div><div class="hbt"><div class="hbf" style="width:${pct(v,td)}%;background:var(--purple)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}</div>
+    <div class="card"><div class="shd">Últimos Lançamentos <span class="supabase-tag">Supabase</span></div>
+      ${state.sb_lancamentos.slice(0,5).map(l=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${l.status==='pago'?'dg':'da'}"></span>${l.descricao||'—'}</span><span style="color:var(--red);font-weight:500">${fmt(l.valentia)}</span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum lançamento</div>'}
+    </div>
+    <div class="card"><div class="shd">Últimos Boletos <span class="supabase-tag">Supabase</span></div>
+      ${state.sb_boletos.slice(0,5).map(b=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px"><span><span class="dot ${b.status==='pago'?'dg':'da'}"></span>${b.descricao||'Boleto #'+b.id}</span><span style="display:flex;gap:8px;align-items:center"><span class="badge ba">${(b.data_vencimento||'').slice(5)}</span><span style="color:var(--red);font-weight:500">${fmt(b.valentia)}</span></span></div>`).join('')||'<div style="color:var(--txt3);font-size:12px;padding:8px 0">Nenhum boleto</div>'}
+    </div>
   </div>`;
+}
+
+// ===== LANÇAMENTOS (SUPABASE) =====
+function pgLanc() {
+  const total = tLanc();
+  const pendentes = state.sb_lancamentos.filter(l => l.status === 'pendente');
+  const pagos = state.sb_lancamentos.filter(l => l.status === 'pago');
+  return `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('flanc')">+ Novo Lançamento</button>
+    <span class="badge br" style="padding:5px 11px">Total: ${fmt(total)}</span>
+    <span class="badge ba" style="padding:5px 11px">${pendentes.length} pendentes</span>
+    <span class="badge bg" style="padding:5px 11px">${pagos.length} pagos</span>
+    <button class="btn btn-g btn-sm" onclick="reloadSB('lancamentos')">↻ Atualizar</button>
+  </div>
+  <div id="flanc" class="fc" style="display:none">
+    <div class="ft">Novo Lançamento no Supabase</div>
+    <div class="fg c4">
+      <div class="fl"><label>Descrição</label><input id="sl-desc" placeholder="Descrição do lançamento"/></div>
+      <div class="fl"><label>Fornecedor</label><select id="sl-forn"><option value="">Selecionar...</option>${state.sb_fornecedores.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
+      <div class="fl"><label>Item</label><select id="sl-item"><option value="">Selecionar...</option>${state.sb_itens.map(i=>`<option value="${i.id}">${i.nome}</option>`).join('')}</select></div>
+      <div class="fl"><label>Valor (R$)</label><input id="sl-val" type="number" step="0.01" placeholder="0,00"/></div>
+    </div>
+    <div class="fg c5">
+      <div class="fl"><label>Qtd</label><input id="sl-qty" type="number" step="1" value="1"/></div>
+      <div class="fl"><label>Data Emissão</label><input id="sl-emissao" type="date"/></div>
+      <div class="fl"><label>Data Vencimento</label><input id="sl-venc" type="date"/></div>
+      <div class="fl"><label>Status</label><select id="sl-status"><option value="pendente">Pendente</option><option value="pago">Pago</option><option value="agendado">Agendado</option></select></div>
+      <div class="fl"><label>Observação</label><input id="sl-obs" placeholder="Opcional"/></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addLancSB()">Salvar no Supabase</button><button class="btn btn-g btn-sm" onclick="toggleForm('flanc')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Descrição</th><th>Fornecedor</th><th>Item</th><th>Qtd</th><th>Emissão</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <tbody>${state.sb_lancamentos.length?state.sb_lancamentos.map(l=>`<tr>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${l.id}</td>
+      <td style="font-weight:500">${l.descricao||'—'}</td>
+      <td style="color:var(--txt2);font-size:11px">${getFornNome(l.fornecedor_id)}</td>
+      <td style="color:var(--txt2);font-size:11px">${getItemNome(l.item_id)}</td>
+      <td style="color:var(--txt3);font-size:11px">${l['Ó']||l.qty||'—'}</td>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${l.data_emissao||'—'}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${l.data_vencimento||'—'}</td>
+      <td><span class="badge ${l.status==='pago'?'bg':l.status==='pendente'?'ba':'bb'}">${l.status||'—'}</span></td>
+      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(l.valentia)}</td>
+      <td style="display:flex;gap:4px">
+        ${l.status==='pendente'?`<button class="btn btn-s btn-sm" onclick="pagarLancSB(${l.id})">✓</button>`:''}
+        <button class="btn btn-d btn-sm" onclick="delSB('lancamentos',${l.id})">×</button>
+      </td>
+    </tr>`).join(''):'<tr><td colspan="10" style="text-align:center;color:var(--txt3);padding:24px">Nenhum lançamento no Supabase</td></tr>'}</tbody>
+  </table></div>`;
+}
+
+// ===== CATEGORIAS (SUPABASE) =====
+function pgCat() {
+  return `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fcat')">+ Nova Categoria</button>
+    <span class="badge bp" style="padding:5px 11px">${state.sb_categorias.length} categorias</span>
+    <button class="btn btn-g btn-sm" onclick="reloadSB('categorias')">↻ Atualizar</button>
+  </div>
+  <div id="fcat" class="fc" style="display:none">
+    <div class="ft">Nova Categoria</div>
+    <div class="fg c3">
+      <div class="fl"><label>Nome</label><input id="sc-nome" placeholder="Ex: Ouro/Metais"/></div>
+      <div class="fl"><label>Tipo</label><select id="sc-tipo"><option>despesa</option><option>receita</option><option>ambos</option></select></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addCatSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcat')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Nome</th><th>Tipo</th><th>Criado em</th><th></th></tr></thead>
+    <tbody>${state.sb_categorias.length?state.sb_categorias.map(c=>`<tr>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${c.id}</td>
+      <td style="font-weight:500">${c.nome||'—'}</td>
+      <td><span class="badge ${c.tipo==='receita'?'bg':c.tipo==='despesa'?'br':'bb'}">${c.tipo||'—'}</span></td>
+      <td style="color:var(--txt3);font-size:11px">${c.criado_em ? new Date(c.criado_em).toLocaleDateString('pt-BR') : '—'}</td>
+      <td><button class="btn btn-d btn-sm" onclick="delSB('categorias',${c.id})">×</button></td>
+    </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma categoria</td></tr>'}</tbody>
+  </table></div>`;
+}
+
+// ===== BOLETOS (SUPABASE) =====
+function pgBol() {
+  const total = tBol();
+  const pendentes = state.sb_boletos.filter(b => b.status === 'pendente' || !b.status);
+  return `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fbol')">+ Novo Boleto</button>
+    <span class="badge br" style="padding:5px 11px">Total: ${fmt(total)}</span>
+    <span class="badge ba" style="padding:5px 11px">${pendentes.length} pendentes</span>
+    <button class="btn btn-g btn-sm" onclick="reloadSB('boletos')">↻ Atualizar</button>
+  </div>
+  <div id="fbol" class="fc" style="display:none">
+    <div class="ft">Novo Boleto</div>
+    <div class="fg c4">
+      <div class="fl"><label>Fornecedor</label><select id="sb-forn"><option value="">Selecionar...</option>${state.sb_fornecedores.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
+      <div class="fl"><label>Compra Ref.</label><select id="sb-compra"><option value="">Nenhuma</option>${state.sb_compras.map(c=>`<option value="${c.id}">#${c.id} - ${c.descricao||fmt(c.valentia)}</option>`).join('')}</select></div>
+      <div class="fl"><label>Descrição</label><input id="sb-desc" placeholder="Descrição do boleto"/></div>
+      <div class="fl"><label>Valor (R$)</label><input id="sb-val" type="number" step="0.01" placeholder="0,00"/></div>
+    </div>
+    <div class="fg c3">
+      <div class="fl"><label>Data Vencimento</label><input id="sb-venc" type="date"/></div>
+      <div class="fl"><label>Status</label><select id="sb-status"><option value="pendente">Pendente</option><option value="pago">Pago</option><option value="vencido">Vencido</option></select></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addBolSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fbol')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Fornecedor</th><th>Compra</th><th>Descrição</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <tbody>${state.sb_boletos.length?state.sb_boletos.map(b=>`<tr>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${b.id}</td>
+      <td style="font-weight:500">${getFornNome(b.fornecedor_id)}</td>
+      <td style="color:var(--txt3);font-size:11px">${b.compra_id ? '#'+b.compra_id : '—'}</td>
+      <td style="color:var(--txt2)">${b.descricao||'—'}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${b.data_vencimento||'—'}</td>
+      <td><span class="badge ${b.status==='pago'?'bg':b.status==='vencido'?'br':'ba'}">${b.status||'pendente'}</span></td>
+      <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(b.valentia)}</td>
+      <td style="display:flex;gap:4px">
+        ${(b.status||'pendente')!=='pago'?`<button class="btn btn-s btn-sm" onclick="pagarBolSB(${b.id})">✓ Pagar</button>`:''}
+        <button class="btn btn-d btn-sm" onclick="delSB('boletos',${b.id})">×</button>
+      </td>
+    </tr>`).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhum boleto</td></tr>'}</tbody>
+  </table></div>`;
+}
+
+// ===== COMPRAS (SUPABASE) =====
+function pgComp() {
+  return `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fcomp')">+ Nova Compra</button>
+    <span class="badge bb" style="padding:5px 11px">Total: ${fmt(tComp())}</span>
+    <button class="btn btn-g btn-sm" onclick="reloadSB('compras')">↻ Atualizar</button>
+  </div>
+  <div id="fcomp" class="fc" style="display:none">
+    <div class="ft">Nova Compra</div>
+    <div class="fg c4">
+      <div class="fl"><label>Fornecedor</label><select id="sco-forn"><option value="">Selecionar...</option>${state.sb_fornecedores.map(f=>`<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
+      <div class="fl"><label>Descrição</label><input id="sco-desc" placeholder="Descrição da compra"/></div>
+      <div class="fl"><label>Valor (R$)</label><input id="sco-val" type="number" step="0.01" placeholder="0,00"/></div>
+      <div class="fl"><label>Data Compra</label><input id="sco-data" type="date"/></div>
+    </div>
+    <div class="fg c2">
+      <div class="fl"><label>Mês Referência</label><input id="sco-mes" type="date" placeholder="YYYY-MM-DD"/></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addCompSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcomp')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Fornecedor</th><th>Descrição</th><th>Data</th><th>Mês Ref.</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <tbody>${state.sb_compras.length?state.sb_compras.map(c=>`<tr>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${c.id}</td>
+      <td style="font-weight:500">${getFornNome(c.fornecedor_id)}</td>
+      <td style="color:var(--txt2)">${c.descricao||'—'}</td>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${c.data_compra||'—'}</td>
+      <td style="color:var(--txt3);font-size:11px">${c.mes_referencia||'—'}</td>
+      <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valentia)}</td>
+      <td><button class="btn btn-d btn-sm" onclick="delSB('compras',${c.id})">×</button></td>
+    </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra</td></tr>'}</tbody>
+  </table></div>`;
+}
+
+// ===== PAGAMENTOS (SUPABASE) =====
+function pgPag() {
+  return `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fpag')">+ Novo Pagamento</button>
+    <span class="badge bg" style="padding:5px 11px">${state.sb_pagamentos.length} pagamentos</span>
+    <button class="btn btn-g btn-sm" onclick="reloadSB('pagamentos')">↻ Atualizar</button>
+  </div>
+  <div id="fpag" class="fc" style="display:none">
+    <div class="ft">Registrar Pagamento</div>
+    <div class="fg c3">
+      <div class="fl"><label>Boleto</label><select id="sp-bol"><option value="">Selecionar boleto...</option>${state.sb_boletos.filter(b=>b.status!=='pago').map(b=>`<option value="${b.id}">#${b.id} - ${b.descricao||getFornNome(b.fornecedor_id)} (${fmt(b.valentia)})</option>`).join('')}</select></div>
+      <div class="fl"><label>Valor (R$)</label><input id="sp-val" type="number" step="0.01" placeholder="0,00"/></div>
+      <div class="fl"><label>Data Pagamento</label><input id="sp-data" type="date"/></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addPagSB()">Registrar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fpag')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Boleto</th><th>Data Pagamento</th><th style="text-align:right">Valor</th><th>Criado em</th><th></th></tr></thead>
+    <tbody>${state.sb_pagamentos.length?state.sb_pagamentos.map(p=>`<tr>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${p.id}</td>
+      <td style="font-weight:500">Boleto #${p.boleto_id||'—'}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green)">${p['pagamento de dados']||p.pagamento_de_dados||'—'}</td>
+      <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(p.valentia)}</td>
+      <td style="color:var(--txt3);font-size:11px">${p.criado_em ? new Date(p.criado_em).toLocaleDateString('pt-BR') : '—'}</td>
+      <td><button class="btn btn-d btn-sm" onclick="delSB('pagamentos',${p.id})">×</button></td>
+    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum pagamento</td></tr>'}</tbody>
+  </table></div>`;
+}
+
+// ===== FORNECEDORES (DUAL) =====
+function pgForn() {
+  const gastoForn = state.despesas.reduce((a,d)=>{if(d.fornecedor){a[d.fornecedor]=(a[d.fornecedor]||0)+(d.valor||0);}return a},{});
+  return `
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="state._fornTab='supabase';render()" id="forn-tab-sb">Supabase (${state.sb_fornecedores.length})</button>
+    <button class="tab-btn" onclick="state._fornTab='firebase';render()" id="forn-tab-fb">Firebase (${state.fornecedores.length})</button>
+  </div>
+  ${(!state._fornTab || state._fornTab==='supabase') ? `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fforn-sb')">+ Novo Fornecedor (Supabase)</button>
+    <button class="btn btn-g btn-sm" onclick="reloadSB('fornecedores')">↻ Atualizar</button>
+  </div>
+  <div id="fforn-sb" class="fc" style="display:none">
+    <div class="ft">Novo Fornecedor — Supabase</div>
+    <div class="fg c3">
+      <div class="fl"><label>Nome</label><input id="sf-nome" placeholder="Nome do fornecedor"/></div>
+      <div class="fl"><label>Contato</label><input id="sf-contato" placeholder="Tel/Email"/></div>
+      <div class="fl"><label>Observação</label><input id="sf-obs" placeholder="Opcional"/></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addFornSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fforn-sb')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Nome</th><th>Contato</th><th>Observação</th><th>Criado em</th><th></th></tr></thead>
+    <tbody>${state.sb_fornecedores.length?state.sb_fornecedores.map(f=>`<tr>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${f.id}</td>
+      <td style="font-weight:500">${f.nome||'—'}</td>
+      <td style="color:var(--txt2)">${f.contato||'—'}</td>
+      <td style="color:var(--txt3);font-size:11px">${f.observacao||'—'}</td>
+      <td style="color:var(--txt3);font-size:11px">${f.criado_em ? new Date(f.criado_em).toLocaleDateString('pt-BR') : '—'}</td>
+      <td><button class="btn btn-d btn-sm" onclick="delSB('fornecedores',${f.id})">×</button></td>
+    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum fornecedor no Supabase</td></tr>'}</tbody>
+  </table></div>` : `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fforn')">+ Novo Fornecedor (Firebase)</button>
+  </div>
+  <div id="fforn" class="fc" style="display:none">
+    <div class="ft">Novo Fornecedor — Firebase</div>
+    <div class="fg c4">
+      <div class="fl"><label>Nome</label><input id="f-nome" placeholder="Razão social ou nome"/></div>
+      <div class="fl"><label>Categoria</label><select id="f-cat"><option>Ouro/Metais</option><option>Insumos</option><option>Serviços</option><option>Outros</option></select></div>
+      <div class="fl"><label>CNPJ/CPF</label><input id="f-doc" placeholder="00.000.000/0001-00"/></div>
+      <div class="fl"><label>Telefone</label><input id="f-tel" placeholder="(11) 99999-9999"/></div>
+    </div>
+    <div class="fg c3">
+      <div class="fl"><label>Email</label><input id="f-email" placeholder="email@fornecedor.com"/></div>
+      <div class="fl"><label>Prazo Pagto</label><select id="f-prazo"><option>À vista</option><option>7 dias</option><option>15 dias</option><option>30 dias</option><option>60 dias</option></select></div>
+      <div class="fl"><label>Observação</label><input id="f-obs" placeholder="Opcional"/></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addForn()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fforn')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Nome</th><th>Categoria</th><th>CNPJ/CPF</th><th>Telefone</th><th>Prazo</th><th style="text-align:right">Total Compras</th><th></th></tr></thead>
+    <tbody>${state.fornecedores.length?state.fornecedores.map(f=>`<tr>
+      <td style="font-weight:500">${f.nome||''}</td>
+      <td><span class="badge bp">${f.cat||''}</span></td>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${f.doc||'—'}</td>
+      <td style="color:var(--txt2)">${f.tel||'—'}</td>
+      <td><span class="badge bt">${f.prazo||'—'}</span></td>
+      <td style="text-align:right;font-weight:600;color:var(--purple);font-family:'DM Mono',monospace">${fmt(gastoForn[f.nome]||0)}</td>
+      <td><button class="btn btn-d btn-sm" onclick="delItem('fornecedores','${f._id}')">×</button></td>
+    </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum fornecedor no Firebase</td></tr>'}</tbody>
+  </table></div>`}`;
+}
+
+// ===== ITENS / PRODUTOS (DUAL) =====
+function pgProd() {
+  return `
+  <div class="tab-bar">
+    <button class="tab-btn ${(!state._prodTab||state._prodTab==='supabase')?'active':''}" onclick="state._prodTab='supabase';render()">Itens Supabase (${state.sb_itens.length})</button>
+    <button class="tab-btn ${state._prodTab==='firebase'?'active':''}" onclick="state._prodTab='firebase';render()">Produtos Firebase (${state.produtos.length})</button>
+  </div>
+  ${(!state._prodTab||state._prodTab==='supabase') ? `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fitem')">+ Novo Item</button>
+    <button class="btn btn-g btn-sm" onclick="reloadSB('itens')">↻ Atualizar</button>
+  </div>
+  <div id="fitem" class="fc" style="display:none">
+    <div class="ft">Novo Item — Supabase</div>
+    <div class="fg c3">
+      <div class="fl"><label>Nome</label><input id="si-nome" placeholder="Ex: Ouro 18k"/></div>
+      <div class="fl"><label>Ótimo (qualidade)</label><input id="si-otimo" placeholder="Ex: 750, 18k"/></div>
+      <div class="fl"><label>Aliases</label><input id="si-alias" placeholder="Ex: ouro18k, gold18"/></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addItemSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fitem')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>ID</th><th>Nome</th><th>Qualidade</th><th>Aliases</th><th>Criado em</th><th></th></tr></thead>
+    <tbody>${state.sb_itens.length?state.sb_itens.map(i=>`<tr>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${i.id}</td>
+      <td style="font-weight:500">${i.nome||'—'}</td>
+      <td style="color:var(--txt2)">${i['Ótimo']||i.otimo||'—'}</td>
+      <td style="color:var(--txt3);font-size:11px">${i.aliases||'—'}</td>
+      <td style="color:var(--txt3);font-size:11px">${i.criado_em ? new Date(i.criado_em).toLocaleDateString('pt-BR') : '—'}</td>
+      <td><button class="btn btn-d btn-sm" onclick="delSB('itens',${i.id})">×</button></td>
+    </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhum item no Supabase</td></tr>'}</tbody>
+  </table></div>` : `
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fprod')">+ Novo Produto</button>
+  </div>
+  <div id="fprod" class="fc" style="display:none">
+    <div class="ft">Novo Produto — Firebase</div>
+    <div class="fg c4">
+      <div class="fl"><label>Nome</label><input id="p-nome" placeholder="Ex: Ouro 18k"/></div>
+      <div class="fl"><label>Categoria</label><input id="p-cat" placeholder="Ex: Ouro, Prata"/></div>
+      <div class="fl"><label>Fornecedor</label><input id="p-forn" placeholder="Nome do fornecedor"/></div>
+      <div class="fl"><label>Unidade</label><select id="p-un"><option>grama</option><option>quilate</option><option>peça</option><option>kg</option><option>unidade</option></select></div>
+    </div>
+    <div class="fg c4">
+      <div class="fl"><label>Custo (R$)</label><input id="p-custo" type="number" step="0.01" placeholder="0,00"/></div>
+      <div class="fl"><label>Preço Venda (R$)</label><input id="p-preco" type="number" step="0.01" placeholder="0,00"/></div>
+      <div class="fl"><label>Estoque</label><input id="p-est" type="number" step="0.001" placeholder="0"/></div>
+      <div class="fl"><label>Pureza/Detalhe</label><input id="p-det" placeholder="Ex: 750, 18k, 925"/></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addProd()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fprod')">Cancelar</button></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Produto</th><th>Categoria</th><th>Custo</th><th>Preço Venda</th><th>Margem</th><th>Estoque</th><th></th></tr></thead>
+    <tbody>${state.produtos.length?state.produtos.map(p=>{
+      const m=Math.round(((p.preco-p.custo)/Math.max(p.preco,1))*100);
+      return `<tr>
+        <td style="font-weight:500">${p.nome||''}</td>
+        <td><span class="badge bp">${p.cat||''}</span></td>
+        <td style="font-family:'DM Mono',monospace;color:var(--txt2)">${fmt(p.custo)}</td>
+        <td style="font-family:'DM Mono',monospace;color:var(--green);font-weight:600">${fmt(p.preco)}</td>
+        <td><span class="badge ${m>50?'bg':m>30?'ba':'br'}">${m}%</span></td>
+        <td>${p.estoque||0} ${p.unidade||''}</td>
+        <td><button class="btn btn-d btn-sm" onclick="delItem('produtos','${p._id}')">×</button></td>
+      </tr>`;
+    }).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum produto no Firebase</td></tr>'}</tbody>
+  </table></div>`}`;
 }
 
 // ===== PDF =====
 function pgPDF() {
   return `
-  <div class="aip"><div class="aip-hd">✦ IA de Leitura de Documentos</div><div class="aip-bd">Envie nota fiscal, boleto, extrato, cheque ou comprovante PIX. A IA identifica automaticamente: fornecedor, produtos, valores, vencimentos e categoria — lançando tudo no sistema.</div></div>
+  <div class="aip"><div class="aip-hd">✦ IA de Leitura de Documentos</div><div class="aip-bd">Envie nota fiscal, boleto, extrato, cheque ou comprovante PIX. A IA identifica automaticamente: fornecedor, produtos, valores, vencimentos e categoria — lançando tudo no sistema (Firebase + Supabase).</div></div>
   <div class="pdf-drop" id="pdf-drop" onclick="document.getElementById('pdf-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event)">
     <div style="font-size:32px;margin-bottom:8px">📄</div>
     <div style="font-size:14px;font-weight:500;margin-bottom:4px">Arraste o PDF aqui ou clique para selecionar</div>
@@ -515,97 +901,17 @@ function pgDesp() {
     <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addDesp()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fdesp')">Cancelar</button></div>
   </div>
   <div class="tw"><table>
-    <thead><tr><th>Descrição</th><th>Categoria</th><th>Fornecedor</th><th>Data</th><th>Forma</th><th>Origem</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <thead><tr><th>Descrição</th><th>Categoria</th><th>Fornecedor</th><th>Data</th><th>Forma</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
     <tbody>${state.despesas.length?state.despesas.map(d=>`<tr>
       <td style="font-weight:500">${d.desc||''}</td>
       <td><span class="badge bb">${d.cat||''}</span></td>
       <td style="color:var(--txt2)">${d.fornecedor||'—'}</td>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${d.data||''}</td>
       <td style="color:var(--txt3);font-size:11px">${d.forma||'—'}</td>
-      <td>${d.origem==='pdf'?'<span class="badge bp">PDF</span>':'<span class="badge bt">Manual</span>'}</td>
       <td><span class="dot ${d.status==='pago'?'dg':'da'}"></span>${d.status||''}</td>
       <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(d.valor)}</td>
       <td><button class="btn btn-d btn-sm" onclick="delItem('despesas','${d._id}')">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="9" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma despesa cadastrada</td></tr>'}</tbody>
-  </table></div>`;
-}
-
-// ===== PRODUTOS =====
-function pgProd() {
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fprod')">+ Novo Produto</button>
-    <span class="badge bb" style="padding:5px 11px">${state.produtos.length} produtos</span>
-  </div>
-  <div id="fprod" class="fc" style="display:none">
-    <div class="ft">Novo Produto</div>
-    <div class="fg c4">
-      <div class="fl"><label>Nome</label><input id="p-nome" placeholder="Ex: Ouro 18k"/></div>
-      <div class="fl"><label>Categoria</label><input id="p-cat" placeholder="Ex: Ouro, Prata, Diamante"/></div>
-      <div class="fl"><label>Fornecedor</label><input id="p-forn" placeholder="Nome do fornecedor"/></div>
-      <div class="fl"><label>Unidade</label><select id="p-un"><option>grama</option><option>quilate</option><option>peça</option><option>kg</option><option>unidade</option></select></div>
-    </div>
-    <div class="fg c4">
-      <div class="fl"><label>Custo (R$)</label><input id="p-custo" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Preço Venda (R$)</label><input id="p-preco" type="number" step="0.01" placeholder="0,00"/></div>
-      <div class="fl"><label>Estoque</label><input id="p-est" type="number" step="0.001" placeholder="0"/></div>
-      <div class="fl"><label>Pureza/Detalhe</label><input id="p-det" placeholder="Ex: 750, 18k, 925"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addProd()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fprod')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Produto</th><th>Categoria</th><th>Fornecedor</th><th>Pureza</th><th>Custo</th><th>Preço Venda</th><th>Margem</th><th>Estoque</th><th></th></tr></thead>
-    <tbody>${state.produtos.length?state.produtos.map(p=>{
-      const m=Math.round(((p.preco-p.custo)/Math.max(p.preco,1))*100);
-      return `<tr>
-        <td style="font-weight:500">${p.nome||''}</td>
-        <td><span class="badge bp">${p.cat||''}</span></td>
-        <td style="color:var(--txt2);font-size:11px">${p.fornecedor||'—'}</td>
-        <td style="color:var(--txt3);font-size:11px">${p.detalhe||'—'}</td>
-        <td style="font-family:'DM Mono',monospace;color:var(--txt2)">${fmt(p.custo)}</td>
-        <td style="font-family:'DM Mono',monospace;color:var(--green);font-weight:600">${fmt(p.preco)}</td>
-        <td><span class="badge ${m>50?'bg':m>30?'ba':'br'}">${m}%</span></td>
-        <td>${p.estoque||0} ${p.unidade||''}</td>
-        <td><button class="btn btn-d btn-sm" onclick="delItem('produtos','${p._id}')">×</button></td>
-      </tr>`;
-    }).join(''):'<tr><td colspan="9" style="text-align:center;color:var(--txt3);padding:24px">Nenhum produto cadastrado</td></tr>'}</tbody>
-  </table></div>`;
-}
-
-// ===== FORNECEDORES =====
-function pgForn() {
-  const gastoForn = state.despesas.reduce((a,d)=>{if(d.fornecedor){a[d.fornecedor]=(a[d.fornecedor]||0)+(d.valor||0);}return a},{});
-  return `
-  <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fforn')">+ Novo Fornecedor</button>
-    <span class="badge bp" style="padding:5px 11px">${state.fornecedores.length} fornecedores</span>
-  </div>
-  <div id="fforn" class="fc" style="display:none">
-    <div class="ft">Novo Fornecedor</div>
-    <div class="fg c4">
-      <div class="fl"><label>Nome</label><input id="f-nome" placeholder="Razão social ou nome"/></div>
-      <div class="fl"><label>Categoria</label><select id="f-cat"><option>Ouro/Metais</option><option>Insumos</option><option>Serviços</option><option>Outros</option></select></div>
-      <div class="fl"><label>CNPJ/CPF</label><input id="f-doc" placeholder="00.000.000/0001-00"/></div>
-      <div class="fl"><label>Telefone</label><input id="f-tel" placeholder="(11) 99999-9999"/></div>
-    </div>
-    <div class="fg c3">
-      <div class="fl"><label>Email</label><input id="f-email" placeholder="email@fornecedor.com"/></div>
-      <div class="fl"><label>Prazo Pagto</label><select id="f-prazo"><option>À vista</option><option>7 dias</option><option>15 dias</option><option>30 dias</option><option>60 dias</option></select></div>
-      <div class="fl"><label>Observação</label><input id="f-obs" placeholder="Opcional"/></div>
-    </div>
-    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addForn()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fforn')">Cancelar</button></div>
-  </div>
-  <div class="tw"><table>
-    <thead><tr><th>Nome</th><th>Categoria</th><th>CNPJ/CPF</th><th>Telefone</th><th>Prazo</th><th style="text-align:right">Total Compras</th><th></th></tr></thead>
-    <tbody>${state.fornecedores.length?state.fornecedores.map(f=>`<tr>
-      <td style="font-weight:500">${f.nome||''}</td>
-      <td><span class="badge bp">${f.cat||''}</span></td>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${f.doc||'—'}</td>
-      <td style="color:var(--txt2)">${f.tel||'—'}</td>
-      <td><span class="badge bt">${f.prazo||'—'}</span></td>
-      <td style="text-align:right;font-weight:600;color:var(--purple);font-family:'DM Mono',monospace">${fmt(gastoForn[f.nome]||0)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delItem('fornecedores','${f._id}')">×</button></td>
-    </tr>`).join(''):'<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum fornecedor cadastrado</td></tr>'}</tbody>
+    </tr>`).join(''):'<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma despesa cadastrada</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -712,11 +1018,7 @@ function pgFech() {
         <tr style="background:rgba(52,211,153,0.05)"><td style="font-weight:700;padding:10px 14px;color:var(--green)">= LUCRO LÍQUIDO</td><td style="text-align:right;font-size:17px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;padding:10px 14px">${fmt(liq)}</td></tr>
       </tbody></table>
       <div class="div"></div>
-      <div style="display:flex;gap:18px">
-        <div><div style="font-size:10px;color:var(--txt3)">MARGEM</div><div style="font-weight:600;font-size:15px">${pct(lr,tr)}%</div></div>
-        <div><div style="font-size:10px;color:var(--txt3)">vs MÉDIA</div><div style="font-weight:600;font-size:15px;color:${lr>=ml?'var(--green)':'var(--red)'}">${lr>=ml?'+':''}${fmt(lr-ml)}</div></div>
-        <div><div style="font-size:10px;color:var(--txt3)">MÉDIA HISTÓRICA</div><div style="font-weight:600;font-size:15px;color:var(--blue)">${fmt(ml)}</div></div>
-      </div>
+      <button class="btn btn-p" style="width:100%" onclick="fecharMes()">✓ Confirmar Fechamento do Mês</button>
     </div>
     <div class="card">
       <div class="shd">Indicadores</div>
@@ -724,48 +1026,32 @@ function pgFech() {
       <div class="hbr"><div class="hbl">Despesas</div><div class="hbt"><div class="hbf" style="width:${pct(td,tr)}%;background:var(--red)"></div></div><div class="hbv">${fmt(td)}</div></div>
       <div class="hbr"><div class="hbl">Impostos</div><div class="hbt"><div class="hbf" style="width:${pct(imp,tr)}%;background:var(--amber)"></div></div><div class="hbv">${fmt(imp)}</div></div>
       <div class="hbr"><div class="hbl">Lucro Líq.</div><div class="hbt"><div class="hbf" style="width:${pct(liq,tr)}%;background:var(--blue)"></div></div><div class="hbv">${fmt(liq)}</div></div>
-      <div class="div"></div>
-      <button class="btn btn-p" style="width:100%" onclick="fecharMes()">✓ Confirmar Fechamento do Mês</button>
     </div>
   </div>
   ${state.fechamentos.length?`<div class="tw"><table><thead><tr><th>Mês</th><th>Receita</th><th>Despesas</th><th>Lucro Bruto</th><th>Impostos</th><th>Lucro Líquido</th><th>Margem</th></tr></thead><tbody>${state.fechamentos.map(f=>`<tr><td style="font-weight:500">${f.mes}</td><td style="color:var(--green);font-family:'DM Mono',monospace">${fmt(f.receita)}</td><td style="color:var(--red);font-family:'DM Mono',monospace">${fmt(f.despesa)}</td><td style="font-family:'DM Mono',monospace">${fmt(f.lucroB)}</td><td style="color:var(--amber);font-family:'DM Mono',monospace">${fmt(f.imp)}</td><td style="font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(f.lucro)}</td><td><span class="badge ${f.margem>40?'bg':f.margem>20?'ba':'br'}">${f.margem}%</span></td></tr>`).join('')}</tbody></table></div>`:''}`;
 }
 
-// ===== DRE COMPLETO =====
+// ===== DRE =====
 function pgDRE() {
   const catR=state.receitas.reduce((a,r)=>{a[r.cat]=(a[r.cat]||0)+(r.valor||0);return a},{});
   const catD=state.despesas.reduce((a,d)=>{a[d.cat]=(a[d.cat]||0)+(d.valor||0);return a},{});
-  const fornD=state.despesas.reduce((a,d)=>{if(d.fornecedor){a[d.fornecedor]=(a[d.fornecedor]||0)+(d.valor||0);}return a},{});
-  const prodVend=state.receitas.reduce((a,r)=>{if(r.produto){a[r.produto]=(a[r.produto]||0)+(r.valor||0);}return a},{});
   const tr=tR(),td=tD(),lr=lucro(),imp=Math.round(lr*0.06),liq=lr-imp;
   return `
   <div class="g2">
-    <div class="card">
-      <div class="shd">Receitas por Categoria</div>
-      ${Object.entries(catR).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,tr)}%;background:var(--green)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}
-    </div>
-    <div class="card">
-      <div class="shd">Despesas por Categoria</div>
-      ${Object.entries(catD).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,td)}%;background:var(--red)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}
-    </div>
+    <div class="card"><div class="shd">Receitas por Categoria</div>${Object.entries(catR).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,tr)}%;background:var(--green)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}</div>
+    <div class="card"><div class="shd">Despesas por Categoria</div>${Object.entries(catD).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,td)}%;background:var(--red)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}</div>
   </div>
-  <div class="g2">
-    <div class="card">
-      <div class="shd">Gasto por Fornecedor</div>
-      ${Object.entries(fornD).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,td)}%;background:var(--purple)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados de fornecedores</div>'}
-    </div>
-    <div class="card">
-      <div class="shd">DRE Consolidado</div>
-      <table><tbody>
-        <tr><td>Receita Bruta</td><td style="text-align:right;color:var(--green);font-family:'DM Mono',monospace">${fmt(tr)}</td></tr>
-        ${Object.entries(catR).map(([k,v])=>`<tr><td style="padding-left:16px;color:var(--txt3);font-size:11px">${k}</td><td style="text-align:right;color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${fmt(v)}</td></tr>`).join('')}
-        <tr><td style="color:var(--txt2)">(-) Despesas Totais</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">(${fmt(td)})</td></tr>
-        ${Object.entries(catD).map(([k,v])=>`<tr><td style="padding-left:16px;color:var(--txt3);font-size:11px">${k}</td><td style="text-align:right;color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">(${fmt(v)})</td></tr>`).join('')}
-        <tr style="background:var(--bg3)"><td style="font-weight:600;padding:8px 14px">= Lucro Bruto</td><td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace;padding:8px 14px">${fmt(lr)}</td></tr>
-        <tr><td style="color:var(--txt3);padding-left:16px">(-) Impostos 6%</td><td style="text-align:right;color:var(--amber);font-family:'DM Mono',monospace">(${fmt(imp)})</td></tr>
-        <tr style="background:rgba(52,211,153,0.05)"><td style="font-weight:700;color:var(--green);padding:8px 14px">= LUCRO LÍQUIDO</td><td style="text-align:right;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;font-size:15px;padding:8px 14px">${fmt(liq)}</td></tr>
-      </tbody></table>
-    </div>
+  <div class="card">
+    <div class="shd">DRE Consolidado</div>
+    <table><tbody>
+      <tr><td>Receita Bruta</td><td style="text-align:right;color:var(--green);font-family:'DM Mono',monospace">${fmt(tr)}</td></tr>
+      ${Object.entries(catR).map(([k,v])=>`<tr><td style="padding-left:16px;color:var(--txt3);font-size:11px">${k}</td><td style="text-align:right;color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${fmt(v)}</td></tr>`).join('')}
+      <tr><td style="color:var(--txt2)">(-) Despesas Totais</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">(${fmt(td)})</td></tr>
+      ${Object.entries(catD).map(([k,v])=>`<tr><td style="padding-left:16px;color:var(--txt3);font-size:11px">${k}</td><td style="text-align:right;color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">(${fmt(v)})</td></tr>`).join('')}
+      <tr style="background:var(--bg3)"><td style="font-weight:600;padding:8px 14px">= Lucro Bruto</td><td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace;padding:8px 14px">${fmt(lr)}</td></tr>
+      <tr><td style="color:var(--txt3);padding-left:16px">(-) Impostos 6%</td><td style="text-align:right;color:var(--amber);font-family:'DM Mono',monospace">(${fmt(imp)})</td></tr>
+      <tr style="background:rgba(52,211,153,0.05)"><td style="font-weight:700;color:var(--green);padding:8px 14px">= LUCRO LÍQUIDO</td><td style="text-align:right;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;font-size:15px;padding:8px 14px">${fmt(liq)}</td></tr>
+    </tbody></table>
   </div>`;
 }
 
@@ -774,44 +1060,43 @@ function pgRel() {
   return `
   <div class="aip">
     <div class="aip-hd">✦ Assistente IA — Análise Financeira Inteligente</div>
-    <div class="aip-bd" id="ai-body">Escolha um tipo de análise. A IA examina todos os seus dados e gera insights personalizados para o seu negócio.</div>
+    <div class="aip-bd" id="ai-body">Escolha um tipo de análise. A IA examina todos os seus dados (Firebase + Supabase) e gera insights personalizados.</div>
   </div>
   <div class="ar" style="margin-bottom:16px">
     <button class="btn btn-g btn-sm" onclick="analisarIA('geral')">📊 Análise Geral</button>
     <button class="btn btn-g btn-sm" onclick="analisarIA('lucro')">💰 Otimizar Lucro</button>
     <button class="btn btn-g btn-sm" onclick="analisarIA('despesas')">✂️ Cortar Despesas</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('produtos')">📦 Produtos/Metais</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('fornecedores')">🤝 Fornecedores</button>
+    <button class="btn btn-g btn-sm" onclick="analisarIA('supabase')">🧠 Análise Supabase</button>
     <button class="btn btn-g btn-sm" onclick="analisarIA('previsao')">🔮 Previsão</button>
     <button class="btn btn-g btn-sm" onclick="analisarIA('fluxo')">💧 Fluxo de Caixa</button>
   </div>
   <div class="g2">
     <div class="card">
-      <div class="shd">Resumo Financeiro</div>
+      <div class="shd">Firebase</div>
       <table><tbody>
         <tr><td>Receitas</td><td style="text-align:right;color:var(--green);font-weight:600;font-family:'DM Mono',monospace">${fmt(tR())}</td></tr>
         <tr><td>Despesas</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">${fmt(tD())}</td></tr>
-        <tr><td>Lucro Bruto</td><td style="text-align:right;color:var(--blue);font-weight:600;font-family:'DM Mono',monospace">${fmt(lucro())}</td></tr>
-        <tr><td>Margem</td><td style="text-align:right"><span class="badge ${pct(lucro(),tR())>30?'bg':'ba'}">${pct(lucro(),tR())}%</span></td></tr>
-        <tr><td>A Receber</td><td style="text-align:right;color:var(--green);font-family:'DM Mono',monospace">${fmt(state.areceber.filter(a=>a.status==='pendente').reduce((s,a)=>s+(a.valor||0),0))}</td></tr>
-        <tr><td>A Pagar</td><td style="text-align:right;color:var(--red);font-family:'DM Mono',monospace">${fmt(state.apagar.filter(a=>a.status==='pendente').reduce((s,a)=>s+(a.valor||0),0))}</td></tr>
-        <tr><td>Fornecedores</td><td style="text-align:right"><span class="badge bp">${state.fornecedores.length}</span></td></tr>
-        <tr><td>Produtos</td><td style="text-align:right"><span class="badge bt">${state.produtos.length}</span></td></tr>
+        <tr><td>Lucro</td><td style="text-align:right;color:var(--blue);font-weight:600;font-family:'DM Mono',monospace">${fmt(lucro())}</td></tr>
       </tbody></table>
     </div>
     <div class="card">
-      <div class="shd">Top Fornecedores por Gasto</div>
-      ${Object.entries(state.despesas.reduce((a,d)=>{if(d.fornecedor){a[d.fornecedor]=(a[d.fornecedor]||0)+(d.valor||0);}return a},{})).sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k,v])=>`<div class="hbr"><div class="hbl">${k}</div><div class="hbt"><div class="hbf" style="width:${pct(v,tD())}%;background:var(--purple)"></div></div><div class="hbv">${fmt(v)}</div></div>`).join('')||'<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}
+      <div class="shd">Supabase</div>
+      <table><tbody>
+        <tr><td>Lançamentos</td><td style="text-align:right;font-weight:600;font-family:'DM Mono',monospace">${state.sb_lancamentos.length} → ${fmt(tLanc())}</td></tr>
+        <tr><td>Boletos</td><td style="text-align:right;font-family:'DM Mono',monospace">${state.sb_boletos.length} → ${fmt(tBol())}</td></tr>
+        <tr><td>Compras</td><td style="text-align:right;font-family:'DM Mono',monospace">${state.sb_compras.length} → ${fmt(tComp())}</td></tr>
+        <tr><td>Fornecedores</td><td style="text-align:right"><span class="badge bp">${state.sb_fornecedores.length}</span></td></tr>
+        <tr><td>Itens</td><td style="text-align:right"><span class="badge bt">${state.sb_itens.length}</span></td></tr>
+      </tbody></table>
     </div>
   </div>`;
 }
 
 // ===== CONFIG =====
 function pgConf() {
-  const SUPABASE_URL = localStorage.getItem('financeai_supabase_url') || '';
-  const SUPABASE_ANON_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
-  const SUPABASE_DEFAULT_CATEGORIA_ID = localStorage.getItem('financeai_supabase_categoria_id') || '';
-  const supabaseOk = !!(window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY);
+  const SB_URL = localStorage.getItem('financeai_supabase_url') || '';
+  const SB_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
+  const sbOk = !!(window.supabase && SB_URL && SB_KEY);
   return `
   <div class="sc">
     <div class="shd">API & Integrações</div>
@@ -824,139 +1109,98 @@ function pgConf() {
       </div>
     </div>
     <div class="sr">
-      <div><div class="sl">Firebase (Banco de Dados visual)</div><div class="ss">A interface continua salvando normalmente no Firebase</div></div>
+      <div><div class="sl">Firebase</div><div class="ss">Banco de dados da interface visual</div></div>
       <span class="badge bg">✓ Conectado</span>
     </div>
     <div class="sr" style="align-items:flex-start">
       <div>
         <div class="sl">Supabase (Cérebro financeiro)</div>
-        <div class="ss">Cole sua URL, anon key e um categoria_id padrão para registrar despesas no agente financeiro.</div>
+        <div class="ss">Tabelas: fornecedores, itens, categorias, lancamentos, boletos, compras, pagamentos, documentos</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:420px">
-        <input class="ki" id="supabase-url-input" value="${SUPABASE_URL}" placeholder="https://xxxxx.supabase.co" style="width:420px"/>
-        <input class="ki" id="supabase-key-input" type="password" value="${SUPABASE_ANON_KEY}" placeholder="eyJhbGciOi..." style="width:420px"/>
-        <input class="ki" id="supabase-categoria-id-input" value="${SUPABASE_DEFAULT_CATEGORIA_ID}" placeholder="categoria_id padrão (ex: 1)" style="width:220px"/>
+        <input class="ki" id="supabase-url-input" value="${SB_URL}" placeholder="https://xxxxx.supabase.co" style="width:420px"/>
+        <input class="ki" id="supabase-key-input" type="password" value="${SB_KEY}" placeholder="eyJhbGciOi..." style="width:420px"/>
         <div style="display:flex;gap:8px">
           <button class="btn btn-p btn-sm" onclick="salvarSupabaseConfig()">Salvar</button>
-          <button class="btn btn-g btn-sm" onclick="testarSupabase()">Testar</button>
+          <button class="btn btn-g btn-sm" onclick="testarSupabase()">Testar Conexão</button>
         </div>
       </div>
     </div>
     <div class="sr">
-      <div><div class="sl">Status do cérebro financeiro</div><div class="ss">Resumo e lançamentos financeiros vão para o Supabase quando ele estiver configurado</div></div>
-      <span class="badge ${supabaseOk ? 'bg' : 'ba'}">${supabaseOk ? '✓ Ativo' : 'Configurar'}</span>
+      <div><div class="sl">Status Supabase</div></div>
+      <span class="badge ${sbOk ? 'bg' : 'ba'}">${sbOk ? '✓ Ativo — Acesso direto a todas as tabelas' : 'Configurar URL e chave'}</span>
+    </div>
+  </div>
+  <div class="sc">
+    <div class="shd">Tabelas Supabase Conectadas</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px 0">
+      ${['fornecedores','itens','categorias','lancamentos','boletos','compras','pagamentos','documentos'].map(t=>{
+        const count = state['sb_'+t]?.length || 0;
+        return `<div style="background:var(--bg3);border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px">${t}</div><div style="font-size:18px;font-weight:600;margin-top:4px">${count}</div></div>`;
+      }).join('')}
     </div>
   </div>
   <div class="sc">
     <div class="shd">Dados</div>
     <div class="sr">
-      <div><div class="sl">Exportar todos os dados</div><div class="ss">Baixe um backup completo em JSON</div></div>
+      <div><div class="sl">Exportar tudo (Firebase + Supabase)</div></div>
       <button class="btn btn-g btn-sm" onclick="exportar()">Exportar JSON</button>
     </div>
     <div class="sr">
-      <div><div class="sl">Limpar dados de demonstração</div><div class="ss">Remove todos os lançamentos</div></div>
-      <button class="btn btn-d btn-sm" onclick="if(confirm('Tem certeza? Isso apagará todos os dados!'))limparTudo()">Limpar Tudo</button>
-    </div>
-  </div>
-  <div class="sc">
-    <div class="shd">Como usar o sistema</div>
-    <div style="font-size:13px;color:var(--txt2);line-height:1.9">
-      <p>1. Cole sua <strong style="color:var(--txt)">API Key</strong> acima e salve</p>
-      <p>2. Vá em <strong style="color:var(--txt)">Importar PDF</strong> — arraste qualquer nota fiscal, boleto ou extrato</p>
-      <p>3. A IA lê o documento e identifica <strong style="color:var(--txt)">fornecedor, produtos, valor e vencimento</strong> automaticamente</p>
-      <p>4. Confirme e o lançamento entra em todas as abas corretas</p>
-      <p>5. A interface salva no <strong style="color:var(--txt)">Firebase</strong> e o financeiro inteligente roda no <strong style="color:var(--txt)">Supabase</strong></p>
-      <p>6. No fim do mês, use <strong style="color:var(--txt)">Fechamento</strong> para gerar a DRE completa</p>
-      <p>7. Use <strong style="color:var(--txt)">Relatório IA</strong> para análises inteligentes do seu negócio</p>
+      <div><div class="sl">Limpar dados Firebase</div></div>
+      <button class="btn btn-d btn-sm" onclick="if(confirm('Apagar tudo do Firebase?'))limparTudo()">Limpar Firebase</button>
     </div>
   </div>`;
 }
 
-// ===== ACTIONS =====
+// ===== ACTIONS — FIREBASE =====
 function toggleForm(id) { const el=document.getElementById(id); if(el) el.style.display=el.style.display==='none'?'block':'none'; }
 
-async function delItem(col, id) {
-  if(!id) return;
-  await window.dbDel(col, id);
-  state[col] = state[col].filter(i=>i._id!==id);
-  render(); toast('Removido.');
-}
+async function delItem(col, id) { if(!id) return; await window.dbDel(col, id); state[col]=state[col].filter(i=>i._id!==id); render(); toast('Removido.'); }
 
-async function pagarC(id) {
-  const a=state.apagar.find(x=>x._id===id);
-  if (a?.supabase_id && window.supabase) {
-    try {
-      await window.executarAgenteFinanceiro('pagar_lancamento', { id: a.supabase_id, data_pagamento: new Date().toISOString().slice(0,10) });
-    } catch (e) {
-      console.error(e);
-      toast('Pago no Firebase, mas falhou no Supabase','te');
-    }
-  }
-  await window.dbUpd('apagar', id, {status:'pago'});
-  if(a) a.status='pago';
-  render(); toast('Conta paga!');
-}
-
-async function receberC(id) {
-  await window.dbUpd('areceber', id, {status:'recebido'});
-  const a=state.areceber.find(x=>x._id===id); if(a) a.status='recebido';
-  render(); toast('Recebimento confirmado!');
-}
+async function pagarC(id) { await window.dbUpd('apagar', id, {status:'pago'}); const a=state.apagar.find(x=>x._id===id); if(a) a.status='pago'; render(); toast('Conta paga!'); }
+async function receberC(id) { await window.dbUpd('areceber', id, {status:'recebido'}); const a=state.areceber.find(x=>x._id===id); if(a) a.status='recebido'; render(); toast('Recebido!'); }
 
 async function addRec() {
   const desc=document.getElementById('r-desc').value, cat=document.getElementById('r-cat').value, cli=document.getElementById('r-cli').value, val=+document.getElementById('r-val').value, data=document.getElementById('r-data').value, status=document.getElementById('r-status').value, obs=document.getElementById('r-obs').value;
   if(!desc||!val) return toast('Preencha descrição e valor','te');
   const obj={desc,cat,cliente:cli,valor:val,data,status,obs,origem:'manual'};
-  const id=await window.dbAdd('receitas',obj);
-  state.receitas.push({...obj,_id:id});
-  render(); toast('Receita salva na nuvem!');
+  const id=await window.dbAdd('receitas',obj); state.receitas.push({...obj,_id:id}); render(); toast('Receita salva!');
 }
 
 async function addDesp() {
   const desc=document.getElementById('d-desc').value, cat=document.getElementById('d-cat').value, forn=document.getElementById('d-forn').value, val=+document.getElementById('d-val').value, data=document.getElementById('d-data').value, status=document.getElementById('d-status').value, forma=document.getElementById('d-forma').value, obs=document.getElementById('d-obs').value;
   if(!desc||!val) return toast('Preencha os campos','te');
   const obj={desc,cat,fornecedor:forn,valor:val,data,status,forma,obs,origem:'manual'};
-  const id=await window.dbAdd('despesas',obj);
-  state.despesas.push({...obj,_id:id});
-  render(); toast('Despesa salva na nuvem!');
+  const id=await window.dbAdd('despesas',obj); state.despesas.push({...obj,_id:id}); render(); toast('Despesa salva!');
 }
 
 async function addProd() {
   const nome=document.getElementById('p-nome').value, cat=document.getElementById('p-cat').value, forn=document.getElementById('p-forn').value, un=document.getElementById('p-un').value, custo=+document.getElementById('p-custo').value, preco=+document.getElementById('p-preco').value, est=+document.getElementById('p-est').value, det=document.getElementById('p-det').value;
   if(!nome||!custo||!preco) return toast('Preencha os campos','te');
   const obj={nome,cat,fornecedor:forn,unidade:un,custo,preco,estoque:est,detalhe:det};
-  const id=await window.dbAdd('produtos',obj);
-  state.produtos.push({...obj,_id:id});
-  render(); toast('Produto salvo!');
+  const id=await window.dbAdd('produtos',obj); state.produtos.push({...obj,_id:id}); render(); toast('Produto salvo!');
 }
 
 async function addForn() {
   const nome=document.getElementById('f-nome').value, cat=document.getElementById('f-cat').value, doc=document.getElementById('f-doc').value, tel=document.getElementById('f-tel').value, email=document.getElementById('f-email').value, prazo=document.getElementById('f-prazo').value, obs=document.getElementById('f-obs').value;
   if(!nome) return toast('Informe o nome','te');
   const obj={nome,cat,doc,tel,email,prazo,obs};
-  const id=await window.dbAdd('fornecedores',obj);
-  state.fornecedores.push({...obj,_id:id});
-  render(); toast('Fornecedor salvo!');
+  const id=await window.dbAdd('fornecedores',obj); state.fornecedores.push({...obj,_id:id}); render(); toast('Fornecedor salvo!');
 }
 
 async function addAP() {
   const desc=document.getElementById('ap-desc').value, cat=document.getElementById('ap-cat').value, forn=document.getElementById('ap-forn').value, val=+document.getElementById('ap-val').value, venc=document.getElementById('ap-venc').value, forma=document.getElementById('ap-forma').value, cod=document.getElementById('ap-cod').value, obs=document.getElementById('ap-obs').value;
   if(!desc||!val) return toast('Preencha os campos','te');
   const obj={desc,cat,fornecedor:forn,valor:val,venc,forma,cod,obs,status:'pendente'};
-  const sync = await sincronizarContaPagarNoSupabase({ ...obj, data:new Date().toISOString().slice(0,10) });
-  if (sync.ok && sync.supabase_id) obj.supabase_id = sync.supabase_id;
-  const id=await window.dbAdd('apagar',obj);
-  state.apagar.push({...obj,_id:id});
-  render(); toast(sync.ok ? 'Conta salva e sincronizada com Supabase!' : 'Conta salva no Firebase. Supabase não sincronizado.');
+  const id=await window.dbAdd('apagar',obj); state.apagar.push({...obj,_id:id}); render(); toast('Conta salva!');
 }
 
 async function addAR() {
   const desc=document.getElementById('ar-desc').value, cli=document.getElementById('ar-cli').value, val=+document.getElementById('ar-val').value, venc=document.getElementById('ar-venc').value, forma=document.getElementById('ar-forma').value, parc=document.getElementById('ar-parc').value, obs=document.getElementById('ar-obs').value;
   if(!desc||!val) return toast('Preencha os campos','te');
   const obj={desc,cliente:cli,valor:val,venc,forma,parcela:parc,obs,status:'pendente'};
-  const id=await window.dbAdd('areceber',obj);
-  state.areceber.push({...obj,_id:id});
-  render(); toast('Lançado!');
+  const id=await window.dbAdd('areceber',obj); state.areceber.push({...obj,_id:id}); render(); toast('Lançado!');
 }
 
 async function fecharMes() {
@@ -966,136 +1210,192 @@ async function fecharMes() {
   state.fechamentos.unshift({...obj,_id:id});
   state.historico.push({mes:MC[state.mes],r:tr,d:td});
   if(state.historico.length>8) state.historico.shift();
-  toast(`${mes} fechado! Lucro Líquido: ${fmt(liq)}`);
-  render();
+  toast(`${mes} fechado! Lucro Líquido: ${fmt(liq)}`); render();
 }
 
-function salvarKey() {
-  API_KEY=document.getElementById('key-input').value.trim();
-  localStorage.setItem('financeai_key',API_KEY);
-  toast('API Key salva!');
-}
+// ===== ACTIONS — SUPABASE =====
+window.reloadSB = async function(table) {
+  if (!window.supabase) return toast('Supabase não configurado','te');
+  try {
+    state['sb_'+table] = await SB.list(table, { order: 'criado_em', asc: false });
+    render(); toast(`${table} atualizado!`);
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.delSB = async function(table, id) {
+  if (!window.supabase) return toast('Supabase não configurado','te');
+  try {
+    await SB.remove(table, id);
+    state['sb_'+table] = state['sb_'+table].filter(i => i.id !== id);
+    render(); toast('Removido do Supabase.');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.addLancSB = async function() {
+  const desc=document.getElementById('sl-desc').value, forn=document.getElementById('sl-forn').value, item=document.getElementById('sl-item').value, val=+document.getElementById('sl-val').value, qty=+document.getElementById('sl-qty').value, emissao=document.getElementById('sl-emissao').value, venc=document.getElementById('sl-venc').value, status=document.getElementById('sl-status').value, obs=document.getElementById('sl-obs').value;
+  if(!desc||!val) return toast('Preencha descrição e valor','te');
+  try {
+    const row = { descricao: desc, valentia: val, status, data_emissao: emissao||null, data_vencimento: venc||null, status_de_observacao: obs||null };
+    if(forn) row.fornecedor_id = +forn;
+    if(item) row.item_id = +item;
+    if(qty) row['Ó'] = qty;
+    const data = await SB.insert('lancamentos', row);
+    state.sb_lancamentos.unshift(data);
+    render(); toast('Lançamento criado no Supabase!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.pagarLancSB = async function(id) {
+  try {
+    await SB.update('lancamentos', id, { status: 'pago', pagamento_de_dados: new Date().toISOString().slice(0,10) });
+    const l = state.sb_lancamentos.find(x => x.id === id); if(l) l.status = 'pago';
+    render(); toast('Lançamento pago!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.addCatSB = async function() {
+  const nome=document.getElementById('sc-nome').value, tipo=document.getElementById('sc-tipo').value;
+  if(!nome) return toast('Informe o nome','te');
+  try {
+    const data = await SB.insert('categorias', { nome, tipo });
+    state.sb_categorias.push(data);
+    render(); toast('Categoria criada!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.addBolSB = async function() {
+  const forn=document.getElementById('sb-forn').value, compra=document.getElementById('sb-compra').value, desc=document.getElementById('sb-desc').value, val=+document.getElementById('sb-val').value, venc=document.getElementById('sb-venc').value, status=document.getElementById('sb-status').value;
+  if(!val) return toast('Informe o valor','te');
+  try {
+    const row = { valentia: val, data_vencimento: venc||null, status: status||'pendente', descricao: desc||null };
+    if(forn) row.fornecedor_id = +forn;
+    if(compra) row.compra_id = +compra;
+    const data = await SB.insert('boletos', row);
+    state.sb_boletos.unshift(data);
+    render(); toast('Boleto criado!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.pagarBolSB = async function(id) {
+  try {
+    await SB.update('boletos', id, { status: 'pago' });
+    // Also create payment record
+    const bol = state.sb_boletos.find(b => b.id === id);
+    if(bol) {
+      bol.status = 'pago';
+      await SB.insert('pagamentos', { boleto_id: id, valentia: bol.valentia, 'pagamento de dados': new Date().toISOString().slice(0,10) });
+      state.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false });
+    }
+    render(); toast('Boleto pago e pagamento registrado!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.addCompSB = async function() {
+  const forn=document.getElementById('sco-forn').value, desc=document.getElementById('sco-desc').value, val=+document.getElementById('sco-val').value, data=document.getElementById('sco-data').value, mes=document.getElementById('sco-mes').value;
+  if(!val) return toast('Informe o valor','te');
+  try {
+    const row = { descricao: desc||null, valentia: val, data_compra: data||null, mes_referencia: mes||null };
+    if(forn) row.fornecedor_id = +forn;
+    const d = await SB.insert('compras', row);
+    state.sb_compras.unshift(d);
+    render(); toast('Compra registrada!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.addPagSB = async function() {
+  const bol=document.getElementById('sp-bol').value, val=+document.getElementById('sp-val').value, data=document.getElementById('sp-data').value;
+  if(!val) return toast('Informe o valor','te');
+  try {
+    const row = { valentia: val, 'pagamento de dados': data||new Date().toISOString().slice(0,10) };
+    if(bol) { row.boleto_id = +bol; await SB.update('boletos', +bol, { status: 'pago' }); }
+    const d = await SB.insert('pagamentos', row);
+    state.sb_pagamentos.unshift(d);
+    if(bol) { const b=state.sb_boletos.find(x=>x.id===+bol); if(b) b.status='pago'; }
+    render(); toast('Pagamento registrado!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.addFornSB = async function() {
+  const nome=document.getElementById('sf-nome').value, contato=document.getElementById('sf-contato').value, obs=document.getElementById('sf-obs').value;
+  if(!nome) return toast('Informe o nome','te');
+  try {
+    const data = await SB.insert('fornecedores', { nome, contato: contato||null, observacao: obs||null });
+    state.sb_fornecedores.push(data);
+    render(); toast('Fornecedor criado no Supabase!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+window.addItemSB = async function() {
+  const nome=document.getElementById('si-nome').value, otimo=document.getElementById('si-otimo').value, alias=document.getElementById('si-alias').value;
+  if(!nome) return toast('Informe o nome','te');
+  try {
+    const row = { nome };
+    if(otimo) row['Ótimo'] = otimo;
+    if(alias) row.aliases = alias;
+    const data = await SB.insert('itens', row);
+    state.sb_itens.push(data);
+    render(); toast('Item criado no Supabase!');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
+};
+
+// ===== CONFIG ACTIONS =====
+function salvarKey() { API_KEY=document.getElementById('key-input').value.trim(); localStorage.setItem('financeai_key',API_KEY); toast('API Key salva!'); }
 
 async function testarKey() {
   if(!API_KEY) return toast('Insira a API Key primeiro','te');
   try {
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:10,messages:[{role:'user',content:'ok'}]})});
-    if(res.ok) toast('Conexão funcionando!');
-    else toast('Chave inválida ou sem créditos','te');
+    if(res.ok) toast('API Key funcionando!'); else toast('Chave inválida','te');
   } catch(e) { toast('Erro de conexão','te'); }
 }
 
 function salvarSupabaseConfig() {
-  const url=document.getElementById('supabase-url-input').value.trim();
-  const key=document.getElementById('supabase-key-input').value.trim();
-  const categoriaId=document.getElementById('supabase-categoria-id-input').value.trim();
-  localStorage.setItem('financeai_supabase_url', url);
-  localStorage.setItem('financeai_supabase_anon_key', key);
-  localStorage.setItem('financeai_supabase_categoria_id', categoriaId);
-  toast('Configuração do Supabase salva! Recarregue a página.');
+  localStorage.setItem('financeai_supabase_url', document.getElementById('supabase-url-input').value.trim());
+  localStorage.setItem('financeai_supabase_anon_key', document.getElementById('supabase-key-input').value.trim());
+  toast('Supabase salvo! Recarregue a página.');
 }
 
 async function testarSupabase() {
-  if (!window.supabase) return toast('Salve a URL/chave e recarregue a página primeiro','te');
+  if (!window.supabase) return toast('Salve URL/chave e recarregue','te');
   try {
-    const data = await window.executarAgenteFinanceiro('resumo');
-    if (data) toast('Supabase conectado com sucesso!');
-    console.log('Resumo Supabase:', data);
-  } catch (e) {
-    console.error(e);
-    toast('Erro no Supabase: ' + (e.message || 'falha na conexão'),'te');
-  }
-}
-
-async function sincronizarContaPagarNoSupabase(item) {
-  if (!window.supabase) return { ok:false, motivo:'supabase_nao_configurado' };
-  try {
-    const categoriaIdRaw = localStorage.getItem('financeai_supabase_categoria_id') || '';
-    const payload = {
-      item_nome: item.item_nome || item.desc || item.descricao || 'Despesa',
-      categoria_id: categoriaIdRaw ? Number(categoriaIdRaw) : null,
-      fornecedor_nome: item.fornecedor || 'Fornecedor não informado',
-      valor: Number(item.valor || 0),
-      data: item.data || new Date().toISOString().slice(0,10),
-      vencimento: item.venc || item.vencimento || item.data || new Date().toISOString().slice(0,10),
-      descricao: item.desc || item.descricao || 'Lançamento financeiro'
-    };
-
-    await window.executarAgenteFinanceiro('registrar_despesa', payload);
-    const supabaseId = await window.buscarLancamentoSupabase({
-      descricao: payload.descricao,
-      valor: payload.valor,
-      vencimento: payload.vencimento
-    });
-
-    return { ok:true, supabase_id:supabaseId || null };
-  } catch (e) {
-    console.error('Falha ao sincronizar no Supabase', e);
-    return { ok:false, motivo:e.message || 'erro_desconhecido' };
-  }
+    const fornecedores = await SB.list('fornecedores', { limit: 1 });
+    toast('Supabase conectado! Acesso direto às tabelas ✓');
+  } catch(e) { toast('Erro: '+e.message, 'te'); }
 }
 
 function exportar() {
   const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='financeai-backup.json'; a.click();
-  toast('Backup exportado!');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='financeai-backup.json'; a.click(); toast('Exportado!');
 }
 
 async function limparTudo() {
   const cols=['receitas','despesas','produtos','fornecedores','apagar','areceber','fechamentos'];
-  for(const col of cols) {
-    for(const item of state[col]) { try { await window.dbDel(col,item._id); } catch(e){} }
-    state[col]=[];
-  }
-  render(); toast('Dados limpos!');
+  for(const col of cols) { for(const item of state[col]) { try { await window.dbDel(col,item._id); } catch(e){} } state[col]=[]; }
+  render(); toast('Firebase limpo!');
 }
 
 // ===== PDF =====
-function handleDrop(e) {
-  e.preventDefault(); document.getElementById('pdf-drop').classList.remove('drag');
-  const f=e.dataTransfer.files[0]; if(f&&f.type==='application/pdf') processarPDF(f);
-}
+function handleDrop(e) { e.preventDefault(); document.getElementById('pdf-drop').classList.remove('drag'); const f=e.dataTransfer.files[0]; if(f&&f.type==='application/pdf') processarPDF(f); }
 function handlePDF(e) { const f=e.target.files[0]; if(f) processarPDF(f); }
 
 async function processarPDF(file) {
-  if(!API_KEY) { toast('Configure sua API Key em Configurações','te'); state.page='config'; render(); return; }
+  if(!API_KEY) { toast('Configure sua API Key','te'); state.page='config'; render(); return; }
   document.getElementById('pdf-drop').style.display='none';
   document.getElementById('pdf-proc').style.display='block';
   try {
-    const ab=await file.arrayBuffer();
-    const pdf=await pdfjsLib.getDocument({data:ab}).promise;
+    const ab=await file.arrayBuffer(); const pdf=await pdfjsLib.getDocument({data:ab}).promise;
     let txt='';
-    for(let i=1;i<=Math.min(pdf.numPages,6);i++) {
-      const pg=await pdf.getPage(i);
-      const ct=await pg.getTextContent();
-      txt+=ct.items.map(item=>item.str).join(' ')+'\n';
-    }
+    for(let i=1;i<=Math.min(pdf.numPages,6);i++) { const pg=await pdf.getPage(i); const ct=await pg.getTextContent(); txt+=ct.items.map(item=>item.str).join(' ')+'\n'; }
     const result=await analisarPDFcomIA(txt,file.name);
     state.pdfPendentes.push({...result,arquivo:file.name});
-    document.getElementById('pdf-proc').style.display='none';
-    document.getElementById('pdf-drop').style.display='block';
-    render(); toast('PDF analisado! Confirme os dados.');
-  } catch(err) {
-    document.getElementById('pdf-proc').style.display='none';
-    document.getElementById('pdf-drop').style.display='block';
-    toast('Erro: '+err.message,'te');
-  }
+    document.getElementById('pdf-proc').style.display='none'; document.getElementById('pdf-drop').style.display='block';
+    render(); toast('PDF analisado!');
+  } catch(err) { document.getElementById('pdf-proc').style.display='none'; document.getElementById('pdf-drop').style.display='block'; toast('Erro: '+err.message,'te'); }
 }
 
 async function analisarPDFcomIA(texto, arquivo) {
-  const prompt=`Você é um assistente financeiro especializado em joalheria, ourivesaria e metais preciosos. Analise o texto deste documento financeiro e retorne APENAS JSON válido (sem markdown):
-{
-  "tipo": "despesa" ou "receita" ou "apagar",
-  "descricao": "descrição curta",
-  "fornecedor": "nome do fornecedor/emissor",
-  "cliente": "nome do cliente se houver",
-  "valor": número total,
-  "vencimento": "YYYY-MM-DD se houver",
-  "categoria": "Fixo|Estoque|Pessoal|Marketing|Impostos|Vendas|Serviços|Ouro/Metais|Outros",
-  "forma_pagamento": "Boleto|PIX|Cheque|Transferência|Dinheiro",
-  "produtos": [{"nome":"...","qtd":número,"preco":número,"unidade":"grama|quilate|peça"}],
-  "resumo": "resumo em 1 frase"
-}
+  const prompt=`Você é um assistente financeiro especializado em joalheria, ourivesaria e metais preciosos. Analise o texto deste documento e retorne APENAS JSON válido (sem markdown):
+{"tipo":"despesa" ou "receita" ou "apagar","descricao":"descrição curta","fornecedor":"nome","cliente":"nome se houver","valor":número,"vencimento":"YYYY-MM-DD","categoria":"Fixo|Estoque|Pessoal|Marketing|Impostos|Vendas|Serviços|Ouro/Metais|Outros","forma_pagamento":"Boleto|PIX|Cheque|Transferência|Dinheiro","produtos":[{"nome":"...","qtd":número,"preco":número,"unidade":"grama|quilate|peça"}],"resumo":"resumo em 1 frase"}
 Texto: ${texto.slice(0,4000)}`;
   const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
   const data=await res.json();
@@ -1110,22 +1410,33 @@ async function confirmarPDF(i) {
   if(item.tipo==='receita') {
     const obj={desc:item.descricao,cat:item.categoria||'Outros',cliente:item.cliente||'',valor:item.valor||0,data:item.vencimento||today,status:'pendente',forma:item.forma_pagamento||'',origem:'pdf'};
     const id=await window.dbAdd('receitas',obj); state.receitas.push({...obj,_id:id});
-    if(item.vencimento){const o2={desc:item.descricao,cliente:item.cliente||'',valor:item.valor||0,venc:item.vencimento,forma:item.forma_pagamento||'',status:'pendente'};const id2=await window.dbAdd('areceber',o2);state.areceber.push({...o2,_id:id2});}
   } else {
     const obj={desc:item.descricao,cat:item.categoria||'Outros',fornecedor:item.fornecedor||'',valor:item.valor||0,data:item.vencimento||today,status:'pendente',forma:item.forma_pagamento||'',origem:'pdf'};
     const id=await window.dbAdd('despesas',obj); state.despesas.push({...obj,_id:id});
-    if(item.vencimento){
-      const o2={desc:item.descricao,fornecedor:item.fornecedor||'',cat:item.categoria||'Outros',valor:item.valor||0,venc:item.vencimento,forma:item.forma_pagamento||'',status:'pendente'};
-      const sync = await sincronizarContaPagarNoSupabase({ ...o2, data: today });
-      if (sync.ok && sync.supabase_id) o2.supabase_id = sync.supabase_id;
-      const id2=await window.dbAdd('apagar',o2);
-      state.apagar.push({...o2,_id:id2});
-    }
-    if(item.produtos?.length) {
-      for(const p of item.produtos) {
-        const o3={nome:p.nome,cat:item.categoria||'Estoque',fornecedor:item.fornecedor||'',custo:p.preco||0,preco:Math.round((p.preco||0)*1.35),estoque:p.qtd||1,unidade:p.unidade||'peça'};
-        const id3=await window.dbAdd('produtos',o3); state.produtos.push({...o3,_id:id3});
-      }
+    // Also create in Supabase lancamentos
+    if(window.supabase) {
+      try {
+        let fornId = null;
+        if(item.fornecedor) {
+          const existing = state.sb_fornecedores.find(f => f.nome.toLowerCase() === item.fornecedor.toLowerCase());
+          if(existing) { fornId = existing.id; }
+          else {
+            const newF = await SB.insert('fornecedores', { nome: item.fornecedor });
+            state.sb_fornecedores.push(newF); fornId = newF.id;
+          }
+        }
+        const lancRow = { descricao: item.descricao, valentia: item.valor||0, status: 'pendente', data_emissao: today, data_vencimento: item.vencimento||null };
+        if(fornId) lancRow.fornecedor_id = fornId;
+        const newLanc = await SB.insert('lancamentos', lancRow);
+        state.sb_lancamentos.unshift(newLanc);
+        // Create boleto if has vencimento
+        if(item.vencimento) {
+          const bolRow = { valentia: item.valor||0, data_vencimento: item.vencimento, status: 'pendente', descricao: item.descricao };
+          if(fornId) bolRow.fornecedor_id = fornId;
+          const newBol = await SB.insert('boletos', bolRow);
+          state.sb_boletos.unshift(newBol);
+        }
+      } catch(e) { console.error('Supabase sync error:', e); }
     }
     if(item.fornecedor&&!state.fornecedores.find(f=>f.nome===item.fornecedor)){
       const o4={nome:item.fornecedor,cat:item.categoria||'Outros',prazo:'A negociar'};
@@ -1133,32 +1444,33 @@ async function confirmarPDF(i) {
     }
   }
   state.pdfPendentes.splice(i,1);
-  render(); toast('Lançado com sucesso em todos os módulos!');
+  render(); toast('Lançado em Firebase + Supabase!');
 }
 
 function rejeitarPDF(i) { state.pdfPendentes.splice(i,1); render(); toast('Descartado.'); }
 
+// ===== IA ANALYSIS =====
 async function analisarIA(tipo) {
-  if(!API_KEY) { toast('Configure a API Key em Configurações','te'); return; }
+  if(!API_KEY) { toast('Configure a API Key','te'); return; }
   const el=document.getElementById('ai-body'); if(!el) return;
-  el.innerHTML='<div class="ail">Analisando seus dados financeiros<div class="aid"><span>.</span><span>.</span><span>.</span></div></div>';
-  const fornGasto=state.despesas.reduce((a,d)=>{if(d.fornecedor){a[d.fornecedor]=(a[d.fornecedor]||0)+(d.valor||0);}return a},{});
-  const topForn=Object.entries(fornGasto).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([k,v])=>`${k}: R$${v.toFixed(0)}`).join(', ');
-  const dados={r:tR(),d:tD(),l:lucro(),m:pct(lucro(),tR()),ml:Math.round(mediaL()),ar:state.areceber.filter(a=>a.status==='pendente').reduce((s,a)=>s+(a.valor||0),0),ap:state.apagar.filter(a=>a.status==='pendente').reduce((s,a)=>s+(a.valor||0),0),prods:state.produtos.map(p=>({n:p.nome,c:p.cat,m:Math.round(((p.preco-p.custo)/Math.max(p.preco,1))*100)})),forn:topForn,hist:state.historico.map(m=>`${m.mes}:R$${m.r}/R$${m.d}`).join(' ')};
+  el.innerHTML='<div class="ail">Analisando dados<div class="aid"><span>.</span><span>.</span><span>.</span></div></div>';
+  const dados={r:tR(),d:tD(),l:lucro(),m:pct(lucro(),tR()),ml:Math.round(mediaL()),
+    sbLanc:state.sb_lancamentos.length,sbLancTotal:tLanc(),sbBol:state.sb_boletos.length,sbBolTotal:tBol(),
+    sbComp:state.sb_compras.length,sbCompTotal:tComp(),sbForn:state.sb_fornecedores.map(f=>f.nome).join(', '),
+    sbItens:state.sb_itens.map(i=>i.nome).join(', ')};
   const ps={
-    geral:`Analise estes dados de uma empresa de joalheria/metais preciosos e dê diagnóstico em 5-6 frases em português. Dados: receitas R$${dados.r}, despesas R$${dados.d}, lucro R$${dados.l}, margem ${dados.m}%, média R$${dados.ml}, a receber R$${dados.ar}, a pagar R$${dados.ap}.`,
-    lucro:`Sugira 4 ações práticas para aumentar lucro neste negócio de joalheria. Lucro: R$${dados.l}, margem: ${dados.m}%. Seja específico para o setor de metais preciosos. Responda em português.`,
-    despesas:`Analise as despesas e sugira cortes. Despesas: R$${dados.d}. Principais fornecedores: ${dados.forn}. Receita: R$${dados.r}. Responda em português.`,
-    produtos:`Avalie este portfólio de produtos de joalheria: ${dados.prods.map(p=>`${p.n} (${p.c}, margem ${p.m}%)`).join(', ')}. Quais priorizar? Preços adequados? Responda em português.`,
-    fornecedores:`Analise os gastos com fornecedores: ${dados.forn}. Total despesas: R$${dados.d}. Há concentração de risco? Oportunidades de negociação? Responda em português com recomendações práticas.`,
-    previsao:`Histórico: ${dados.hist}. Faça previsão para próximo mês com cenário otimista, realista e pessimista. Inclua valores estimados. Responda em português.`,
-    fluxo:`Fluxo de caixa: receitas R$${dados.r}, a receber R$${dados.ar}, a pagar R$${dados.ap}. O caixa está saudável? Risco de inadimplência? Recomendações? Responda em português.`
+    geral:`Analise dados de joalheria: receitas R$${dados.r}, despesas R$${dados.d}, lucro R$${dados.l}, margem ${dados.m}%. Supabase: ${dados.sbLanc} lançamentos (R$${dados.sbLancTotal}), ${dados.sbBol} boletos (R$${dados.sbBolTotal}), ${dados.sbComp} compras (R$${dados.sbCompTotal}). Diagnóstico em 5 frases. Português.`,
+    lucro:`Sugira 4 ações para aumentar lucro neste negócio de joalheria. Lucro: R$${dados.l}, margem: ${dados.m}%. Compras Supabase: R$${dados.sbCompTotal}. Português.`,
+    despesas:`Analise despesas R$${dados.d} e compras Supabase R$${dados.sbCompTotal}. Sugira cortes. Fornecedores: ${dados.sbForn}. Português.`,
+    supabase:`Dados Supabase: ${dados.sbLanc} lançamentos (R$${dados.sbLancTotal}), ${dados.sbBol} boletos (R$${dados.sbBolTotal}), ${dados.sbComp} compras (R$${dados.sbCompTotal}). Fornecedores: ${dados.sbForn}. Itens: ${dados.sbItens}. Analise a operação e sugira melhorias. Português.`,
+    previsao:`Histórico Firebase: receitas R$${dados.r}, despesas R$${dados.d}. Volume Supabase: ${dados.sbLanc} lançamentos, ${dados.sbBol} boletos. Faça previsão para próximo mês: cenário otimista, realista, pessimista. Português.`,
+    fluxo:`Fluxo: receitas R$${dados.r}, boletos pendentes R$${state.sb_boletos.filter(b=>b.status!=='pago').reduce((s,b)=>s+Number(b.valentia||0),0)}, lançamentos pendentes R$${state.sb_lancamentos.filter(l=>l.status==='pendente').reduce((s,l)=>s+Number(l.valentia||0),0)}. Caixa saudável? Português.`
   };
   try {
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:ps[tipo]}]})});
     const data=await res.json();
     el.textContent=data.content?.[0]?.text||'Sem resposta.';
-  } catch(e) { el.textContent='Erro. Verifique a API Key em Configurações.'; }
+  } catch(e) { el.textContent='Erro. Verifique a API Key.'; }
 }
 
 render();
