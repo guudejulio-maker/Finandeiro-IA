@@ -1108,10 +1108,10 @@ window.addReceb = async function() {
     state.recebimentos.unshift(insertReceb.data);
 
     render();
-    toast('Recebimento registrado!', 'ok');
+    toast('Recebimento registrado!');
   } catch (e) {
     console.error(e);
-    toast('Erro ao registrar recebimento', 'er');
+    toast('Erro ao registrar recebimento', 'te');
   }
 };
 
@@ -1123,10 +1123,10 @@ window.delRecebSB = async function(id) {
     await SB.remove('recebimentos', id);
     state.recebimentos = state.recebimentos.filter(r => r.id !== id);
     render();
-    toast('Recebimento removido.', 'ok');
+    toast('Recebimento removido.');
   } catch (e) {
     console.error(e);
-    toast('Erro ao remover recebimento', 'er');
+    toast('Erro ao remover recebimento', 'te');
   }
 };
 
@@ -1137,10 +1137,10 @@ window.delRetiradaSB = async function(id) {
     await SB.remove('retiradas_diretor', id);
     state.retiradas = state.retiradas.filter(r => r.id !== id);
     render();
-    toast('Retirada removida.', 'ok');
+    toast('Retirada removida.');
   } catch (e) {
     console.error(e);
-    toast('Erro ao remover retirada', 'er');
+    toast('Erro ao remover retirada', 'te');
   }
 };
 
@@ -1168,10 +1168,10 @@ window.addRetirada = async function() {
     state.retiradas.unshift(insertRet.data);
 
     render();
-    toast('Retirada registrada!', 'ok');
+    toast('Retirada registrada!');
   } catch (e) {
     console.error(e);
-    toast('Erro ao registrar retirada', 'er');
+    toast('Erro ao registrar retirada', 'te');
   }
 };
 
@@ -1188,10 +1188,10 @@ async function pagarC(id) {
     if (b) b.status = 'pago';
 
     render();
-    toast('Pago!', 'ok');
+    toast('Pago!');
   } catch (e) {
     console.error(e);
-    toast('Erro ao marcar como pago', 'er');
+    toast('Erro ao marcar como pago', 'te');
   }
 }
 
@@ -1258,10 +1258,10 @@ async function addDesp() {
     state.sb_boletos.unshift(insertBoleto.data);
 
     render();
-    toast('Despesa salva!', 'ok');
+    toast('Despesa salva!');
   } catch (e) {
     console.error(e);
-    toast('Erro ao salvar despesa', 'er');
+    toast('Erro ao salvar despesa', 'te');
   }
 }
 
@@ -1326,10 +1326,10 @@ async function addAP() {
     state.sb_boletos.unshift(insertBoleto.data);
 
     render();
-    toast('Conta salva!', 'ok');
+    toast('Conta salva!');
   } catch (e) {
     console.error(e);
-    toast('Erro ao salvar conta', 'er');
+    toast('Erro ao salvar conta', 'te');
   }
 }
 
@@ -1564,7 +1564,7 @@ async function confirmarPDF(i) {
 
   } catch (e) {
     console.error(e);
-    toast('Erro ao lançar despesa do PDF', 'er');
+    toast('Erro ao lançar despesa do PDF', 'te');
   }
 }
   state.pdfPendentes.splice(i,1); render(); toast('Lançado!');
@@ -1617,10 +1617,9 @@ window.confirmarExtrato = async function(i) {
     state.recebimentos.unshift(insertReceb.data);
   } catch (e) {
     console.error(e);
-    toast('Erro ao lançar recebimento do extrato', 'er');
+    toast('Erro ao lançar recebimento do extrato', 'te');
     return;
   }
-}
   } else {
   try {
     const insertBoleto = await supabase
@@ -1642,10 +1641,9 @@ window.confirmarExtrato = async function(i) {
 
   } catch (e) {
     console.error(e);
-    toast('Erro ao lançar despesa do extrato', 'er');
+    toast('Erro ao lançar despesa do extrato', 'te');
     return;
   }
-}
   }
   state.extratoPendentes.splice(i,1); render(); toast('Lançado!');
 };
@@ -1676,3 +1674,5 @@ async function analisarIA(tipo) {
 
 render();
 </script>
+</body>
+</html>
