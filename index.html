@@ -218,6 +218,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDcIFCq1ujGP-0KR6AJaM0s7f5wkT9ea4E",
@@ -230,7 +231,18 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+
+const SUPABASE_URL = localStorage.getItem('financeai_supabase_url') || '';
+const SUPABASE_ANON_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
+const SUPABASE_DEFAULT_CATEGORIA_ID = localStorage.getItem('financeai_supabase_categoria_id') || '';
+
+const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY)
+  ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
 window.db = db;
+window.supabase = supabase;
+window.supabaseReady = !!supabase;
 window.FB = { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, onSnapshot, query, orderBy };
 
 document.getElementById('lov').style.display = 'none';
@@ -277,6 +289,38 @@ function setOnline() {
   document.getElementById('stxt').textContent = 'Salvo na nuvem ✓';
   setTimeout(()=>{ document.getElementById('stxt').textContent = 'Online — Firebase ativo'; }, 2000);
 }
+
+window.executarAgenteFinanceiro = async (acao, payload = {}) => {
+  if (!window.supabase) {
+    throw new Error('Supabase não configurado');
+  }
+
+  const { data, error } = await window.supabase.rpc('executar_agente_financeiro', {
+    p_acao: acao,
+    p_payload: payload
+  });
+
+  if (error) throw error;
+  return data;
+};
+
+window.buscarLancamentoSupabase = async ({ descricao, valor, vencimento }) => {
+  if (!window.supabase) return null;
+  const res = await window.executarAgenteFinanceiro('contas_a_pagar');
+  const contas = res?.resultado || [];
+  const alvoDesc = (descricao || '').trim().toLowerCase();
+  const alvoValor = Number(valor || 0);
+  const alvoVenc = vencimento || null;
+
+  const match = [...contas].reverse().find(c => {
+    const descOk = (c.descricao || '').trim().toLowerCase() === alvoDesc;
+    const valorOk = Math.abs(Number(c.valor || 0) - alvoValor) < 0.01;
+    const vencOk = !alvoVenc || c.vencimento === alvoVenc;
+    return descOk && valorOk && vencOk;
+  });
+
+  return match?.id || null;
+};
 
 loadAll();
 </script>
@@ -355,6 +399,7 @@ function pgDash() {
   const fornGasto=state.despesas.reduce((a,d)=>{if(d.fornecedor){a[d.fornecedor]=(a[d.fornecedor]||0)+(d.valor||0);}return a},{});
   const topForn=Object.entries(fornGasto).sort((a,b)=>b[1]-a[1]).slice(0,4);
   return `
+  <div class="ar"><button class="btn btn-g btn-sm" onclick="testarSupabase()">🧠 Testar Supabase</button></div>
   <div class="g4">
     <div class="mc"><div class="mc-lbl">Receitas do Mês</div><div class="mc-val" style="color:var(--green)">${fmt(tr)}</div><div class="mc-sub"><span class="badge bg">${state.receitas.length} entradas</span></div></div>
     <div class="mc"><div class="mc-lbl">Despesas do Mês</div><div class="mc-val" style="color:var(--red)">${fmt(td)}</div><div class="mc-sub"><span class="badge br">${state.despesas.length} lançamentos</span></div></div>
@@ -763,6 +808,10 @@ function pgRel() {
 
 // ===== CONFIG =====
 function pgConf() {
+  const SUPABASE_URL = localStorage.getItem('financeai_supabase_url') || '';
+  const SUPABASE_ANON_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
+  const SUPABASE_DEFAULT_CATEGORIA_ID = localStorage.getItem('financeai_supabase_categoria_id') || '';
+  const supabaseOk = !!(window.supabase && SUPABASE_URL && SUPABASE_ANON_KEY);
   return `
   <div class="sc">
     <div class="shd">API & Integrações</div>
@@ -775,8 +824,27 @@ function pgConf() {
       </div>
     </div>
     <div class="sr">
-      <div><div class="sl">Firebase (Banco de Dados)</div><div class="ss">Seus dados já estão sendo salvos no Firebase automaticamente</div></div>
+      <div><div class="sl">Firebase (Banco de Dados visual)</div><div class="ss">A interface continua salvando normalmente no Firebase</div></div>
       <span class="badge bg">✓ Conectado</span>
+    </div>
+    <div class="sr" style="align-items:flex-start">
+      <div>
+        <div class="sl">Supabase (Cérebro financeiro)</div>
+        <div class="ss">Cole sua URL, anon key e um categoria_id padrão para registrar despesas no agente financeiro.</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:420px">
+        <input class="ki" id="supabase-url-input" value="${SUPABASE_URL}" placeholder="https://xxxxx.supabase.co" style="width:420px"/>
+        <input class="ki" id="supabase-key-input" type="password" value="${SUPABASE_ANON_KEY}" placeholder="eyJhbGciOi..." style="width:420px"/>
+        <input class="ki" id="supabase-categoria-id-input" value="${SUPABASE_DEFAULT_CATEGORIA_ID}" placeholder="categoria_id padrão (ex: 1)" style="width:220px"/>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-p btn-sm" onclick="salvarSupabaseConfig()">Salvar</button>
+          <button class="btn btn-g btn-sm" onclick="testarSupabase()">Testar</button>
+        </div>
+      </div>
+    </div>
+    <div class="sr">
+      <div><div class="sl">Status do cérebro financeiro</div><div class="ss">Resumo e lançamentos financeiros vão para o Supabase quando ele estiver configurado</div></div>
+      <span class="badge ${supabaseOk ? 'bg' : 'ba'}">${supabaseOk ? '✓ Ativo' : 'Configurar'}</span>
     </div>
   </div>
   <div class="sc">
@@ -797,7 +865,7 @@ function pgConf() {
       <p>2. Vá em <strong style="color:var(--txt)">Importar PDF</strong> — arraste qualquer nota fiscal, boleto ou extrato</p>
       <p>3. A IA lê o documento e identifica <strong style="color:var(--txt)">fornecedor, produtos, valor e vencimento</strong> automaticamente</p>
       <p>4. Confirme e o lançamento entra em todas as abas corretas</p>
-      <p>5. Todos os dados ficam salvos no <strong style="color:var(--txt)">Firebase</strong> — acesse de qualquer dispositivo</p>
+      <p>5. A interface salva no <strong style="color:var(--txt)">Firebase</strong> e o financeiro inteligente roda no <strong style="color:var(--txt)">Supabase</strong></p>
       <p>6. No fim do mês, use <strong style="color:var(--txt)">Fechamento</strong> para gerar a DRE completa</p>
       <p>7. Use <strong style="color:var(--txt)">Relatório IA</strong> para análises inteligentes do seu negócio</p>
     </div>
@@ -815,8 +883,17 @@ async function delItem(col, id) {
 }
 
 async function pagarC(id) {
+  const a=state.apagar.find(x=>x._id===id);
+  if (a?.supabase_id && window.supabase) {
+    try {
+      await window.executarAgenteFinanceiro('pagar_lancamento', { id: a.supabase_id, data_pagamento: new Date().toISOString().slice(0,10) });
+    } catch (e) {
+      console.error(e);
+      toast('Pago no Firebase, mas falhou no Supabase','te');
+    }
+  }
   await window.dbUpd('apagar', id, {status:'pago'});
-  const a=state.apagar.find(x=>x._id===id); if(a) a.status='pago';
+  if(a) a.status='pago';
   render(); toast('Conta paga!');
 }
 
@@ -866,9 +943,11 @@ async function addAP() {
   const desc=document.getElementById('ap-desc').value, cat=document.getElementById('ap-cat').value, forn=document.getElementById('ap-forn').value, val=+document.getElementById('ap-val').value, venc=document.getElementById('ap-venc').value, forma=document.getElementById('ap-forma').value, cod=document.getElementById('ap-cod').value, obs=document.getElementById('ap-obs').value;
   if(!desc||!val) return toast('Preencha os campos','te');
   const obj={desc,cat,fornecedor:forn,valor:val,venc,forma,cod,obs,status:'pendente'};
+  const sync = await sincronizarContaPagarNoSupabase({ ...obj, data:new Date().toISOString().slice(0,10) });
+  if (sync.ok && sync.supabase_id) obj.supabase_id = sync.supabase_id;
   const id=await window.dbAdd('apagar',obj);
   state.apagar.push({...obj,_id:id});
-  render(); toast('Conta salva!');
+  render(); toast(sync.ok ? 'Conta salva e sincronizada com Supabase!' : 'Conta salva no Firebase. Supabase não sincronizado.');
 }
 
 async function addAR() {
@@ -904,6 +983,56 @@ async function testarKey() {
     if(res.ok) toast('Conexão funcionando!');
     else toast('Chave inválida ou sem créditos','te');
   } catch(e) { toast('Erro de conexão','te'); }
+}
+
+function salvarSupabaseConfig() {
+  const url=document.getElementById('supabase-url-input').value.trim();
+  const key=document.getElementById('supabase-key-input').value.trim();
+  const categoriaId=document.getElementById('supabase-categoria-id-input').value.trim();
+  localStorage.setItem('financeai_supabase_url', url);
+  localStorage.setItem('financeai_supabase_anon_key', key);
+  localStorage.setItem('financeai_supabase_categoria_id', categoriaId);
+  toast('Configuração do Supabase salva! Recarregue a página.');
+}
+
+async function testarSupabase() {
+  if (!window.supabase) return toast('Salve a URL/chave e recarregue a página primeiro','te');
+  try {
+    const data = await window.executarAgenteFinanceiro('resumo');
+    if (data) toast('Supabase conectado com sucesso!');
+    console.log('Resumo Supabase:', data);
+  } catch (e) {
+    console.error(e);
+    toast('Erro no Supabase: ' + (e.message || 'falha na conexão'),'te');
+  }
+}
+
+async function sincronizarContaPagarNoSupabase(item) {
+  if (!window.supabase) return { ok:false, motivo:'supabase_nao_configurado' };
+  try {
+    const categoriaIdRaw = localStorage.getItem('financeai_supabase_categoria_id') || '';
+    const payload = {
+      item_nome: item.item_nome || item.desc || item.descricao || 'Despesa',
+      categoria_id: categoriaIdRaw ? Number(categoriaIdRaw) : null,
+      fornecedor_nome: item.fornecedor || 'Fornecedor não informado',
+      valor: Number(item.valor || 0),
+      data: item.data || new Date().toISOString().slice(0,10),
+      vencimento: item.venc || item.vencimento || item.data || new Date().toISOString().slice(0,10),
+      descricao: item.desc || item.descricao || 'Lançamento financeiro'
+    };
+
+    await window.executarAgenteFinanceiro('registrar_despesa', payload);
+    const supabaseId = await window.buscarLancamentoSupabase({
+      descricao: payload.descricao,
+      valor: payload.valor,
+      vencimento: payload.vencimento
+    });
+
+    return { ok:true, supabase_id:supabaseId || null };
+  } catch (e) {
+    console.error('Falha ao sincronizar no Supabase', e);
+    return { ok:false, motivo:e.message || 'erro_desconhecido' };
+  }
 }
 
 function exportar() {
@@ -985,7 +1114,13 @@ async function confirmarPDF(i) {
   } else {
     const obj={desc:item.descricao,cat:item.categoria||'Outros',fornecedor:item.fornecedor||'',valor:item.valor||0,data:item.vencimento||today,status:'pendente',forma:item.forma_pagamento||'',origem:'pdf'};
     const id=await window.dbAdd('despesas',obj); state.despesas.push({...obj,_id:id});
-    if(item.vencimento){const o2={desc:item.descricao,fornecedor:item.fornecedor||'',cat:item.categoria||'Outros',valor:item.valor||0,venc:item.vencimento,forma:item.forma_pagamento||'',status:'pendente'};const id2=await window.dbAdd('apagar',o2);state.apagar.push({...o2,_id:id2});}
+    if(item.vencimento){
+      const o2={desc:item.descricao,fornecedor:item.fornecedor||'',cat:item.categoria||'Outros',valor:item.valor||0,venc:item.vencimento,forma:item.forma_pagamento||'',status:'pendente'};
+      const sync = await sincronizarContaPagarNoSupabase({ ...o2, data: today });
+      if (sync.ok && sync.supabase_id) o2.supabase_id = sync.supabase_id;
+      const id2=await window.dbAdd('apagar',o2);
+      state.apagar.push({...o2,_id:id2});
+    }
     if(item.produtos?.length) {
       for(const p of item.produtos) {
         const o3={nome:p.nome,cat:item.categoria||'Estoque',fornecedor:item.fornecedor||'',custo:p.preco||0,preco:Math.round((p.preco||0)*1.35),estoque:p.qtd||1,unidade:p.unidade||'peça'};
