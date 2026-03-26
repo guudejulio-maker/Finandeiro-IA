@@ -1517,24 +1517,33 @@ async function iaAnalise(texto, instrucao) {
   try { return JSON.parse(t.replace(/```json|```/g, '').trim()); } catch (e) { return { tipo: 'despesa', descricao: 'Doc', valor: 0 }; }
 }
 
-window.confirmarPDF = async function(i) {
-  const item = state.pdfPendentes[i]; const td = today();
-  try {
-    setSaving();
-    if (item.tipo === 'receita') {
-      const row = await SB.insert('recebimentos', { descricao: item.descricao, valor: item.valor || 0, data: item.vencimento || td, observacao: 'Importado via PDF' });
-      if (!Array.isArray(state.recebimentos)) state.recebimentos = [];
-      state.recebimentos.unshift(row);
-    } else {
-      const fornecedor_id = item.fornecedor ? await resolveFornecedor(item.fornecedor) : null;
-      const row = await SB.insert('boletos', { fornecedor_id, descricao: item.descricao, valor: item.valor || 0, data_vencimento: item.vencimento || td, status: 'pendente' });
-      if (!Array.isArray(state.sb_boletos)) state.sb_boletos = [];
-      state.sb_boletos.unshift(row);
-    }
-    setOnline();
-  } catch (e) { console.error(e); toast('Erro ao lançar PDF', 'te'); }
-  state.pdfPendentes.splice(i, 1); render(); toast('Lançado!');
-};
+if (!r.tipo_documento) {
+  const nomeArq = String(file.name || '').toLowerCase();
+  const desc = String(r.descricao || '').toLowerCase();
+  const forn = String(r.fornecedor || '').toLowerCase();
+  const textoBase = `${nomeArq} ${desc} ${forn}`;
+
+  if (
+    textoBase.includes('boleto') ||
+    textoBase.includes('linha digitavel') ||
+    textoBase.includes('linha digitável') ||
+    textoBase.includes('codigo de barras') ||
+    textoBase.includes('código de barras')
+  ) {
+    r.tipo_documento = 'boleto';
+  } else if (
+    textoBase.includes('orcamento') ||
+    textoBase.includes('orçamento') ||
+    textoBase.includes('pedido') ||
+    textoBase.includes('cotacao') ||
+    textoBase.includes('cotação') ||
+    textoBase.includes('compra')
+  ) {
+    r.tipo_documento = 'compra';
+  } else {
+    r.tipo_documento = 'outro';
+  }
+}
 function rejeitarPDF(i) { state.pdfPendentes.splice(i, 1); render(); toast('Descartado.'); }
 
 // ============================================================
@@ -1685,4 +1694,3 @@ render();
 </script>
 </body>
 </html>
-
