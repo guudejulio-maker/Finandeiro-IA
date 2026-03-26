@@ -48,7 +48,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .page-title{font-size:15px;font-weight:600}
 .topbar-right{display:flex;align-items:center;gap:8px}
 .topbar-right select{font-size:12px;padding:5px 9px;border:1px solid var(--border2);border-radius:7px;background:var(--bg3);color:var(--txt)}
-.content{flex:1;overflow-y:auto;padding:18px 22px}
+.content{flex:1;overflow-y:auto;overflow-x:auto;padding:18px 22px;min-width:0}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:14px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px}
@@ -234,7 +234,7 @@ body.role-admin .admin-only-block{display:block}
 
 <div class="toast" id="toast"></div>
 <div id="modal-root"></div>
-<input type="file" id="pdf-input" accept=".pdf" style="display:none" onchange="handlePDF(event)">
+<input type="file" id="pdf-input" accept=".pdf" multiple style="display:none" onchange="handlePDF(event)">
 <input type="file" id="extrato-input" accept=".pdf,.csv,.ofx,.txt" style="display:none" onchange="handleExtrato(event)">
 
 <!-- ============================================================ -->
@@ -1488,18 +1488,71 @@ function exportar() {
 // ============================================================
 // PDF IMPORT
 // ============================================================
-function handleDrop(e) { e.preventDefault(); const el = document.getElementById('pdf-drop'); if (el) el.classList.remove('drag'); const f = e.dataTransfer.files[0]; if (f && f.type === 'application/pdf') processarPDF(f); }
-function handlePDF(e) { const f = e.target.files[0]; if (f) processarPDF(f); }
+function handleDrop(e) {
+  e.preventDefault();
+  const el = document.getElementById('pdf-drop');
+  if (el) el.classList.remove('drag');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type === 'application/pdf');
+  if (!files.length) { toast('Envie apenas arquivos PDF', 'te'); return; }
+  files.forEach(f => processarPDF(f));
+}
+function handlePDF(e) {
+  const files = Array.from(e.target.files || []).filter(f => f.type === 'application/pdf');
+  if (!files.length) { toast('Envie apenas arquivos PDF', 'te'); return; }
+  files.forEach(f => processarPDF(f));
+  e.target.value = '';
+}
 
 async function processarPDF(file) {
   if (!API_KEY) { toast('Configure API Key', 'te'); state.page = 'config'; render(); return; }
   const drop = document.getElementById('pdf-drop'), proc = document.getElementById('pdf-proc');
   if (drop) drop.style.display = 'none'; if (proc) proc.style.display = 'block';
   try {
-    const ab = await file.arrayBuffer(); const pdf = await pdfjsLib.getDocument({ data: ab }).promise; let txt = '';
-    for (let i = 1; i <= Math.min(pdf.numPages, 6); i++) { const pg = await pdf.getPage(i); const ct = await pg.getTextContent(); txt += ct.items.map(x => x.str).join(' ') + '\n'; }
+    const ab = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+    let txt = '';
+    for (let i = 1; i <= Math.min(pdf.numPages, 6); i++) {
+      const pg = await pdf.getPage(i);
+      const ct = await pg.getTextContent();
+      txt += ct.items.map(item => item.str).join(' ') + '\n';
+    }
     const result = await iaAnalise(txt, `Analise documento financeiro de joalheria. Retorne APENAS JSON: {"tipo":"despesa"/"receita","descricao":"","fornecedor":"","valor":0,"vencimento":"YYYY-MM-DD","categoria":"","resumo":""}`);
-    state.pdfPendentes.push({ ...result, arquivo: file.name });
+
+    // Classificação automática do tipo de documento
+    const nomeArq = String(file.name || '').toLowerCase();
+    const desc = String(result.descricao || '').toLowerCase();
+    const forn = String(result.fornecedor || '').toLowerCase();
+    const resumo = String(result.resumo || '').toLowerCase();
+    const textoBase = `${nomeArq} ${desc} ${forn} ${resumo} ${txt.slice(0, 500).toLowerCase()}`;
+
+    let tipo_documento;
+    if (
+      textoBase.includes('boleto') ||
+      textoBase.includes('linha digitavel') ||
+      textoBase.includes('linha digitável') ||
+      textoBase.includes('codigo de barras') ||
+      textoBase.includes('código de barras')
+    ) {
+      tipo_documento = 'boleto';
+    } else if (
+      textoBase.includes('orcamento') ||
+      textoBase.includes('orçamento') ||
+      textoBase.includes('pedido') ||
+      textoBase.includes('cotacao') ||
+      textoBase.includes('cotação')
+    ) {
+      tipo_documento = 'orçamento';
+    } else if (
+      textoBase.includes('nota fiscal') ||
+      textoBase.includes('nf-e') ||
+      textoBase.includes('danfe')
+    ) {
+      tipo_documento = 'nota fiscal';
+    } else {
+      tipo_documento = 'outros';
+    }
+
+    state.pdfPendentes.push({ ...result, tipo_documento, arquivo: file.name, status: 'pendente' });
     if (drop) drop.style.display = 'block'; if (proc) proc.style.display = 'none';
     render(); toast('PDF analisado!');
   } catch (err) {
@@ -1517,33 +1570,6 @@ async function iaAnalise(texto, instrucao) {
   try { return JSON.parse(t.replace(/```json|```/g, '').trim()); } catch (e) { return { tipo: 'despesa', descricao: 'Doc', valor: 0 }; }
 }
 
-if (!r.tipo_documento) {
-  const nomeArq = String(file.name || '').toLowerCase();
-  const desc = String(r.descricao || '').toLowerCase();
-  const forn = String(r.fornecedor || '').toLowerCase();
-  const textoBase = `${nomeArq} ${desc} ${forn}`;
-
-  if (
-    textoBase.includes('boleto') ||
-    textoBase.includes('linha digitavel') ||
-    textoBase.includes('linha digitável') ||
-    textoBase.includes('codigo de barras') ||
-    textoBase.includes('código de barras')
-  ) {
-    r.tipo_documento = 'boleto';
-  } else if (
-    textoBase.includes('orcamento') ||
-    textoBase.includes('orçamento') ||
-    textoBase.includes('pedido') ||
-    textoBase.includes('cotacao') ||
-    textoBase.includes('cotação') ||
-    textoBase.includes('compra')
-  ) {
-    r.tipo_documento = 'compra';
-  } else {
-    r.tipo_documento = 'outro';
-  }
-}
 function rejeitarPDF(i) { state.pdfPendentes.splice(i, 1); render(); toast('Descartado.'); }
 
 // ============================================================
