@@ -3,28 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinanceAI — Agente Financeiro</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>SCARLAT — Sistema Financeiro</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
---bg:#0f1117;--bg2:#181c27;--bg3:#1e2333;--bg4:#252a3a;
---border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
---txt:#e8eaf0;--txt2:#8b92a8;--txt3:#555d78;
+--bg:#08090c;--bg2:#0f1117;--bg3:#161a24;--bg4:#1e222e;
+--border:rgba(199,171,109,0.08);--border2:rgba(199,171,109,0.15);
+--txt:#f0ece4;--txt2:#9b9484;--txt3:#5d5647;
+--gold:#c7ab6d;--gold-light:#dcc995;--gold-dark:#a08a4e;
 --green:#34d399;--green-bg:rgba(52,211,153,0.1);--green-txt:#34d399;
 --red:#f87171;--red-bg:rgba(248,113,113,0.1);--red-txt:#f87171;
 --blue:#60a5fa;--blue-bg:rgba(96,165,250,0.1);--blue-txt:#60a5fa;
 --amber:#fbbf24;--amber-bg:rgba(251,191,36,0.1);--amber-txt:#fbbf24;
 --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.1);--purple-txt:#a78bfa;
 --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.1);
---radius:10px;--radius-lg:14px}
+--radius:10px;--radius-lg:14px;--accent:var(--gold)}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
 .app{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
-.logo{padding:18px 16px 14px;border-bottom:1px solid var(--border)}
-.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:8px}
-.logo-title{font-size:15px;font-weight:600;letter-spacing:-0.3px}
-.logo-sub{font-size:11px;color:var(--txt3);margin-top:2px}
+.sidebar{width:230px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);text-align:center}
+.logo-img{height:28px;margin-bottom:6px;opacity:0.95}
+.logo-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:3px;color:var(--gold)}
+.logo-sub{font-size:10px;color:var(--txt3);margin-top:3px;letter-spacing:1.5px;text-transform:uppercase}
 .sync-row{display:flex;align-items:center;gap:6px;margin-top:8px}
 .sync-dot{width:6px;height:6px;border-radius:50%;background:var(--txt3);flex-shrink:0}
 .sync-dot.online{background:var(--green);animation:pulse 2s infinite}
@@ -36,12 +37,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .nav-sec{font-size:10px;color:var(--txt3);padding:10px 16px 4px;letter-spacing:0.8px;text-transform:uppercase}
 .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;cursor:pointer;color:var(--txt2);border-left:2px solid transparent;transition:all 0.15s;user-select:none}
 .nav-item:hover{background:var(--bg3);color:var(--txt)}
-.nav-item.active{background:rgba(99,102,241,0.1);color:#818cf8;border-left-color:#818cf8;font-weight:500}
+.nav-item.active{background:rgba(199,171,109,0.08);color:var(--gold);border-left-color:var(--gold);font-weight:500}
 .nav-badge{margin-left:auto;background:var(--red-bg);color:var(--red);font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600}
 .sidebar-footer{padding:10px;border-top:1px solid var(--border)}
-.ai-pill{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--purple-bg);border:1px solid rgba(167,139,250,0.2);border-radius:var(--radius)}
-.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--purple);animation:pulse 2s infinite}
-.ai-pill-txt{font-size:12px;color:var(--purple-txt);font-weight:500}
+.ai-pill{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(199,171,109,0.08);border:1px solid rgba(199,171,109,0.2);border-radius:var(--radius)}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+.ai-pill-txt{font-size:12px;color:var(--gold);font-weight:500}
 .main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .topbar{padding:0 22px;height:54px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg2);flex-shrink:0}
 .page-title{font-size:15px;font-weight:600}
@@ -65,20 +66,20 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:11px;font-weight:500}
 .bg{background:var(--green-bg);color:var(--green-txt)}.br{background:var(--red-bg);color:var(--red-txt)}.bb{background:var(--blue-bg);color:var(--blue-txt)}.ba{background:var(--amber-bg);color:var(--amber-txt)}.bp{background:var(--purple-bg);color:var(--purple-txt)}.bt{background:var(--teal-bg);color:var(--teal)}
 .btn{padding:7px 14px;border-radius:7px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.15s;border:1px solid transparent}
-.btn-p{background:#6366f1;color:#fff;border-color:#6366f1}.btn-p:hover{background:#4f46e5}
+.btn-p{background:var(--gold);color:#0a0a0a;border-color:var(--gold);font-weight:600}.btn-p:hover{background:var(--gold-light)}
 .btn-g{background:transparent;border-color:var(--border2);color:var(--txt2)}.btn-g:hover{background:var(--bg3);color:var(--txt)}
 .btn-d{background:var(--red-bg);color:var(--red-txt);border-color:rgba(248,113,113,0.2)}
 .btn-s{background:var(--green-bg);color:var(--green-txt);border-color:rgba(52,211,153,0.2)}
 .btn-a{background:var(--amber-bg);color:var(--amber-txt);border-color:rgba(251,191,36,0.2)}
 .btn-sm{padding:4px 10px;font-size:11px;border-radius:5px}
 .ar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
-.fc{background:var(--bg2);border:1px solid rgba(99,102,241,0.3);border-radius:var(--radius-lg);padding:16px;margin-bottom:14px}
+.fc{background:var(--bg2);border:1px solid rgba(199,171,109,0.2);border-radius:var(--radius-lg);padding:16px;margin-bottom:14px}
 .ft{font-size:13px;font-weight:600;margin-bottom:12px}
 .fg{display:grid;gap:10px;margin-bottom:12px}
 .fg.c2{grid-template-columns:1fr 1fr}.fg.c3{grid-template-columns:1fr 1fr 1fr}.fg.c4{grid-template-columns:1fr 1fr 1fr 1fr}.fg.c5{grid-template-columns:1fr 1fr 1fr 1fr 1fr}
 .fl label{display:block;font-size:11px;color:var(--txt2);margin-bottom:4px;font-weight:500}
 .fl input,.fl select,.fl textarea{width:100%;font-size:12px;padding:7px 10px;border:1px solid var(--border2);border-radius:7px;background:var(--bg3);color:var(--txt);font-family:'DM Sans',sans-serif}
-.fl input:focus,.fl select:focus{outline:none;border-color:#6366f1}
+.fl input:focus,.fl select:focus{outline:none;border-color:var(--gold)}
 .fl textarea{resize:vertical;min-height:60px}
 .aip{background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(139,92,246,0.08));border:1px solid rgba(99,102,241,0.25);border-radius:var(--radius-lg);padding:14px;margin-bottom:14px}
 .aip-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:13px;font-weight:600;color:var(--purple-txt)}
@@ -104,7 +105,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .toast{position:fixed;bottom:18px;right:18px;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:11px 16px;font-size:13px;color:var(--txt);z-index:1000;transform:translateX(130%);transition:transform 0.3s;box-shadow:0 8px 24px rgba(0,0,0,0.5)}
 .toast.show{transform:translateX(0)}.toast.ts{border-color:rgba(52,211,153,0.4)}.toast.te{border-color:rgba(248,113,113,0.4)}
 .lov{position:fixed;inset:0;background:rgba(10,11,16,0.92);display:flex;align-items:center;justify-content:center;z-index:998;flex-direction:column;gap:14px}
-.lsp{width:38px;height:38px;border:3px solid var(--border);border-top-color:#6366f1;border-radius:50%;animation:spin 0.8s linear infinite}
+.lsp{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .ltx{font-size:13px;color:var(--txt2)}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
@@ -125,18 +126,67 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .modal-overlay{position:fixed;inset:0;background:rgba(10,11,16,0.85);display:flex;align-items:center;justify-content:center;z-index:999}
 .modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;width:400px;max-width:90vw}
 .modal-title{font-size:15px;font-weight:600;margin-bottom:16px}
+/* LOGIN SCREEN */
+.login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column}
+.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:40px;width:380px;max-width:90vw;text-align:center}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;letter-spacing:4px;color:var(--gold);margin-bottom:6px}
+.login-sub{font-size:11px;color:var(--txt3);letter-spacing:2px;text-transform:uppercase;margin-bottom:28px}
+.login-input{width:100%;padding:12px 16px;border:1px solid var(--border2);border-radius:8px;background:var(--bg3);color:var(--txt);font-family:'DM Sans',sans-serif;font-size:13px;margin-bottom:12px}
+.login-input:focus{outline:none;border-color:var(--gold)}
+.login-btn{width:100%;padding:12px;border:none;border-radius:8px;background:var(--gold);color:#0a0a0a;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:0.5px;margin-top:4px}
+.login-btn:hover{background:var(--gold-light)}
+.login-btn:disabled{opacity:0.5;cursor:not-allowed}
+.login-error{color:var(--red);font-size:12px;margin-top:8px;min-height:18px}
+.login-diamond{font-size:40px;margin-bottom:16px;display:block}
+/* USER BAR in topbar */
+.user-bar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--txt2)}
+.user-role{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.user-role.admin{background:rgba(199,171,109,0.15);color:var(--gold)}
+.user-role.funcionario{background:rgba(96,165,250,0.15);color:var(--blue)}
+.btn-logout{padding:4px 10px;font-size:11px;border-radius:5px;cursor:pointer;background:transparent;border:1px solid var(--border2);color:var(--txt3);font-family:'DM Sans',sans-serif}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+/* PERMISSION: hide elements for funcionario */
+.admin-only{display:none}
+body.role-admin .admin-only{display:initial}
+body.role-admin .admin-only-flex{display:flex}
+body.role-admin .admin-only-block{display:block}
+.admin-only-flex{display:none}
+.admin-only-block{display:none}
+/* AIP box gold */
+.aip{background:linear-gradient(135deg,rgba(199,171,109,0.06),rgba(199,171,109,0.02));border:1px solid rgba(199,171,109,0.2);border-radius:var(--radius-lg);padding:14px;margin-bottom:14px}
+.aip-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:13px;font-weight:600;color:var(--gold)}
 </style>
 </head>
 <body>
 
-<div id="lov" class="lov"><div class="lsp"></div><div class="ltx" id="ltx">Conectando ao Supabase...</div></div>
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="login-screen">
+  <div class="login-box">
+    <span class="login-diamond">💎</span>
+    <div class="login-logo">SCARLAT</div>
+    <div class="login-sub">Sistema Financeiro</div>
+    <input type="email" id="login-email" class="login-input" placeholder="Email" autocomplete="email">
+    <input type="password" id="login-pass" class="login-input" placeholder="Senha" autocomplete="current-password">
+    <button id="login-btn" class="login-btn" onclick="doLogin()">Entrar</button>
+    <div id="login-error" class="login-error"></div>
+    <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:14px">
+      <div style="font-size:10px;color:var(--txt3);cursor:pointer;letter-spacing:0.5px" onclick="document.getElementById('login-config').style.display=document.getElementById('login-config').style.display==='none'?'block':'none'">⚙️ Configurar conexão</div>
+      <div id="login-config" style="display:none;margin-top:10px;text-align:left">
+        <input type="text" class="login-input" id="lc-url" placeholder="Supabase URL" value="${localStorage.getItem('financeai_supabase_url') || ''}">
+        <input type="text" class="login-input" id="lc-key" placeholder="Supabase Anon Key" value="${localStorage.getItem('financeai_supabase_anon_key') || ''}">
+        <button class="login-btn" style="background:var(--bg4);color:var(--txt);font-size:12px;padding:8px" onclick="localStorage.setItem('financeai_supabase_url',document.getElementById('lc-url').value.trim());localStorage.setItem('financeai_supabase_anon_key',document.getElementById('lc-key').value.trim());location.reload()">Salvar e Recarregar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div class="app">
+<div id="lov" class="lov" style="display:none"><div class="lsp"></div><div class="ltx" id="ltx">Carregando...</div></div>
+
+<div class="app" id="app-main" style="display:none">
   <div class="sidebar">
     <div class="logo">
-      <div class="logo-icon">💰</div>
-      <div class="logo-title">FinanceAI</div>
-      <div class="logo-sub">Agente Financeiro Inteligente</div>
+      <div class="logo-title">SCARLAT</div>
+      <div class="logo-sub">Sistema Financeiro</div>
       <div class="sync-row"><div class="sync-dot" id="sdot"></div><span class="sync-txt" id="stxt">Conectando...</span></div>
     </div>
     <nav class="nav" id="nav">
@@ -168,7 +218,15 @@ tr:hover td{background:rgba(255,255,255,0.02)}
   <div class="main">
     <div class="topbar">
       <div class="page-title" id="page-title">Dashboard</div>
-      <div class="topbar-right"><select id="mes-sel"></select><select id="ano-sel"></select><button class="btn btn-g btn-sm" onclick="reloadAllData()" title="Recarregar">↻</button></div>
+      <div class="topbar-right">
+        <select id="mes-sel"></select><select id="ano-sel"></select>
+        <button class="btn btn-g btn-sm" onclick="reloadAllData()" title="Recarregar">↻</button>
+        <div class="user-bar">
+          <span id="user-name"></span>
+          <span id="user-role-badge" class="user-role"></span>
+          <button class="btn-logout" onclick="doLogout()">Sair</button>
+        </div>
+      </div>
     </div>
     <div class="content" id="content"></div>
   </div>
@@ -180,7 +238,7 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 <input type="file" id="extrato-input" accept=".pdf,.csv,.ofx,.txt" style="display:none" onchange="handleExtrato(event)">
 
 <!-- ============================================================ -->
-<!-- SUPABASE INIT (single source of truth — Firebase removed)    -->
+<!-- SUPABASE INIT + AUTH + DATA LAYER                           -->
 <!-- ============================================================ -->
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
@@ -192,7 +250,123 @@ const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY) ? createClient(SUPABASE_URL
 window.supabase = supabase;
 window.supabaseReady = !!supabase;
 
-// === SUPABASE CRUD LAYER ===
+// ============================================================
+// AUTH SYSTEM
+// ============================================================
+window.currentUser = null;
+window.currentProfile = null;
+window.userRole = null;
+
+// Check if already logged in
+async function checkSession() {
+  if (!supabase) {
+    showLogin('Configure Supabase URL e chave nas Configurações');
+    return;
+  }
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      await onLoginSuccess(session.user);
+    } else {
+      showLogin();
+    }
+  } catch (e) {
+    console.error('Session check error:', e);
+    showLogin();
+  }
+}
+
+function showLogin(msg) {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-main').style.display = 'none';
+  if (msg) document.getElementById('login-error').textContent = msg;
+}
+
+function showApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-main').style.display = 'flex';
+}
+
+window.doLogin = async function() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  const btn = document.getElementById('login-btn');
+  errEl.textContent = '';
+  if (!email || !pass) { errEl.textContent = 'Preencha email e senha'; return; }
+  if (!supabase) { errEl.textContent = 'Supabase não configurado'; return; }
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+    if (error) throw error;
+    await onLoginSuccess(data.user);
+  } catch (e) {
+    errEl.textContent = e.message === 'Invalid login credentials' ? 'Email ou senha incorretos' : (e.message || 'Erro ao entrar');
+  }
+  btn.disabled = false; btn.textContent = 'Entrar';
+};
+
+// Enter key on password field
+document.getElementById('login-pass')?.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+window.doLogout = async function() {
+  if (supabase) await supabase.auth.signOut();
+  window.currentUser = null; window.currentProfile = null; window.userRole = null;
+  document.body.className = '';
+  showLogin();
+};
+
+async function onLoginSuccess(user) {
+  window.currentUser = user;
+  // Load profile
+  try {
+    const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+    window.currentProfile = profile;
+    window.userRole = profile?.role || 'funcionario';
+  } catch (e) {
+    // Profile might not exist yet — default to funcionario
+    window.currentProfile = { email: user.email, nome: user.email, role: 'funcionario' };
+    window.userRole = 'funcionario';
+  }
+  // Apply role to body
+  document.body.className = 'role-' + window.userRole;
+  // Update UI
+  const nameEl = document.getElementById('user-name');
+  if (nameEl) nameEl.textContent = window.currentProfile?.nome || user.email;
+  const roleEl = document.getElementById('user-role-badge');
+  if (roleEl) {
+    roleEl.textContent = window.userRole;
+    roleEl.className = 'user-role ' + window.userRole;
+  }
+  // Apply permissions — hide pages for funcionario
+  applyPermissions();
+  showApp();
+  loadAll();
+}
+
+function applyPermissions() {
+  const role = window.userRole;
+  // Pages restricted to admin
+  const adminPages = ['retirada', 'fechamento', 'dre', 'config', 'relatorio'];
+  // Pages funcionario can only VIEW (no write)
+  const readOnlyPages = ['boletos', 'pagamentos', 'precos'];
+  document.querySelectorAll('.nav-item').forEach(el => {
+    const page = el.dataset.page;
+    if (!page) return;
+    if (role === 'funcionario' && adminPages.includes(page)) {
+      el.style.display = 'none';
+    } else {
+      el.style.display = '';
+    }
+  });
+  // Store permissions globally for use in render functions
+  window.canWrite = (role === 'admin');
+  window.canViewFinancials = (role === 'admin');
+}
+
+// ============================================================
+// SUPABASE CRUD LAYER (unchanged)
+// ============================================================
 window.SB = {
   async list(table, opts = {}) {
     if (!supabase) return [];
@@ -231,7 +405,9 @@ window.SB = {
   }
 };
 
-// === SYNC STATUS UI ===
+// ============================================================
+// SYNC STATUS UI
+// ============================================================
 function setSaving() {
   const d = document.getElementById('sdot'); if(d) d.className = 'sync-dot saving';
   const t = document.getElementById('stxt'); if(t) t.textContent = 'Salvando...';
@@ -239,24 +415,26 @@ function setSaving() {
 function setOnline() {
   const d = document.getElementById('sdot'); if(d) d.className = 'sync-dot online';
   const t = document.getElementById('stxt'); if(t) t.textContent = 'Salvo ✓';
-  setTimeout(() => { if(t) t.textContent = supabase ? 'Online — Supabase' : 'Offline'; }, 2000);
+  setTimeout(() => { if(t) t.textContent = 'Online — Supabase'; }, 2000);
 }
 window.setSaving = setSaving;
 window.setOnline = setOnline;
 
-// === RPC EXECUTOR ===
+// ============================================================
+// RPC EXECUTOR (unchanged)
+// ============================================================
 window.executarAgenteFinanceiro = async (acao, payload = {}) => {
   return await SB.rpc('executar_agente_financeiro', { p_acao: acao, p_payload: payload });
 };
 
-// === RESOLVE FORNECEDOR (find or create + vinculo) ===
+// ============================================================
+// RESOLVE FORNECEDOR (unchanged)
+// ============================================================
 window.resolveFornecedor = async (nome) => {
   if (!nome || !supabase) return null;
   const nomeNorm = nome.toLowerCase().trim();
-  // Try existing
   const existing = (window.state?.sb_fornecedores || []).find(f => (f.nome || '').toLowerCase().trim() === nomeNorm);
   if (existing) return existing.id;
-  // Create new
   try {
     const novo = await SB.insert('fornecedores', { nome });
     if (window.state?.sb_fornecedores) window.state.sb_fornecedores.push(novo);
@@ -264,27 +442,24 @@ window.resolveFornecedor = async (nome) => {
   } catch(e) { console.error('resolveFornecedor:', e); return null; }
 };
 
-// === INIT ===
-document.getElementById('lov').style.display = 'none';
-document.getElementById('sdot').className = supabase ? 'sync-dot online' : 'sync-dot error';
-document.getElementById('stxt').textContent = supabase ? 'Online — Supabase' : 'Supabase não configurado';
-document.getElementById('ai-status').textContent = supabase ? 'Supabase ✓' : 'Configurar Supabase';
-
-// === LAST UPDATE ===
+// ============================================================
+// LAST UPDATE
+// ============================================================
 window.lastUpdate = null;
 function stampUpdate() { window.lastUpdate = new Date(); }
 
-// === LOAD ALL DATA FROM SUPABASE ===
+// ============================================================
+// LOAD ALL DATA FROM SUPABASE (unchanged logic)
+// ============================================================
 async function loadAll() {
   if (!supabase) {
     window.state = window.state || {};
-    window.state.sb_fornecedores = []; window.state.sb_categorias = []; window.state.sb_itens = [];
-    window.state.sb_lancamentos = []; window.state.sb_boletos = []; window.state.sb_compras = [];
-    window.state.sb_pagamentos = []; window.state.recebimentos = []; window.state.retiradas = [];
-    window.state.sb_documentos = []; window.state.fechamentos = [];
+    ['sb_fornecedores','sb_categorias','sb_itens','sb_lancamentos','sb_boletos','sb_compras','sb_pagamentos','sb_documentos','recebimentos','retiradas','fechamentos'].forEach(k => { if(!window.state[k]) window.state[k]=[]; });
     if (typeof render === 'function') render();
     return;
   }
+  const lov = document.getElementById('lov');
+  if (lov) lov.style.display = 'flex';
   try {
     const s = window.state;
     s.sb_fornecedores = await SB.list('fornecedores', { order: 'criado_em' });
@@ -301,6 +476,10 @@ async function loadAll() {
   } catch (e) {
     console.error('loadAll error:', e);
   }
+  if (lov) lov.style.display = 'none';
+  document.getElementById('sdot').className = 'sync-dot online';
+  document.getElementById('stxt').textContent = 'Online — Supabase';
+  document.getElementById('ai-status').textContent = 'Supabase ✓';
   autoMarkOverdue();
   stampUpdate();
   if (typeof render === 'function') render();
@@ -313,7 +492,10 @@ window.reloadAllData = async function() {
   toast('Dados atualizados!');
 };
 
-loadAll();
+// ============================================================
+// BOOT: Check session on load
+// ============================================================
+checkSession();
 </script>
 
 <!-- ============================================================ -->
@@ -364,6 +546,11 @@ function toast(msg, type = 'ts') {
 }
 
 function toggleForm(id) { const el = document.getElementById(id); if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none'; }
+
+// Permission helpers
+function isAdmin() { return window.userRole === 'admin'; }
+function writeBtn(html) { return isAdmin() ? html : ''; }
+function adminBlock(html) { return isAdmin() ? html : ''; }
 
 // === PERIOD FILTER ===
 function getSelMes() { return parseInt(mesSel.value); }
