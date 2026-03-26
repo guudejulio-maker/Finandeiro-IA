@@ -472,14 +472,14 @@ async function loadAll() {
   if (lov) lov.style.display = 'flex';
   try {
     const s = window.state;
-    s.sb_fornecedores = await SB.list('fornecedores', { order: 'criado_em' });
-    s.sb_categorias = await SB.list('categorias', { order: 'criado_em' });
-    s.sb_itens = await SB.list('itens', { order: 'criado_em' });
-    s.sb_lancamentos = await SB.list('lancamentos', { order: 'criado_em', asc: false });
-    s.sb_boletos = await SB.list('boletos', { order: 'criado_em', asc: false });
-    s.sb_compras = await SB.list('compras', { order: 'criado_em', asc: false });
-    s.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false });
-    s.sb_documentos = await SB.list('documentos', { order: 'criado_em', asc: false });
+    s.sb_fornecedores = await SB.list('fornecedores', { order: 'created_at' });
+    s.sb_categorias = await SB.list('categorias', { order: 'created_at' });
+    s.sb_itens = await SB.list('itens', { order: 'created_at' });
+    s.sb_lancamentos = await SB.list('lancamentos', { order: 'created_at', asc: false });
+    s.sb_boletos = await SB.list('boletos', { order: 'created_at', asc: false });
+    s.sb_compras = await SB.list('compras', { order: 'created_at', asc: false });
+    s.sb_pagamentos = await SB.list('pagamentos', { order: 'created_at', asc: false });
+    s.sb_documentos = await SB.list('documentos', { order: 'created_at', asc: false });
     s.recebimentos = await SB.list('recebimentos', { order: 'data', asc: false });
     s.retiradas = await SB.list('retiradas_diretor', { order: 'data', asc: false });
     try { s.fechamentos = await SB.list('fechamentos', { order: 'data', asc: false }); } catch(e) { s.fechamentos = []; }
@@ -1019,7 +1019,7 @@ function pgProd() {
     <tbody>${(state.sb_itens || []).length ? state.sb_itens.map(i => `<tr>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${i.id}</td>
       <td style="font-weight:500">${i.nome || '—'}</td>
-      <td style="color:var(--txt2)">${i['Ótimo'] || i.otimo || '—'}</td>
+      <td style="color:var(--txt2)">${i.unidade || '—'}</td>
       <td style="color:var(--txt3);font-size:11px">${i.aliases || '—'}</td>
       <td><button class="btn btn-d btn-sm" onclick="delSB('itens',${i.id})">×</button></td>
     </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhum item</td></tr>'}</tbody>
@@ -1343,7 +1343,7 @@ window.addLancSB = async function() {
   if (!desc || !val) return toast('Preencha descrição e valor', 'te');
   try {
     setSaving();
-    const row = { descricao: desc, valor: val, status, data_emissao: emissao, data_vencimento: venc, status_de_observacao: obs || null };
+    const row = { descricao: desc, valor: val, status, data_emissao: emissao, data_vencimento: venc, observacao_status: obs || null };
     if (forn) row.fornecedor_id = +forn;
     if (item) row.item_id = +item;
     const data = await SB.insert('lancamentos', row);
@@ -1403,7 +1403,7 @@ window.addItemSB = async function() {
   try {
     setSaving();
     const row = { nome };
-    if (otimo) row['Ótimo'] = otimo;
+    if (otimo) row.unidade = otimo;
     if (alias) row.aliases = alias;
     const data = await SB.insert('itens', row);
     state.sb_itens.push(data);
