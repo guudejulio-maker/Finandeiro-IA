@@ -320,14 +320,24 @@ async function onLoginSuccess(user) {
   window.currentUser = user;
   // Load profile
   try {
-    const { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
-    window.currentProfile = profile;
-    window.userRole = profile?.role || 'funcionario';
+    const { data: profile, error } = await supabase.from('profiles').select('*').eq('id', user.id).maybeSingle();
+    if (error) {
+      console.warn('Erro ao carregar perfil:', error.message);
+    }
+    if (profile) {
+      window.currentProfile = profile;
+      window.userRole = profile.role || 'funcionario';
+    } else {
+      console.warn('Perfil não encontrado para user.id:', user.id);
+      window.currentProfile = { email: user.email, nome: user.email, role: 'funcionario' };
+      window.userRole = 'funcionario';
+    }
   } catch (e) {
-    // Profile might not exist yet — default to funcionario
+    console.error('Exceção ao carregar perfil:', e);
     window.currentProfile = { email: user.email, nome: user.email, role: 'funcionario' };
     window.userRole = 'funcionario';
   }
+  console.log('Role definido:', window.userRole);
   // Apply role to body
   document.body.className = 'role-' + window.userRole;
   // Update UI
