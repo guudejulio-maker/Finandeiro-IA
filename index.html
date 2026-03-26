@@ -21,7 +21,7 @@
 --radius:10px;--radius-lg:14px;--accent:var(--gold)}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
 .app{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:230px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar{width:230px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;min-height:0;height:100vh}
 .logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);text-align:center}
 .logo-img{height:28px;margin-bottom:6px;opacity:0.95}
 .logo-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:3px;color:var(--gold)}
@@ -33,7 +33,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .sync-dot.error{background:var(--red)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .sync-txt{font-size:10px;color:var(--txt3)}
-.nav{flex:1;padding:8px 0;overflow-y:auto}
+.nav{flex:1;padding:8px 0;overflow-y:auto;min-height:0}
 .nav-sec{font-size:10px;color:var(--txt3);padding:10px 16px 4px;letter-spacing:0.8px;text-transform:uppercase}
 .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;cursor:pointer;color:var(--txt2);border-left:2px solid transparent;transition:all 0.15s;user-select:none}
 .nav-item:hover{background:var(--bg3);color:var(--txt)}
@@ -1124,13 +1124,14 @@ function pgPDF() {
     <div class="card" style="margin-bottom:10px">
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
         <div><div style="font-size:13px;font-weight:600">${item.descricao || 'Doc'}</div><div style="font-size:11px;color:var(--txt3)">📄 ${item.arquivo}</div></div>
-        <span class="badge ${item.tipo === 'despesa' ? 'br' : 'bg'}">${item.tipo}</span>
+        <span class="badge ${item.tipo === 'despesa' ? 'br' : item.tipo === 'receita' ? 'bg' : 'ba'}">${item.tipo_documento || item.tipo || 'documento'}</span>
       </div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px">
         ${item.fornecedor ? `<div><div style="font-size:10px;color:var(--txt3)">Fornecedor</div><div style="font-size:12px;font-weight:500">${item.fornecedor}</div></div>` : ''}
         <div><div style="font-size:10px;color:var(--txt3)">Valor</div><div style="font-size:12px;font-weight:500;color:var(--green)">${fmt(item.valor)}</div></div>
         ${item.vencimento ? `<div><div style="font-size:10px;color:var(--txt3)">Vencimento</div><div style="font-size:12px">${item.vencimento}</div></div>` : ''}
       </div>
+      ${item.resumo ? `<div style="font-size:11px;color:var(--txt2);margin-bottom:8px;line-height:1.5">${item.resumo}</div>` : ''}
       <div style="display:flex;gap:8px">
         <button class="btn btn-s btn-sm" onclick="confirmarPDF(${i})">✓ Confirmar</button>
         <button class="btn btn-g btn-sm" onclick="rejeitarPDF(${i})">Descartar</button>
@@ -1504,7 +1505,7 @@ function handlePDF(e) {
 }
 
 async function processarPDF(file) {
-  if (!API_KEY) { toast('Configure API Key', 'te'); state.page = 'config'; render(); return; }
+  if (!window.supabase) { toast('Supabase não configurado', 'te'); return; }
   const drop = document.getElementById('pdf-drop'), proc = document.getElementById('pdf-proc');
   if (drop) drop.style.display = 'none'; if (proc) proc.style.display = 'block';
   try {
@@ -1516,47 +1517,36 @@ async function processarPDF(file) {
       const ct = await pg.getTextContent();
       txt += ct.items.map(item => item.str).join(' ') + '\n';
     }
-    const result = await iaAnalise(txt, `Analise documento financeiro de joalheria. Retorne APENAS JSON: {"tipo":"despesa"/"receita","descricao":"","fornecedor":"","valor":0,"vencimento":"YYYY-MM-DD","categoria":"","resumo":""}`);
 
-    // Classificação automática do tipo de documento
-    const nomeArq = String(file.name || '').toLowerCase();
-    const desc = String(result.descricao || '').toLowerCase();
-    const forn = String(result.fornecedor || '').toLowerCase();
-    const resumo = String(result.resumo || '').toLowerCase();
-    const textoBase = `${nomeArq} ${desc} ${forn} ${resumo} ${txt.slice(0, 500).toLowerCase()}`;
+    // Envia texto bruto ao Supabase — toda inteligência fica no backend
+    const result = await SB.rpc('processar_documento_pdf', {
+      p_texto: txt.slice(0, 8000),
+      p_nome_arquivo: file.name
+    });
 
-    let tipo_documento;
-    if (
-      textoBase.includes('boleto') ||
-      textoBase.includes('linha digitavel') ||
-      textoBase.includes('linha digitável') ||
-      textoBase.includes('codigo de barras') ||
-      textoBase.includes('código de barras')
-    ) {
-      tipo_documento = 'boleto';
-    } else if (
-      textoBase.includes('orcamento') ||
-      textoBase.includes('orçamento') ||
-      textoBase.includes('pedido') ||
-      textoBase.includes('cotacao') ||
-      textoBase.includes('cotação')
-    ) {
-      tipo_documento = 'orçamento';
-    } else if (
-      textoBase.includes('nota fiscal') ||
-      textoBase.includes('nf-e') ||
-      textoBase.includes('danfe')
-    ) {
-      tipo_documento = 'nota fiscal';
-    } else {
-      tipo_documento = 'outros';
-    }
+    // Supabase retorna JSON estruturado; front apenas exibe
+    const dados = result || {};
+    state.pdfPendentes.push({
+      tipo_documento: dados.tipo_documento || 'outros',
+      tipo: dados.tipo || 'despesa',
+      fornecedor: dados.fornecedor || '',
+      descricao: dados.descricao || 'Documento',
+      valor: Number(dados.valor_total || dados.valor || 0),
+      vencimento: dados.vencimento || dados.data || '',
+      data: dados.data || '',
+      categoria: dados.categoria || '',
+      resumo: dados.resumo || '',
+      itens: dados.itens || [],
+      arquivo: file.name,
+      status: 'pendente',
+      _payload: dados
+    });
 
-    state.pdfPendentes.push({ ...result, tipo_documento, arquivo: file.name, status: 'pendente' });
     if (drop) drop.style.display = 'block'; if (proc) proc.style.display = 'none';
     render(); toast('PDF analisado!');
   } catch (err) {
     if (drop) drop.style.display = 'block'; if (proc) proc.style.display = 'none';
+    console.error('processarPDF:', err);
     toast('Erro: ' + err.message, 'te');
   }
 }
@@ -1571,6 +1561,31 @@ async function iaAnalise(texto, instrucao) {
 }
 
 function rejeitarPDF(i) { state.pdfPendentes.splice(i, 1); render(); toast('Descartado.'); }
+
+window.confirmarPDF = async function(i) {
+  const item = state.pdfPendentes[i];
+  if (!item) return;
+  if (!window.supabase) { toast('Supabase não configurado', 'te'); return; }
+  try {
+    setSaving();
+    await SB.rpc('confirmar_documento_pdf', {
+      p_payload: JSON.stringify(item._payload || item)
+    });
+    setOnline();
+    state.pdfPendentes.splice(i, 1);
+    render();
+    toast('Documento confirmado!');
+    // Recarregar dados para refletir o que o backend inseriu
+    await loadAll();
+  } catch (e) {
+    console.error('confirmarPDF:', e);
+    toast('Erro ao confirmar: ' + e.message, 'te');
+  }
+};
+
+window.rejeitarPDF = rejeitarPDF;
+window.handleDrop = handleDrop;
+window.handlePDF = handlePDF;
 
 // ============================================================
 // EXTRATO BANCÁRIO
