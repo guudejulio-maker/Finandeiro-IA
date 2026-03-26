@@ -19,9 +19,9 @@
 --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.1);--purple-txt:#a78bfa;
 --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.1);
 --radius:10px;--radius-lg:14px;--accent:var(--gold)}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;height:100vh;height:100dvh;overflow:hidden}
-.app{display:grid;grid-template-columns:230px minmax(0,1fr);height:100vh;height:100dvh;overflow:hidden}
-.sidebar{width:230px;background:var(--bg2);border-right:1px solid var(--border);display:grid;grid-template-rows:auto minmax(0,1fr) auto;flex-shrink:0;min-height:100vh;min-height:100dvh;height:100%;max-height:100dvh;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.app{display:flex;height:100vh;overflow:hidden}
+.sidebar{flex-shrink:0;height:100vh;width:230px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
 .logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);text-align:center}
 .logo-img{height:28px;margin-bottom:6px;opacity:0.95}
 .logo-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:3px;color:var(--gold)}
@@ -33,22 +33,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .sync-dot.error{background:var(--red)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .sync-txt{font-size:10px;color:var(--txt3)}
-.nav{min-height:0;height:auto;padding:8px 0 20px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;scrollbar-gutter:stable}
-.sidebar-footer{padding:10px;border-top:1px solid var(--border);flex-shrink:0}
+.nav{flex:1;overflow-y:auto;height:0;flex:1;padding:8px 0;overflow-y:auto}
 .nav-sec{font-size:10px;color:var(--txt3);padding:10px 16px 4px;letter-spacing:0.8px;text-transform:uppercase}
 .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;cursor:pointer;color:var(--txt2);border-left:2px solid transparent;transition:all 0.15s;user-select:none}
 .nav-item:hover{background:var(--bg3);color:var(--txt)}
 .nav-item.active{background:rgba(199,171,109,0.08);color:var(--gold);border-left-color:var(--gold);font-weight:500}
 .nav-badge{margin-left:auto;background:var(--red-bg);color:var(--red);font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600}
+.sidebar-footer{padding:10px;border-top:1px solid var(--border)}
 .ai-pill{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(199,171,109,0.08);border:1px solid rgba(199,171,109,0.2);border-radius:var(--radius)}
 .ai-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
 .ai-pill-txt{font-size:12px;color:var(--gold);font-weight:500}
-.main{flex:1;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column}
 .topbar{padding:0 22px;height:54px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg2);flex-shrink:0}
 .page-title{font-size:15px;font-weight:600}
 .topbar-right{display:flex;align-items:center;gap:8px}
 .topbar-right select{font-size:12px;padding:5px 9px;border:1px solid var(--border2);border-radius:7px;background:var(--bg3);color:var(--txt)}
-.content{flex:1;overflow-y:auto;overflow-x:auto;padding:18px 22px;min-width:0}
+.content{flex:1;overflow-x:auto;min-width:0;flex:1;overflow-y:auto;overflow-x:auto;padding:18px 22px;min-width:0}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:14px}
 .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:14px}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px}
@@ -616,15 +616,7 @@ setInterval(() => {
 }, 1000);
 
 // === NAVIGATION ===
-const navEl = document.getElementById('nav');
-if (navEl) {
-  navEl.addEventListener('wheel', e => {
-    navEl.scrollTop += e.deltaY;
-  }, { passive: true });
-}
-
 document.getElementById('nav').addEventListener('click', e => {
-
   const item = e.target.closest('.nav-item');
   if (!item || !item.dataset.page) return;
   state.page = item.dataset.page;
@@ -1576,76 +1568,6 @@ async function iaAnalise(texto, instrucao) {
   });
   const data = await res.json(); const t = data.content?.[0]?.text || '{}';
   try { return JSON.parse(t.replace(/```json|```/g, '').trim()); } catch (e) { return { tipo: 'despesa', descricao: 'Doc', valor: 0 }; }
-}
-
-window.confirmarPDF = async function(i) {
-  const obj = state.pdfPendentes[i];
-  if (!obj) return;
-
-  try {
-    setSaving();
-
-    let fornecedor_id = null;
-    const fornecedorNome = (obj.fornecedor || '').trim();
-    if (fornecedorNome) {
-      fornecedor_id = await resolveFornecedor(fornecedorNome);
-    }
-
-    const tipoDoc = String(obj.tipo_documento || '').toLowerCase();
-    const descricao = (obj.descricao || obj.resumo || obj.arquivo || 'Documento importado').trim();
-    const valor = +(obj.valor || 0);
-    const vencimento = obj.vencimento || today();
-    const status = obj.status_pagamento || 'pendente';
-
-    if (tipoDoc === 'boleto') {
-      const row = {
-        fornecedor_id,
-        descricao,
-        valor,
-        data_vencimento: vencimento,
-        status
-      };
-
-      const data = await SB.insert('boletos', row);
-      if (!Array.isArray(state.sb_boletos)) state.sb_boletos = [];
-      state.sb_boletos.unshift(data);
-      toast('Boleto confirmado!');
-    } else if (tipoDoc === 'orçamento' || tipoDoc === 'orcamento') {
-      const row = {
-        descricao,
-        valor,
-        data_compra: vencimento
-      };
-      if (fornecedor_id) row.fornecedor_id = fornecedor_id;
-
-      const data = await SB.insert('compras', row);
-      if (!Array.isArray(state.sb_compras)) state.sb_compras = [];
-      state.sb_compras.unshift(data);
-      toast('Orçamento enviado para Compras!');
-    } else {
-      const row = {
-        descricao,
-        valor,
-        status,
-        data_emissao: today(),
-        data_vencimento: vencimento,
-        status_de_observacao: tipoDoc ? `Importado via PDF (${tipoDoc})` : 'Importado via PDF'
-      };
-      if (fornecedor_id) row.fornecedor_id = fornecedor_id;
-
-      const data = await SB.insert('lancamentos', row);
-      if (!Array.isArray(state.sb_lancamentos)) state.sb_lancamentos = [];
-      state.sb_lancamentos.unshift(data);
-      toast('Documento confirmado em Lançamentos!');
-    }
-
-    state.pdfPendentes.splice(i, 1);
-    setOnline();
-    render();
-  } catch (e) {
-    console.error(e);
-    toast('Erro ao confirmar PDF: ' + (e?.message || e), 'te');
-  }
 }
 
 function rejeitarPDF(i) { state.pdfPendentes.splice(i, 1); render(); toast('Descartado.'); }
