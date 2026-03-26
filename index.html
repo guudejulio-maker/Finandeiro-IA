@@ -19,9 +19,9 @@
 --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.1);--purple-txt:#a78bfa;
 --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.1);
 --radius:10px;--radius-lg:14px;--accent:var(--gold)}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
-.app{display:flex;height:100vh;height:100dvh;overflow:hidden}
-.sidebar{width:230px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;min-height:0;height:100%;max-height:100dvh;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;height:100vh;height:100dvh;overflow:hidden}
+.app{display:grid;grid-template-columns:230px minmax(0,1fr);height:100vh;height:100dvh;overflow:hidden}
+.sidebar{width:230px;background:var(--bg2);border-right:1px solid var(--border);display:grid;grid-template-rows:auto minmax(0,1fr) auto;flex-shrink:0;min-height:100vh;min-height:100dvh;height:100%;max-height:100dvh;overflow:hidden}
 .logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);text-align:center}
 .logo-img{height:28px;margin-bottom:6px;opacity:0.95}
 .logo-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;letter-spacing:3px;color:var(--gold)}
@@ -33,7 +33,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--txt);min-
 .sync-dot.error{background:var(--red)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .sync-txt{font-size:10px;color:var(--txt3)}
-.nav{flex:1 1 auto;height:0;padding:8px 0 20px;overflow-y:auto;overflow-x:hidden;min-height:0;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
+.nav{min-height:0;height:auto;padding:8px 0 20px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;scrollbar-gutter:stable}
 .sidebar-footer{padding:10px;border-top:1px solid var(--border);flex-shrink:0}
 .nav-sec{font-size:10px;color:var(--txt3);padding:10px 16px 4px;letter-spacing:0.8px;text-transform:uppercase}
 .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:13px;cursor:pointer;color:var(--txt2);border-left:2px solid transparent;transition:all 0.15s;user-select:none}
@@ -616,7 +616,15 @@ setInterval(() => {
 }, 1000);
 
 // === NAVIGATION ===
+const navEl = document.getElementById('nav');
+if (navEl) {
+  navEl.addEventListener('wheel', e => {
+    navEl.scrollTop += e.deltaY;
+  }, { passive: true });
+}
+
 document.getElementById('nav').addEventListener('click', e => {
+
   const item = e.target.closest('.nav-item');
   if (!item || !item.dataset.page) return;
   state.page = item.dataset.page;
@@ -1583,22 +1591,57 @@ window.confirmarPDF = async function(i) {
       fornecedor_id = await resolveFornecedor(fornecedorNome);
     }
 
-    const row = {
-      fornecedor_id,
-      descricao: (obj.descricao || obj.resumo || obj.arquivo || 'Documento importado').trim(),
-      valor: +(obj.valor || 0),
-      data_vencimento: obj.vencimento || today(),
-      status: obj.status_pagamento || 'pendente'
-    };
+    const tipoDoc = String(obj.tipo_documento || '').toLowerCase();
+    const descricao = (obj.descricao || obj.resumo || obj.arquivo || 'Documento importado').trim();
+    const valor = +(obj.valor || 0);
+    const vencimento = obj.vencimento || today();
+    const status = obj.status_pagamento || 'pendente';
 
-    const data = await SB.insert('boletos', row);
-    if (!Array.isArray(state.sb_boletos)) state.sb_boletos = [];
-    state.sb_boletos.unshift(data);
+    if (tipoDoc === 'boleto') {
+      const row = {
+        fornecedor_id,
+        descricao,
+        valor,
+        data_vencimento: vencimento,
+        status
+      };
+
+      const data = await SB.insert('boletos', row);
+      if (!Array.isArray(state.sb_boletos)) state.sb_boletos = [];
+      state.sb_boletos.unshift(data);
+      toast('Boleto confirmado!');
+    } else if (tipoDoc === 'orçamento' || tipoDoc === 'orcamento') {
+      const row = {
+        descricao,
+        valor,
+        data_compra: vencimento
+      };
+      if (fornecedor_id) row.fornecedor_id = fornecedor_id;
+
+      const data = await SB.insert('compras', row);
+      if (!Array.isArray(state.sb_compras)) state.sb_compras = [];
+      state.sb_compras.unshift(data);
+      toast('Orçamento enviado para Compras!');
+    } else {
+      const row = {
+        descricao,
+        valor,
+        status,
+        data_emissao: today(),
+        data_vencimento: vencimento,
+        status_de_observacao: tipoDoc ? `Importado via PDF (${tipoDoc})` : 'Importado via PDF'
+      };
+      if (fornecedor_id) row.fornecedor_id = fornecedor_id;
+
+      const data = await SB.insert('lancamentos', row);
+      if (!Array.isArray(state.sb_lancamentos)) state.sb_lancamentos = [];
+      state.sb_lancamentos.unshift(data);
+      toast('Documento confirmado em Lançamentos!');
+    }
 
     state.pdfPendentes.splice(i, 1);
     setOnline();
     render();
-    toast('Confirmado!');
   } catch (e) {
     console.error(e);
     toast('Erro ao confirmar PDF: ' + (e?.message || e), 'te');
