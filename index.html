@@ -1010,10 +1010,10 @@ function pgComp() {
       <div class="fl"><label>Data</label><input id="sco-data" type="date" value="${today()}"/></div>
     </div>
     <div class="fg c4">
-      <div class="fl"><label>Quantidade</label><input id="sco-qtd" type="number" step="0.01" value="1"/></div>
+      <div class="fl"><label>Quantidade</label><input id="sco-qtd" type="number" step="0.01" value="1" oninput="autoCalc('sco','unit')"/></div>
       <div class="fl"><label>Unidade</label><select id="sco-un"><option value="UN">UN</option><option value="KG">KG</option><option value="G">G</option><option value="L">L</option><option value="ML">ML</option><option value="M">M</option><option value="CX">CX</option><option value="PC">PC</option><option value="PAR">PAR</option></select></div>
-      <div class="fl"><label>Valor Total (R$)</label><input id="sco-val" type="number" step="0.01"/></div>
-      <div class="fl"></div>
+      <div class="fl"><label>Valor Unitário (R$)</label><input id="sco-vunit" type="number" step="0.01" oninput="autoCalc('sco','unit')"/></div>
+      <div class="fl"><label>Valor Total (R$)</label><input id="sco-val" type="number" step="0.01" style="font-weight:600;color:var(--blue)" oninput="autoCalc('sco','total')"/></div>
     </div>
     <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addCompSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcomp')">Cancelar</button></div>
   </div>
@@ -1022,21 +1022,24 @@ function pgComp() {
   <div id="compra-detalhe"></div>
 
   <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Fornecedor</th><th>Nº Doc</th><th>Descrição</th><th style="text-align:center">Qtd</th><th>UN</th><th>Data</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-    <tbody>${lista.length ? lista.map(c => `<tr style="cursor:pointer" onclick="verCompra(${c.id})">
+    <thead><tr><th>ID</th><th>Fornecedor</th><th>Nº Doc</th><th>Descrição</th><th style="text-align:center">Qtd</th><th>UN</th><th style="text-align:right">Vlr Unit.</th><th style="text-align:right">Total</th><th>Data</th><th></th></tr></thead>
+    <tbody>${lista.length ? lista.map(c => {
+      const vUnit = c.valor_unitario || (c.quantidade > 0 ? c.valor / c.quantidade : c.valor);
+      return `<tr style="cursor:pointer" onclick="verCompra(${c.id})">
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${c.id}</td>
       <td style="font-weight:500">${getFornNome(c.fornecedor_id)}</td>
       <td style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px">${c.numero_documento || '—'}</td>
       <td style="color:var(--txt2)">${c.descricao || '—'}</td>
       <td style="text-align:center;font-family:'DM Mono',monospace;font-size:11px">${c.quantidade || 1}</td>
       <td style="color:var(--txt3);font-size:10px">${c.unidade || 'UN'}</td>
-      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${c.data_compra || '—'}</td>
+      <td style="text-align:right;color:var(--txt2);font-family:'DM Mono',monospace;font-size:11px">${fmt(vUnit)}</td>
       <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valor)}</td>
+      <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${c.data_compra || '—'}</td>
       <td style="display:flex;gap:4px" onclick="event.stopPropagation()">
         <button class="btn btn-g btn-sm" onclick="editarRegistro('compras',${c.id})">✏️</button>
         <button class="btn btn-d btn-sm" onclick="delSB('compras',${c.id})">×</button>
       </td>
-    </tr>`).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra neste mês</td></tr>'}</tbody>
+    </tr>`}).join('') : '<tr><td colspan="10" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -1740,18 +1743,53 @@ window.pagarLancSB = async function(id) {
 };
 
 // Compra
+// Calcular total automaticamente
+// Cálculo automático bidirecional: Qtd × Unit = Total (e vice-versa)
+window.autoCalc = function(prefix, source) {
+  const qtdEl = document.getElementById(prefix + '-qtd');
+  const unitEl = document.getElementById(prefix + '-vunit');
+  const totalEl = document.getElementById(prefix + '-val');
+  if (!qtdEl || !unitEl || !totalEl) return;
+  const qtd = +(qtdEl.value || 0);
+  const unit = +(unitEl.value || 0);
+  const total = +(totalEl.value || 0);
+  if (source === 'unit' && qtd > 0 && unit > 0) {
+    totalEl.value = (qtd * unit).toFixed(2);
+  } else if (source === 'total' && qtd > 0 && total > 0) {
+    unitEl.value = (total / qtd).toFixed(2);
+  }
+};
+
+// Auto-calc para modal de edição (usa IDs edit-quantidade, edit-valor_unitario, edit-valor)
+window.autoCalcEdit = function(source) {
+  const qtdEl = document.getElementById('edit-quantidade');
+  const unitEl = document.getElementById('edit-valor_unitario');
+  const totalEl = document.getElementById('edit-valor');
+  if (!qtdEl || !unitEl || !totalEl) return;
+  const qtd = +(qtdEl.value || 0);
+  const unit = +(unitEl.value || 0);
+  const total = +(totalEl.value || 0);
+  if (source === 'unit' && qtd > 0 && unit > 0) {
+    totalEl.value = (qtd * unit).toFixed(2);
+  } else if (source === 'total' && qtd > 0 && total > 0) {
+    unitEl.value = (total / qtd).toFixed(2);
+  }
+};
+function round2(n) { return Math.round(n * 100) / 100; }
+
 window.addCompSB = async function() {
   const forn = document.getElementById('sco-forn')?.value;
   const ndoc = (document.getElementById('sco-ndoc')?.value || '').trim();
   const desc = (document.getElementById('sco-desc')?.value || '').trim();
   const qtd = +(document.getElementById('sco-qtd')?.value || 1);
   const un = document.getElementById('sco-un')?.value || 'UN';
+  const vunit = +(document.getElementById('sco-vunit')?.value || 0);
   const val = +(document.getElementById('sco-val')?.value || 0);
-  const data = document.getElementById('sco-data')?.value || null;
+  const dt = document.getElementById('sco-data')?.value || null;
   if (!val) return toast('Informe o valor', 'te');
   try {
     setSaving();
-    const row = { descricao: desc || null, valor: val, data_compra: data, numero_documento: ndoc || null, quantidade: qtd, unidade: un };
+    const row = { descricao: desc || null, valor: val, valor_unitario: vunit || (qtd > 0 ? round2(val / qtd) : val), data_compra: dt, numero_documento: ndoc || null, quantidade: qtd, unidade: un };
     if (forn) row.fornecedor_id = +forn;
     const d = await SB.insert('compras', row);
     state.sb_compras.unshift(d);
@@ -1938,7 +1976,8 @@ window.editarRegistro = function(tabela, id) {
         { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}">${f.nome}</option>`).join('') },
         { key: 'quantidade', label: 'Quantidade', type: 'number' },
         { key: 'unidade', label: 'Unidade', type: 'select', options: () => `<option value="UN">UN</option><option value="KG">KG</option><option value="G">G</option><option value="L">L</option><option value="ML">ML</option><option value="M">M</option><option value="CX">CX</option><option value="PC">PC</option><option value="PAR">PAR</option>` },
-        { key: 'valor', label: 'Valor (R$)', type: 'number' },
+        { key: 'valor_unitario', label: 'Valor Unitário (R$)', type: 'number' },
+        { key: 'valor', label: 'Valor Total (R$)', type: 'number' },
         { key: 'data_compra', label: 'Data Compra', type: 'date' },
       ]
     },
@@ -1988,8 +2027,11 @@ window.editarRegistro = function(tabela, id) {
   const camposHTML = cfg.campos.map(c => {
     let input;
     const val = item[c.key] != null ? item[c.key] : '';
+    // Auto-calc para compras: qtd, valor_unitario, valor
+    const calcAttr = (tabela === 'compras' && ['quantidade','valor_unitario'].includes(c.key)) ? ' oninput="autoCalcEdit(\'unit\')"' :
+                     (tabela === 'compras' && c.key === 'valor') ? ' oninput="autoCalcEdit(\'total\')"' : '';
     if (c.type === 'number') {
-      input = `<input id="edit-${c.key}" type="number" step="0.01" value="${val}" class="fl-input"/>`;
+      input = `<input id="edit-${c.key}" type="number" step="0.01" value="${val}" class="fl-input"${calcAttr}/>`;
     } else if (c.type === 'date') {
       input = `<input id="edit-${c.key}" type="date" value="${val}" class="fl-input"/>`;
     } else if (c.type === 'select-forma') {
@@ -2026,7 +2068,7 @@ window.salvarEdicao = async function(tabela, id) {
     pagamentos: { stateKey: 'sb_pagamentos', campos: ['numero_documento','descricao','fornecedor_id','valor','data_pagamento','forma_pagamento','observacao'] },
     recebimentos: { stateKey: 'recebimentos', campos: ['numero_documento','descricao','valor','data','forma','origem','observacao'] },
     lancamentos: { stateKey: 'sb_lancamentos', campos: ['numero_documento','descricao','fornecedor_id','valor','data_emissao','data_vencimento','status','observacao_status'] },
-    compras: { stateKey: 'sb_compras', campos: ['numero_documento','descricao','fornecedor_id','quantidade','unidade','valor','data_compra'] },
+    compras: { stateKey: 'sb_compras', campos: ['numero_documento','descricao','fornecedor_id','quantidade','unidade','valor_unitario','valor','data_compra'] },
     fornecedores: { stateKey: 'sb_fornecedores', campos: ['nome','contato','observacao'] },
     itens: { stateKey: 'sb_itens', campos: ['nome','unidade','aliases'] },
     categorias: { stateKey: 'sb_categorias', campos: ['nome','tipo'] },
