@@ -157,6 +157,29 @@ body.role-admin .admin-only-block{display:block}
 /* AIP box gold */
 .aip{background:linear-gradient(135deg,rgba(199,171,109,0.06),rgba(199,171,109,0.02));border:1px solid rgba(199,171,109,0.2);border-radius:var(--radius-lg);padding:14px;margin-bottom:14px}
 .aip-hd{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:13px;font-weight:600;color:var(--gold)}
+/* MOBILE: hamburger + responsivo */
+.menu-toggle{display:none;position:fixed;top:12px;left:12px;z-index:1001;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:8px 10px;cursor:pointer;color:var(--gold);font-size:18px;line-height:1}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999}
+@media(max-width:768px){
+  .menu-toggle{display:block}
+  .sidebar{position:fixed;left:-240px;top:0;bottom:0;z-index:1000;transition:left 0.25s ease;width:230px}
+  .sidebar.open{left:0}
+  .sidebar-overlay.open{display:block}
+  .main{margin-left:0}
+  .topbar{padding-left:50px}
+  .content{padding:12px 10px}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:1fr}
+  .g2{grid-template-columns:1fr}
+  .fg.c4,.fg.c5{grid-template-columns:1fr 1fr}
+  .fg.c3{grid-template-columns:1fr}
+  .modal-box{width:95vw!important;max-height:85vh;overflow-y:auto}
+  table{font-size:11px}
+  th,td{padding:7px 8px}
+  .mc-val{font-size:18px}
+  .clock-time{font-size:16px}
+  .ar{flex-wrap:wrap}
+}
 </style>
 </head>
 <body>
@@ -171,21 +194,15 @@ body.role-admin .admin-only-block{display:block}
     <input type="password" id="login-pass" class="login-input" placeholder="Senha" autocomplete="current-password">
     <button id="login-btn" class="login-btn" onclick="doLogin()">Entrar</button>
     <div id="login-error" class="login-error"></div>
-    <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:14px">
-      <div style="font-size:10px;color:var(--txt3);cursor:pointer;letter-spacing:0.5px" onclick="document.getElementById('login-config').style.display=document.getElementById('login-config').style.display==='none'?'block':'none'">⚙️ Configurar conexão</div>
-      <div id="login-config" style="display:none;margin-top:10px;text-align:left">
-        <input type="text" class="login-input" id="lc-url" placeholder="Supabase URL" value="${localStorage.getItem('financeai_supabase_url') || ''}">
-        <input type="text" class="login-input" id="lc-key" placeholder="Supabase Anon Key" value="${localStorage.getItem('financeai_supabase_anon_key') || ''}">
-        <button class="login-btn" style="background:var(--bg4);color:var(--txt);font-size:12px;padding:8px" onclick="localStorage.setItem('financeai_supabase_url',document.getElementById('lc-url').value.trim());localStorage.setItem('financeai_supabase_anon_key',document.getElementById('lc-key').value.trim());location.reload()">Salvar e Recarregar</button>
-      </div>
-    </div>
   </div>
 </div>
 
 <div id="lov" class="lov" style="display:none"><div class="lsp"></div><div class="ltx" id="ltx">Carregando...</div></div>
 
 <div class="app" id="app-main" style="display:none">
-  <div class="sidebar">
+  <div class="menu-toggle" id="menu-toggle" onclick="toggleSidebar()">☰</div>
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+  <div class="sidebar" id="sidebar-el">
     <div class="logo">
       <div class="logo-title">SCARLAT</div>
       <div class="logo-sub">Sistema Financeiro</div>
@@ -245,9 +262,9 @@ body.role-admin .admin-only-block{display:block}
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-const SUPABASE_URL = localStorage.getItem('financeai_supabase_url') || '';
-const SUPABASE_ANON_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
-const supabase = (SUPABASE_URL && SUPABASE_ANON_KEY) ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const SUPABASE_URL = 'https://cqopxsdrxalfmammzdlv.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxb3B4c2RyeGFsZm1hbW16ZGx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMjU1MzMsImV4cCI6MjA4ODkwMTUzM30.ivdt1Q38aTHoCkhO83KZgkkBPa1okY3KpBPKJWnKgNc';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 window.supabase = supabase;
 window.supabaseReady = !!supabase;
@@ -628,9 +645,23 @@ setInterval(() => {
   const el3 = document.getElementById('dash-lastupdate'); if (el3 && window.lastUpdate) el3.textContent = 'Atualizado: ' + window.lastUpdate.toLocaleTimeString('pt-BR');
 }, 1000);
 
+// === MOBILE SIDEBAR ===
+window.toggleSidebar = function() {
+  const sb = document.getElementById('sidebar-el');
+  const ov = document.getElementById('sidebar-overlay');
+  if (sb) sb.classList.toggle('open');
+  if (ov) ov.classList.toggle('open');
+};
+
 // === NAVIGATION ===
 document.getElementById('nav').addEventListener('click', e => {
   const item = e.target.closest('.nav-item');
+  if (!item || !item.dataset.page) return;
+  // Fechar sidebar no mobile
+  const sb = document.getElementById('sidebar-el');
+  const ov = document.getElementById('sidebar-overlay');
+  if (sb) sb.classList.remove('open');
+  if (ov) ov.classList.remove('open');
   if (!item || !item.dataset.page) return;
   state.page = item.dataset.page;
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -1307,19 +1338,20 @@ function pgRel() {
 // PAGE: CONFIGURAÇÕES
 // ============================================================
 function pgConf() {
-  const SB_URL = localStorage.getItem('financeai_supabase_url') || '';
-  const SB_KEY = localStorage.getItem('financeai_supabase_anon_key') || '';
   const sbOk = !!window.supabase;
   return `
   <div class="sc">
-    <div class="shd">Integrações</div>
-    <div class="sr"><div><div class="sl">Anthropic API Key</div><div class="ss">Para PDF e IA</div></div><div style="display:flex;gap:8px;align-items:center"><input class="ki" type="password" id="key-input" value="${API_KEY}" placeholder="sk-ant-api03-..."/><button class="btn btn-p btn-sm" onclick="salvarKey()">Salvar</button></div></div>
-    <div class="sr" style="align-items:flex-start"><div><div class="sl">Supabase (fonte principal)</div><div class="ss">Todas as operações usam Supabase</div></div><div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;min-width:420px"><input class="ki" id="supabase-url-input" value="${SB_URL}" placeholder="https://xxxxx.supabase.co" style="width:420px"/><input class="ki" id="supabase-key-input" type="password" value="${SB_KEY}" placeholder="eyJhbGciOi..." style="width:420px"/><div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="salvarSupabaseConfig()">Salvar</button><button class="btn btn-g btn-sm" onclick="testarSupabase()">Testar</button></div></div></div>
-    <div class="sr"><div><div class="sl">Status</div></div><span class="badge ${sbOk ? 'bg' : 'br'}">${sbOk ? '✓ Supabase Ativo' : '✗ Configurar Supabase'}</span></div>
+    <div class="shd">Status do Sistema</div>
+    <div class="sr"><div><div class="sl">Supabase</div><div class="ss">Banco de dados e autenticação</div></div><span class="badge ${sbOk ? 'bg' : 'br'}">${sbOk ? '✓ Conectado' : '✗ Erro'}</span></div>
+    <div class="sr"><div><div class="sl">Usuário</div><div class="ss">${window.currentProfile?.email || '—'}</div></div><span class="badge ${window.userRole === 'admin' ? 'bg' : 'bb'}">${window.userRole || '—'}</span></div>
+  </div>
+  <div class="sc">
+    <div class="shd">Relatório IA (opcional)</div>
+    <div class="sr"><div><div class="sl">Anthropic API Key</div><div class="ss">Usado apenas para o Relatório IA</div></div><div style="display:flex;gap:8px;align-items:center"><input class="ki" type="password" id="key-input" value="${API_KEY}" placeholder="sk-ant-api03-..."/><button class="btn btn-p btn-sm" onclick="salvarKey()">Salvar</button></div></div>
   </div>
   <div class="sc">
     <div class="shd">Dados</div>
-    <div class="sr"><div><div class="sl">Exportar tudo</div></div><button class="btn btn-g btn-sm" onclick="exportar()">JSON</button></div>
+    <div class="sr"><div><div class="sl">Exportar backup</div><div class="ss">Baixar todos os dados em JSON</div></div><button class="btn btn-g btn-sm" onclick="exportar()">Exportar JSON</button></div>
   </div>`;
 }
 
@@ -1912,7 +1944,7 @@ window.confirmarPDF = async function(i) {
     render();
     toast('Documento confirmado!');
     // Recarregar dados para refletir o que o backend inseriu
-    await loadAll();
+    await window.reloadAllData();
   } catch (e) {
     console.error('confirmarPDF:', e);
     toast('Erro ao confirmar: ' + e.message, 'te');
