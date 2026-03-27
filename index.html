@@ -125,6 +125,8 @@ tr:hover td{background:rgba(255,255,255,0.02)}
 .price-up{color:var(--red);font-weight:600}.price-down{color:var(--green);font-weight:600}.price-same{color:var(--txt3)}
 .modal-overlay{position:fixed;inset:0;background:rgba(10,11,16,0.85);display:flex;align-items:center;justify-content:center;z-index:999}
 .modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:24px;width:400px;max-width:90vw}
+.modal-box .fl-input{width:100%;font-size:12px;padding:7px 10px;border:1px solid var(--border2);border-radius:7px;background:var(--bg3);color:var(--txt);font-family:'DM Sans',sans-serif}
+.modal-box .fl-input:focus{outline:none;border-color:var(--gold)}
 .modal-title{font-size:15px;font-weight:600;margin-bottom:16px}
 /* LOGIN SCREEN */
 .login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column}
@@ -768,7 +770,7 @@ function pgReceb() {
       <td><span class="badge ${formaBadge(r.forma)}">${formaLabel(r.forma)}</span></td>
       <td style="color:var(--txt3);font-size:11px">${r.origem || '—'}</td>
       <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(r.valor)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('recebimentos',${r.id})">×</button></td>
+      <td><button class="btn btn-g btn-sm" onclick="editarRegistro('recebimentos',${r.id})">✏️</button> <button class="btn btn-d btn-sm" onclick="delSB('recebimentos',${r.id})">×</button></td>
     </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum recebimento neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
@@ -800,7 +802,7 @@ function pgRetirada() {
       <td style="font-family:'DM Mono',monospace;font-size:11px">${r.data || ''}</td>
       <td>${r.observacao || 'Retirada'}</td>
       <td style="text-align:right;font-weight:600;color:var(--amber);font-family:'DM Mono',monospace">${fmt(r.valor)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('retiradas_diretor',${r.id})">×</button></td>
+      <td><button class="btn btn-g btn-sm" onclick="editarRegistro('retiradas_diretor',${r.id})">✏️</button> <button class="btn btn-d btn-sm" onclick="delSB('retiradas_diretor',${r.id})">×</button></td>
     </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma retirada neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
@@ -840,6 +842,7 @@ function pgDesp() {
       <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(b.valor)}</td>
       <td style="display:flex;gap:4px">
         ${b.status !== 'pago' ? `<button class="btn btn-s btn-sm" onclick="pagarBolSB(${b.id})">✓</button>` : ''}
+        <button class="btn btn-g btn-sm" onclick="editarRegistro('boletos',${b.id})">✏️</button>
         <button class="btn btn-d btn-sm" onclick="delSB('boletos',${b.id})">×</button>
       </td>
     </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma despesa neste mês</td></tr>'}</tbody>
@@ -885,6 +888,7 @@ function pgLanc() {
       <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(l.valor)}</td>
       <td style="display:flex;gap:4px">
         ${l.status === 'pendente' ? `<button class="btn btn-s btn-sm" onclick="pagarLancSB(${l.id})">✓</button>` : ''}
+        <button class="btn btn-g btn-sm" onclick="editarRegistro('lancamentos',${l.id})">✏️</button>
         <button class="btn btn-d btn-sm" onclick="delSB('lancamentos',${l.id})">×</button>
       </td>
     </tr>`).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhum lançamento neste mês</td></tr>'}</tbody>
@@ -930,6 +934,7 @@ function pgBol() {
       <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(b.valor)}</td>
       <td style="display:flex;gap:4px;flex-wrap:wrap">
         ${b.status !== 'pago' ? `<button class="btn btn-s btn-sm" onclick="pagarBolSB(${b.id})">✓ Pagar</button><button class="btn btn-a btn-sm" onclick="showRenegociar(${b.id})">🔄</button>` : ''}
+        <button class="btn btn-g btn-sm" onclick="editarRegistro('boletos',${b.id})">✏️</button>
         <button class="btn btn-d btn-sm" onclick="delSB('boletos',${b.id})">×</button>
       </td>
     </tr>`).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma conta a pagar</td></tr>'}</tbody>
@@ -966,7 +971,7 @@ function pgComp() {
       <td style="color:var(--txt2)">${c.descricao || '—'}</td>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${c.data_compra || '—'}</td>
       <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valor)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('compras',${c.id})">×</button></td>
+      <td><button class="btn btn-g btn-sm" onclick="editarRegistro('compras',${c.id})">✏️</button> <button class="btn btn-d btn-sm" onclick="delSB('compras',${c.id})">×</button></td>
     </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
@@ -1010,7 +1015,7 @@ function pgPag() {
       <td><span class="badge ${formaBadge(p.forma_pagamento)}">${formaLabel(p.forma_pagamento)}</span></td>
       <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green)">${p.data_pagamento || '—'}</td>
       <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(p.valor)}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('pagamentos',${p.id})">×</button></td>
+      <td><button class="btn btn-g btn-sm" onclick="editarRegistro('pagamentos',${p.id})">✏️</button> <button class="btn btn-d btn-sm" onclick="delSB('pagamentos',${p.id})">×</button></td>
     </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum pagamento neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
@@ -1037,7 +1042,7 @@ function pgForn() {
       <td style="font-weight:500">${f.nome || '—'}</td>
       <td style="color:var(--txt2)">${f.contato || '—'}</td>
       <td style="color:var(--txt3);font-size:11px">${f.observacao || '—'}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('fornecedores',${f.id})">×</button></td>
+      <td><button class="btn btn-g btn-sm" onclick="editarRegistro('fornecedores',${f.id})">✏️</button> <button class="btn btn-d btn-sm" onclick="delSB('fornecedores',${f.id})">×</button></td>
     </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhum fornecedor</td></tr>'}</tbody>
   </table></div>`;
 }
@@ -1064,7 +1069,7 @@ function pgProd() {
       <td style="font-weight:500">${i.nome || '—'}</td>
       <td style="color:var(--txt2)">${i.unidade || '—'}</td>
       <td style="color:var(--txt3);font-size:11px">${i.aliases || '—'}</td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('itens',${i.id})">×</button></td>
+      <td><button class="btn btn-g btn-sm" onclick="editarRegistro('itens',${i.id})">✏️</button> <button class="btn btn-d btn-sm" onclick="delSB('itens',${i.id})">×</button></td>
     </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhum item</td></tr>'}</tbody>
   </table></div>`;
 }
@@ -1089,7 +1094,7 @@ function pgCat() {
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${c.id}</td>
       <td style="font-weight:500">${c.nome || '—'}</td>
       <td><span class="badge ${c.tipo === 'receita' ? 'bg' : c.tipo === 'despesa' ? 'br' : 'bb'}">${c.tipo || '—'}</span></td>
-      <td><button class="btn btn-d btn-sm" onclick="delSB('categorias',${c.id})">×</button></td>
+      <td><button class="btn btn-g btn-sm" onclick="editarRegistro('categorias',${c.id})">✏️</button> <button class="btn btn-d btn-sm" onclick="delSB('categorias',${c.id})">×</button></td>
     </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma categoria</td></tr>'}</tbody>
   </table></div>`;
 }
@@ -1574,6 +1579,188 @@ window.showRenegociar = function(id) {
   </div>`;
 };
 window.closeModal = function() { document.getElementById('modal-root').innerHTML = ''; };
+
+// ============================================================
+// EDIÇÃO GENÉRICA VIA MODAL
+// ============================================================
+const formaOptsHTML = `<option value="boleto">Boleto</option><option value="pix">PIX</option><option value="cartao">Cartão</option><option value="cheque">Cheque</option><option value="dinheiro">Dinheiro</option><option value="outros">Outros</option>`;
+const statusOptsHTML = `<option value="pendente">Pendente</option><option value="pago">Pago</option><option value="atrasado">Atrasado</option><option value="renegociado">Renegociado</option>`;
+
+window.editarRegistro = function(tabela, id) {
+  const configs = {
+    boletos: {
+      titulo: 'Conta a Pagar',
+      stateKey: 'sb_boletos',
+      campos: [
+        { key: 'descricao', label: 'Descrição', type: 'text' },
+        { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}" \${item.fornecedor_id==f.id?'selected':''}>${f.nome}</option>`).join('') },
+        { key: 'valor', label: 'Valor (R$)', type: 'number' },
+        { key: 'data_vencimento', label: 'Vencimento', type: 'date' },
+        { key: 'forma_pagamento', label: 'Forma', type: 'select-forma' },
+        { key: 'status', label: 'Status', type: 'select-status' },
+      ]
+    },
+    pagamentos: {
+      titulo: 'Pagamento',
+      stateKey: 'sb_pagamentos',
+      campos: [
+        { key: 'descricao', label: 'Descrição', type: 'text' },
+        { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}">${f.nome}</option>`).join('') },
+        { key: 'valor', label: 'Valor (R$)', type: 'number' },
+        { key: 'data_pagamento', label: 'Data Pagamento', type: 'date' },
+        { key: 'forma_pagamento', label: 'Forma', type: 'select-forma' },
+        { key: 'observacao', label: 'Observação', type: 'text' },
+      ]
+    },
+    recebimentos: {
+      titulo: 'Recebimento',
+      stateKey: 'recebimentos',
+      campos: [
+        { key: 'descricao', label: 'Descrição', type: 'text' },
+        { key: 'valor', label: 'Valor (R$)', type: 'number' },
+        { key: 'data', label: 'Data', type: 'date' },
+        { key: 'forma', label: 'Forma', type: 'select-forma' },
+        { key: 'origem', label: 'Origem', type: 'text' },
+        { key: 'observacao', label: 'Observação', type: 'text' },
+      ]
+    },
+    lancamentos: {
+      titulo: 'Lançamento',
+      stateKey: 'sb_lancamentos',
+      campos: [
+        { key: 'descricao', label: 'Descrição', type: 'text' },
+        { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}">${f.nome}</option>`).join('') },
+        { key: 'valor', label: 'Valor (R$)', type: 'number' },
+        { key: 'data_emissao', label: 'Data Emissão', type: 'date' },
+        { key: 'data_vencimento', label: 'Vencimento', type: 'date' },
+        { key: 'status', label: 'Status', type: 'select-status' },
+        { key: 'observacao_status', label: 'Observação', type: 'text' },
+      ]
+    },
+    compras: {
+      titulo: 'Compra',
+      stateKey: 'sb_compras',
+      campos: [
+        { key: 'descricao', label: 'Descrição', type: 'text' },
+        { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}">${f.nome}</option>`).join('') },
+        { key: 'valor', label: 'Valor (R$)', type: 'number' },
+        { key: 'data_compra', label: 'Data Compra', type: 'date' },
+      ]
+    },
+    fornecedores: {
+      titulo: 'Fornecedor',
+      stateKey: 'sb_fornecedores',
+      campos: [
+        { key: 'nome', label: 'Nome', type: 'text' },
+        { key: 'contato', label: 'Contato', type: 'text' },
+        { key: 'observacao', label: 'Observação', type: 'text' },
+      ]
+    },
+    itens: {
+      titulo: 'Item / Produto',
+      stateKey: 'sb_itens',
+      campos: [
+        { key: 'nome', label: 'Nome', type: 'text' },
+        { key: 'unidade', label: 'Unidade/Qualidade', type: 'text' },
+        { key: 'aliases', label: 'Aliases', type: 'text' },
+      ]
+    },
+    categorias: {
+      titulo: 'Categoria',
+      stateKey: 'sb_categorias',
+      campos: [
+        { key: 'nome', label: 'Nome', type: 'text' },
+        { key: 'tipo', label: 'Tipo', type: 'select', options: () => `<option value="despesa">Despesa</option><option value="receita">Receita</option><option value="ambos">Ambos</option>` },
+      ]
+    },
+    retiradas_diretor: {
+      titulo: 'Retirada Diretor',
+      stateKey: 'retiradas',
+      campos: [
+        { key: 'valor', label: 'Valor (R$)', type: 'number' },
+        { key: 'data', label: 'Data', type: 'date' },
+        { key: 'observacao', label: 'Observação', type: 'text' },
+      ]
+    },
+  };
+
+  const cfg = configs[tabela];
+  if (!cfg) return toast('Tabela não configurada para edição', 'te');
+  
+  const item = (state[cfg.stateKey] || []).find(i => i.id === id);
+  if (!item) return toast('Registro não encontrado', 'te');
+
+  const camposHTML = cfg.campos.map(c => {
+    let input;
+    const val = item[c.key] != null ? item[c.key] : '';
+    if (c.type === 'number') {
+      input = `<input id="edit-${c.key}" type="number" step="0.01" value="${val}" class="fl-input"/>`;
+    } else if (c.type === 'date') {
+      input = `<input id="edit-${c.key}" type="date" value="${val}" class="fl-input"/>`;
+    } else if (c.type === 'select-forma') {
+      input = `<select id="edit-${c.key}" class="fl-input">${formaOptsHTML.replace(`value="${val}"`, `value="${val}" selected`)}</select>`;
+    } else if (c.type === 'select-status') {
+      input = `<select id="edit-${c.key}" class="fl-input">${statusOptsHTML.replace(`value="${val}"`, `value="${val}" selected`)}</select>`;
+    } else if (c.type === 'select') {
+      const opts = c.options();
+      input = `<select id="edit-${c.key}" class="fl-input"><option value="">—</option>${opts.replace(`value="${val}"`, `value="${val}" selected`)}</select>`;
+    } else {
+      input = `<input id="edit-${c.key}" type="text" value="${String(val).replace(/"/g, '&quot;')}" class="fl-input"/>`;
+    }
+    return `<div class="fl"><label>${c.label}</label>${input}</div>`;
+  }).join('');
+
+  const cols = cfg.campos.length <= 3 ? 'c2' : cfg.campos.length <= 5 ? 'c3' : 'c3';
+
+  document.getElementById('modal-root').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal-box" style="width:560px">
+      <div class="modal-title">✏️ Editar ${cfg.titulo} #${id}</div>
+      <div class="fg ${cols}" style="margin-bottom:12px">${camposHTML}</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-p btn-sm" onclick="salvarEdicao('${tabela}',${id})">Salvar</button>
+        <button class="btn btn-g btn-sm" onclick="closeModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>`;
+};
+
+window.salvarEdicao = async function(tabela, id) {
+  const configs = {
+    boletos: { stateKey: 'sb_boletos', campos: ['descricao','fornecedor_id','valor','data_vencimento','forma_pagamento','status'] },
+    pagamentos: { stateKey: 'sb_pagamentos', campos: ['descricao','fornecedor_id','valor','data_pagamento','forma_pagamento','observacao'] },
+    recebimentos: { stateKey: 'recebimentos', campos: ['descricao','valor','data','forma','origem','observacao'] },
+    lancamentos: { stateKey: 'sb_lancamentos', campos: ['descricao','fornecedor_id','valor','data_emissao','data_vencimento','status','observacao_status'] },
+    compras: { stateKey: 'sb_compras', campos: ['descricao','fornecedor_id','valor','data_compra'] },
+    fornecedores: { stateKey: 'sb_fornecedores', campos: ['nome','contato','observacao'] },
+    itens: { stateKey: 'sb_itens', campos: ['nome','unidade','aliases'] },
+    categorias: { stateKey: 'sb_categorias', campos: ['nome','tipo'] },
+    retiradas_diretor: { stateKey: 'retiradas', campos: ['valor','data','observacao'] },
+  };
+  
+  const cfg = configs[tabela];
+  if (!cfg) return;
+
+  const changes = {};
+  cfg.campos.forEach(key => {
+    const el = document.getElementById('edit-' + key);
+    if (!el) return;
+    let val = el.value;
+    if (val === '') val = null;
+    else if (['valor'].includes(key)) val = +val;
+    else if (['fornecedor_id'].includes(key) && val) val = +val;
+    changes[key] = val;
+  });
+
+  try {
+    setSaving();
+    await SB.update(tabela, id, changes);
+    // Atualizar state local
+    const item = (state[cfg.stateKey] || []).find(i => i.id === id);
+    if (item) Object.assign(item, changes);
+    setOnline(); closeModal(); render(); toast('Atualizado!');
+  } catch (e) { toast('Erro: ' + e.message, 'te'); }
+};
 window.confirmarRenegociar = async function(id) {
   const novaData = document.getElementById('renego-data')?.value;
   const obs = (document.getElementById('renego-obs')?.value || '').trim();
