@@ -533,7 +533,7 @@ window.state = {
   sb_lancamentos: [], sb_boletos: [], sb_compras: [],
   sb_pagamentos: [], sb_documentos: [],
   recebimentos: [], retiradas: [], fechamentos: [],
-  pdfPendentes: [], extratoPendentes: [],
+  pdfPendentes: [], extratoPendentes: [], extratoConferencia: null,
   historico: [
     {mes:'Jan',r:11200,d:7800},{mes:'Fev',r:9800,d:8200},{mes:'Mar',r:13500,d:9100},
     {mes:'Abr',r:10200,d:7600},{mes:'Mai',r:14800,d:8900},{mes:'Jun',r:13500,d:8700}
@@ -1084,34 +1084,76 @@ function pgPrecos() {
 }
 
 // ============================================================
-// PAGE: EXTRATO BANCÁRIO
+// PAGE: EXTRATO BANCÁRIO (conferência, não lança nada)
 // ============================================================
 function pgExtrato() {
+  const conf = state.extratoConferencia;
   return `
-  <div class="aip"><div class="aip-hd">✦ Leitura de Extrato Bancário</div><div class="aip-bd">Envie extrato (PDF, CSV, TXT ou OFX). A IA separa pagamentos e recebimentos.</div></div>
+  <div class="aip"><div class="aip-hd">✦ Conferência de Extrato Bancário</div><div class="aip-bd">Envie o extrato para conferir se entradas e saídas batem com o sistema. <strong>Nenhum lançamento será criado.</strong></div></div>
   <div class="pdf-drop" onclick="document.getElementById('extrato-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleExtratoDrop(event)">
     <div style="font-size:32px;margin-bottom:8px">🏦</div>
     <div style="font-size:14px;font-weight:500;margin-bottom:4px">Arraste o extrato aqui ou clique</div>
     <div style="font-size:12px;color:var(--txt3)">PDF · CSV · TXT · OFX</div>
   </div>
   <div id="extrato-proc" style="display:none" class="card"><div class="ail">Lendo extrato<div class="aid"><span>.</span><span>.</span><span>.</span></div></div></div>
-  ${state.extratoPendentes.length > 0 ? `
+  ${conf ? `
   <div style="margin-top:14px">
-    <div class="shd">Lançamentos do Extrato <span class="badge ba">${state.extratoPendentes.length}</span></div>
+    <!-- STATUS DA CONFERÊNCIA -->
+    <div class="alert-box ${conf.conferencia.diff_entradas == 0 && conf.conferencia.diff_saidas == 0 ? 'alert-green' : 'alert-red'}">
+      <div class="alert-icon">${conf.conferencia.diff_entradas == 0 && conf.conferencia.diff_saidas == 0 ? '✅' : '⚠️'}</div>
+      <div class="alert-body">
+        <div class="alert-title">${conf.conferencia.status}</div>
+        <div class="alert-sub">Período: ${conf.conferencia.periodo}</div>
+      </div>
+    </div>
+
+    <!-- COMPARAÇÃO: EXTRATO vs SISTEMA -->
+    <div class="g2" style="margin-top:10px">
+      <div class="mc" style="border-left:2px solid var(--blue)">
+        <div class="mc-lbl">Extrato Bancário</div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px">
+          <div><div style="font-size:10px;color:var(--txt3)">Entradas</div><div style="font-size:16px;font-weight:600;color:var(--green)">${fmt(conf.extrato.total_entradas)}</div></div>
+          <div><div style="font-size:10px;color:var(--txt3)">Saídas</div><div style="font-size:16px;font-weight:600;color:var(--red)">${fmt(conf.extrato.total_saidas)}</div></div>
+          <div><div style="font-size:10px;color:var(--txt3)">Saldo</div><div style="font-size:16px;font-weight:600;color:var(--blue)">${fmt(conf.extrato.saldo)}</div></div>
+        </div>
+      </div>
+      <div class="mc" style="border-left:2px solid var(--gold)">
+        <div class="mc-lbl">Sistema SCARLAT</div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px">
+          <div><div style="font-size:10px;color:var(--txt3)">Entradas</div><div style="font-size:16px;font-weight:600;color:var(--green)">${fmt(conf.sistema.total_entradas)}</div></div>
+          <div><div style="font-size:10px;color:var(--txt3)">Saídas</div><div style="font-size:16px;font-weight:600;color:var(--red)">${fmt(conf.sistema.total_saidas)}</div></div>
+          <div><div style="font-size:10px;color:var(--txt3)">Saldo</div><div style="font-size:16px;font-weight:600;color:var(--blue)">${fmt(conf.sistema.saldo)}</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFERENÇAS -->
+    ${(conf.conferencia.diff_entradas != 0 || conf.conferencia.diff_saidas != 0) ? `
+    <div class="g2" style="margin-top:10px">
+      <div class="mc" style="border-left:2px solid ${conf.conferencia.diff_entradas == 0 ? 'var(--green)' : 'var(--red)'}">
+        <div class="mc-lbl">Diferença Entradas</div>
+        <div class="mc-val" style="color:${conf.conferencia.diff_entradas == 0 ? 'var(--green)' : 'var(--red)'}">${fmt(Math.abs(conf.conferencia.diff_entradas))}</div>
+        <div class="mc-sub">${conf.conferencia.diff_entradas > 0 ? 'Extrato tem mais que o sistema' : conf.conferencia.diff_entradas < 0 ? 'Sistema tem mais que o extrato' : 'OK'}</div>
+      </div>
+      <div class="mc" style="border-left:2px solid ${conf.conferencia.diff_saidas == 0 ? 'var(--green)' : 'var(--red)'}">
+        <div class="mc-lbl">Diferença Saídas</div>
+        <div class="mc-val" style="color:${conf.conferencia.diff_saidas == 0 ? 'var(--green)' : 'var(--red)'}">${fmt(Math.abs(conf.conferencia.diff_saidas))}</div>
+        <div class="mc-sub">${conf.conferencia.diff_saidas > 0 ? 'Extrato tem mais que o sistema' : conf.conferencia.diff_saidas < 0 ? 'Sistema tem mais que o extrato' : 'OK'}</div>
+      </div>
+    </div>` : ''}
+
+    <!-- LANÇAMENTOS DO EXTRATO (somente leitura) -->
+    <div class="shd" style="margin-top:14px">Movimentações do Extrato <span class="badge ba">${conf.total_linhas}</span></div>
     <div class="tw"><table>
-      <thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th style="text-align:right">Valor</th><th></th></tr></thead>
-      <tbody>${state.extratoPendentes.map((item, i) => `<tr>
+      <thead><tr><th>Data</th><th>Descrição</th><th>Tipo</th><th style="text-align:right">Valor</th></tr></thead>
+      <tbody>${(conf.lancamentos || []).map(item => `<tr>
         <td style="font-family:'DM Mono',monospace;font-size:11px">${item.data || '—'}</td>
         <td>${item.descricao || '—'}</td>
-        <td><span class="badge ${item.tipo === 'recebimento' ? 'bg' : 'br'}">${item.tipo}</span></td>
-        <td style="text-align:right;font-weight:600;color:${item.tipo === 'recebimento' ? 'var(--green)' : 'var(--red)'};font-family:'DM Mono',monospace">${fmt(item.valor)}</td>
-        <td style="display:flex;gap:4px">
-          <button class="btn btn-s btn-sm" onclick="confirmarExtrato(${i})">✓</button>
-          <button class="btn btn-d btn-sm" onclick="rejeitarExtrato(${i})">×</button>
-        </td>
+        <td><span class="badge ${item.tipo === 'entrada' ? 'bg' : 'br'}">${item.tipo}</span></td>
+        <td style="text-align:right;font-weight:600;color:${item.tipo === 'entrada' ? 'var(--green)' : 'var(--red)'};font-family:'DM Mono',monospace">${fmt(item.valor)}</td>
       </tr>`).join('')}</tbody>
     </table></div>
-    <button class="btn btn-p" onclick="confirmarTodosExtrato()">✓ Confirmar Todos</button>
+    <button class="btn btn-g" onclick="state.extratoConferencia=null;render()">Limpar Conferência</button>
   </div>` : ''}`;
 }
 
@@ -1134,7 +1176,7 @@ function pgPDF() {
     <div class="card" style="margin-bottom:10px">
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
         <div><div style="font-size:13px;font-weight:600">${item.descricao || 'Doc'}</div><div style="font-size:11px;color:var(--txt3)">📄 ${item.arquivo}</div></div>
-        <span class="badge ${item.tipo === 'despesa' ? 'br' : item.tipo === 'receita' ? 'bg' : 'ba'}">${item.tipo_documento || item.tipo || 'documento'}</span>
+        <div><span class="badge ${item.tipo === 'despesa' ? 'br' : item.tipo === 'receita' ? 'bg' : 'ba'}">${item.tipo_documento || 'documento'}</span> <span class="badge ${item._payload?.destino === 'boletos' ? 'bp' : item._payload?.destino === 'compras' ? 'bb' : item._payload?.destino === 'recebimentos' ? 'bg' : 'ba'}" style="margin-left:4px">→ ${item._payload?.destino || 'lançamento'}</span></div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px">
         ${item.fornecedor ? `<div><div style="font-size:10px;color:var(--txt3)">Fornecedor</div><div style="font-size:12px;font-weight:500">${item.fornecedor}</div></div>` : ''}
@@ -1604,7 +1646,7 @@ function handleExtratoDrop(e) { e.preventDefault(); const f = e.dataTransfer.fil
 function handleExtrato(e) { const f = e.target.files[0]; if (f) processarExtrato(f); }
 
 async function processarExtrato(file) {
-  if (!API_KEY) { toast('Configure API Key', 'te'); return; }
+  if (!window.supabase) { toast('Supabase não configurado', 'te'); return; }
 
   const proc = document.getElementById('extrato-proc');
   if (proc) proc.style.display = 'block';
@@ -1625,70 +1667,30 @@ async function processarExtrato(file) {
       txt = await file.text();
     }
 
-    const base = parseLinhasExtrato(txt);
-
-    if (!base.length) {
+    if (!txt.trim()) {
       if (proc) proc.style.display = 'none';
-      toast('Não consegui identificar linhas do extrato.', 'te');
+      toast('Arquivo vazio ou sem texto legível.', 'te');
       return;
     }
 
-    const payload = compactarLancamentosParaIA(base);
-
-    const prompt = `
-Você receberá um array JSON de lançamentos bancários já extraídos.
-Sua tarefa é APENAS revisar e enriquecer os itens.
-
-REGRAS:
-- Retorne APENAS JSON array válido
-- Não invente lançamentos novos
-- Mantenha o mesmo campo idx
-- Mantenha data e valor, só ajuste se estiver claramente errado
-- tipo deve ser apenas "pagamento" ou "recebimento"
-- preencha categoria com uma sugestão curta
-- adicione confianca de 0 a 100
-- se não tiver certeza, mantenha categoria vazia e confiança menor
-
-Formato de saída:
-[
-  {
-    "idx": 0,
-    "data": "YYYY-MM-DD",
-    "descricao": "",
-    "tipo": "pagamento",
-    "valor": 0,
-    "categoria": "",
-    "confianca": 0
-  }
-]
-
-Lançamentos:
-${JSON.stringify(payload)}
-`;
-
-    const r = await iaAnalise(prompt, 'Retorne apenas JSON válido.');
-    const itensIA = Array.isArray(r) ? r : [];
-
-    const finalItems = base.map((item, i) => {
-      const achado = itensIA.find(x => Number(x.idx) === i) || {};
-      return {
-        data: achado.data || item.data,
-        descricao: achado.descricao || item.descricao,
-        tipo: achado.tipo === 'recebimento' ? 'recebimento' : item.tipo,
-        valor: Number(achado.valor || item.valor || 0),
-        categoria: achado.categoria || '',
-        confianca: Number(achado.confianca || 0)
-      };
+    // Envia texto bruto ao Supabase — toda inteligência no backend
+    const result = await SB.rpc('processar_extrato_bancario', {
+      p_texto: txt.slice(0, 15000),
+      p_nome_arquivo: file.name
     });
 
-    state.extratoPendentes = finalItems;
+    const lancamentos = (result && result.lancamentos) ? result.lancamentos : [];
+
+    // Resultado é conferência, não pendentes
+    state.extratoConferencia = result;
 
     if (proc) proc.style.display = 'none';
     render();
-    toast(`${finalItems.length} lançamentos identificados!`);
+    const status = result.conferencia?.status || '';
+    toast(result.total_linhas + ' linhas lidas. ' + status);
   } catch (e) {
     if (proc) proc.style.display = 'none';
-    console.error(e);
+    console.error('processarExtrato:', e);
     toast('Erro: ' + e.message, 'te');
   }
 }
