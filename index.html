@@ -553,7 +553,7 @@ window.state = {
   sb_lancamentos: [], sb_boletos: [], sb_compras: [],
   sb_pagamentos: [], sb_documentos: [],
   recebimentos: [], retiradas: [], fechamentos: [],
-  pdfPendentes: [], extratoPendentes: [], extratoConferencia: null,
+  pdfPendentes: [], extratoPendentes: [], extratoConferencia: null, snapshotIA: null,
   historico: [
     {mes:'Jan',r:11200,d:7800},{mes:'Fev',r:9800,d:8200},{mes:'Mar',r:13500,d:9100},
     {mes:'Abr',r:10200,d:7600},{mes:'Mai',r:14800,d:8900},{mes:'Jun',r:13500,d:8700}
@@ -1320,19 +1320,183 @@ function pgDRE() {
 }
 
 // ============================================================
-// PAGE: RELATÓRIO IA
+// PAGE: RELATÓRIO IA — PAINEL DE DESEMPENHO INTERATIVO
 // ============================================================
 function pgRel() {
+  const snap = state.snapshotIA;
   return `
-  <div class="aip"><div class="aip-hd">✦ Relatório IA</div><div class="aip-bd" id="ai-body">Escolha uma análise.</div></div>
-  <div class="ar" style="margin-bottom:16px">
-    <button class="btn btn-g btn-sm" onclick="analisarIA('geral')">📊 Geral</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('lucro')">💰 Lucro</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('despesas')">✂️ Despesas</button>
+  <div class="aip"><div class="aip-hd">✦ Painel de Desempenho — Inteligência Financeira</div><div class="aip-bd">Análise completa do seu negócio com dados reais + insights de mercado.</div></div>
+  
+  <div class="ar" style="margin-bottom:14px">
+    <button class="btn btn-p btn-sm" onclick="gerarRelatorioIA()">🧠 Gerar Análise Completa</button>
+    <button class="btn btn-g btn-sm" onclick="analisarIA('geral')">📊 Resumo Rápido</button>
+    <button class="btn btn-g btn-sm" onclick="analisarIA('fluxo')">💧 Fluxo de Caixa</button>
     <button class="btn btn-g btn-sm" onclick="analisarIA('previsao')">🔮 Previsão</button>
-    <button class="btn btn-g btn-sm" onclick="analisarIA('fluxo')">💧 Fluxo</button>
-  </div>`;
+  </div>
+
+  <!-- RESULTADO DA IA -->
+  <div id="ai-body-full" style="display:none"></div>
+
+  <!-- RESUMO RÁPIDO (antigo) -->
+  <div class="aip" style="display:none" id="ai-quick"><div class="aip-bd" id="ai-body">Clique em uma análise acima.</div></div>
+
+  ${snap ? `
+  <!-- ====================== SNAPSHOT ====================== -->
+  
+  <!-- SAÚDE FINANCEIRA -->
+  <div class="card" style="margin-bottom:14px;border-left:3px solid ${snap.resumo.saldo >= 0 ? 'var(--green)' : 'var(--red)'}">
+    <div class="shd">Saúde Financeira — ${MESES[getSelMes()]} ${getSelAno()}</div>
+    <div class="g4">
+      <div style="text-align:center"><div style="font-size:10px;color:var(--txt3)">ENTRADAS</div><div style="font-size:20px;font-weight:600;color:var(--green)">${fmt(snap.resumo.recebimentos)}</div></div>
+      <div style="text-align:center"><div style="font-size:10px;color:var(--txt3)">SAÍDAS</div><div style="font-size:20px;font-weight:600;color:var(--red)">${fmt(snap.resumo.lancamentos + snap.resumo.retiradas)}</div></div>
+      <div style="text-align:center"><div style="font-size:10px;color:var(--txt3)">COMPRAS</div><div style="font-size:20px;font-weight:600;color:var(--blue)">${fmt(snap.resumo.compras)}</div></div>
+      <div style="text-align:center"><div style="font-size:10px;color:var(--txt3)">RESULTADO</div><div style="font-size:20px;font-weight:600;color:${snap.resumo.saldo >= 0 ? 'var(--green)' : 'var(--red)'}">${fmt(snap.resumo.saldo)}</div></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <!-- CONTAS ATRASADAS -->
+    <div class="card">
+      <div class="shd" style="color:var(--red)">🚨 Contas Atrasadas <span class="badge br">${(snap.contas_atrasadas || []).length}</span></div>
+      ${(snap.contas_atrasadas || []).length ? (snap.contas_atrasadas || []).map(c => `
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span style="color:var(--red)">${c.descricao || '—'}</span>
+          <span><span style="color:var(--txt3);font-size:10px">${c.dias_atraso}d atraso</span> <span style="font-weight:600;color:var(--red)">${fmt(c.valor)}</span></span>
+        </div>`).join('') : '<div style="color:var(--green);font-size:12px;padding:8px 0">✅ Nenhuma conta atrasada</div>'}
+    </div>
+
+    <!-- PRÓXIMAS A VENCER -->
+    <div class="card">
+      <div class="shd" style="color:var(--amber)">⏰ Vencendo em 7 dias <span class="badge ba">${(snap.contas_proximas || []).length}</span></div>
+      ${(snap.contas_proximas || []).length ? (snap.contas_proximas || []).map(c => `
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span>${c.descricao || '—'}</span>
+          <span><span style="color:var(--txt3);font-size:10px">${c.data_vencimento}</span> <span style="font-weight:600;color:var(--amber)">${fmt(c.valor)}</span></span>
+        </div>`).join('') : '<div style="color:var(--green);font-size:12px;padding:8px 0">✅ Nenhuma conta nos próximos 7 dias</div>'}
+    </div>
+  </div>
+
+  <div class="g2" style="margin-top:14px">
+    <!-- TOP FORNECEDORES -->
+    <div class="card">
+      <div class="shd">🏢 Maiores Fornecedores do Mês</div>
+      ${(snap.top_fornecedores || []).length ? (snap.top_fornecedores || []).map((f, i) => `
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span>${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '  '} ${f.nome}</span>
+          <span style="font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(f.total)}</span>
+        </div>`).join('') : '<div style="color:var(--txt3);font-size:12px">Sem dados</div>'}
+    </div>
+
+    <!-- ALERTAS DE PREÇO -->
+    <div class="card">
+      <div class="shd">📈 Alertas de Preço</div>
+      ${(snap.alertas_preco || []).length ? (snap.alertas_preco || []).map(a => `
+        <div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span class="badge ${a.variacao_percentual > 0 ? 'br' : 'bg'}" style="margin-right:6px">${a.variacao_percentual > 0 ? '▲' : '▼'} ${Math.abs(a.variacao_percentual)}%</span>
+          ${a.mensagem}
+        </div>`).join('') : '<div style="color:var(--txt3);font-size:12px">Nenhuma variação de preço detectada</div>'}
+    </div>
+  </div>
+
+  <!-- TENDÊNCIA (últimos 6 meses) -->
+  ${(snap.historico_mensal || []).length > 1 ? `
+  <div class="card" style="margin-top:14px">
+    <div class="shd">📊 Tendência — Últimos 6 Meses</div>
+    <div style="display:flex;gap:12px;align-items:flex-end;height:120px;padding:10px 0">
+      ${(snap.historico_mensal || []).map(m => {
+        const max = Math.max(...(snap.historico_mensal || []).map(x => Math.max(x.entradas || 0, x.saidas || 0)), 1);
+        const hE = Math.round(((m.entradas || 0) / max) * 100);
+        const hS = Math.round(((m.saidas || 0) / max) * 100);
+        return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="display:flex;gap:2px;align-items:flex-end;height:100px">
+            <div style="width:14px;background:var(--green);border-radius:3px 3px 0 0;height:${hE}px"></div>
+            <div style="width:14px;background:rgba(248,113,113,0.5);border-radius:3px 3px 0 0;height:${hS}px"></div>
+          </div>
+          <div style="font-size:9px;color:var(--txt3)">${(m.mes || '').slice(5)}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div style="font-size:10px;color:var(--txt3);text-align:center;margin-top:4px"><span style="color:var(--green)">■</span> Entradas <span style="color:rgba(248,113,113,0.6)">■</span> Saídas</div>
+  </div>` : ''}
+
+  ` : '<div class="card" style="text-align:center;padding:24px;color:var(--txt3)">Clique em <strong>"🧠 Gerar Análise Completa"</strong> para carregar o painel de desempenho.</div>'}`;
 }
+
+// Gerar snapshot + análise IA
+window.gerarRelatorioIA = async function() {
+  if (!window.supabase) { toast('Supabase não configurado', 'te'); return; }
+  
+  const bodyEl = document.getElementById('ai-body-full');
+  if (bodyEl) {
+    bodyEl.style.display = 'block';
+    bodyEl.innerHTML = '<div class="aip"><div class="ail">Coletando dados e gerando análise<div class="aid"><span>.</span><span>.</span><span>.</span></div></div></div>';
+  }
+
+  try {
+    // 1. Buscar snapshot do Supabase
+    const snapshot = await SB.rpc('gerar_snapshot_financeiro', { 
+      p_mes: getSelMes() + 1, 
+      p_ano: getSelAno() 
+    });
+    state.snapshotIA = snapshot;
+    render();
+
+    // 2. Se tem API Key, gerar análise com IA
+    if (API_KEY) {
+      const bodyEl2 = document.getElementById('ai-body-full');
+      if (bodyEl2) {
+        bodyEl2.style.display = 'block';
+        bodyEl2.innerHTML = '<div class="aip"><div class="ail">IA analisando seus dados<div class="aid"><span>.</span><span>.</span><span>.</span></div></div></div>';
+      }
+
+      const prompt = `Você é um consultor financeiro especialista em pequenas empresas do setor de joalheria/galvânica no Brasil.
+
+Analise este snapshot financeiro REAL de uma empresa e forneça um relatório executivo em PT-BR.
+
+DADOS:
+${JSON.stringify(snapshot, null, 2)}
+
+FORNEÇA EXATAMENTE ESTAS SEÇÕES (use emojis nos títulos):
+
+1. 🏥 DIAGNÓSTICO: estado geral da saúde financeira em 2-3 frases
+2. ⚠️ PONTOS CRÍTICOS: máximo 3 itens que precisam de atenção urgente
+3. 💡 OPORTUNIDADES: máximo 3 ações concretas para melhorar receita ou reduzir custos
+4. 📊 BENCHMARK: compare os indicadores com a média do setor de joalheria/galvânica
+5. 🎯 PLANO DE AÇÃO: 3 ações priorizadas para os próximos 30 dias
+6. 🔮 PREVISÃO: cenário para o próximo mês (otimista/realista/pessimista)
+
+Seja direto, prático e específico. Use números reais dos dados. Máximo 400 palavras total.`;
+
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+          body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+        });
+        const data = await res.json();
+        const texto = data.content?.[0]?.text || 'Sem resposta da IA.';
+        
+        if (bodyEl2) {
+          bodyEl2.innerHTML = `<div class="card" style="border-left:3px solid var(--gold)">
+            <div class="shd" style="color:var(--gold)">🧠 Análise da Inteligência Artificial</div>
+            <div style="font-size:13px;color:var(--txt);line-height:1.8;white-space:pre-wrap">${texto}</div>
+            <div style="margin-top:12px;font-size:10px;color:var(--txt3)">Gerado em ${new Date().toLocaleString('pt-BR')} com base nos seus dados reais</div>
+          </div>`;
+        }
+      } catch(e) {
+        if (bodyEl2) bodyEl2.innerHTML = `<div class="alert-box alert-amber"><div class="alert-icon">⚠️</div><div class="alert-body"><div class="alert-title">IA indisponível</div><div class="alert-sub">Configure a API Key em Configurações para análises com IA. O painel de dados funciona normalmente.</div></div></div>`;
+      }
+    } else {
+      if (bodyEl) bodyEl.innerHTML = `<div class="alert-box alert-amber"><div class="alert-icon">💡</div><div class="alert-body"><div class="alert-title">Painel carregado com seus dados reais</div><div class="alert-sub">Para análise com IA (diagnóstico, oportunidades, previsão), configure a API Key em Configurações.</div></div></div>`;
+    }
+    
+    toast('Painel atualizado!');
+  } catch(e) {
+    console.error('gerarRelatorioIA:', e);
+    if (bodyEl) bodyEl.innerHTML = '';
+    toast('Erro: ' + e.message, 'te');
+  }
+};
 
 // ============================================================
 // PAGE: CONFIGURAÇÕES
@@ -2038,16 +2202,19 @@ window.confirmarTodosExtrato = async function() {
 // RELATÓRIO IA
 // ============================================================
 async function analisarIA(tipo) {
-  if (!API_KEY) { toast('Configure API Key', 'te'); return; }
-  const el = document.getElementById('ai-body'); if (!el) return;
+  if (!API_KEY) { toast('Configure API Key em Configurações', 'te'); return; }
+  const quickEl = document.getElementById('ai-quick');
+  const el = document.getElementById('ai-body');
+  if (quickEl) quickEl.style.display = 'block';
+  if (!el) return;
   el.innerHTML = '<div class="ail">Analisando<div class="aid"><span>.</span><span>.</span><span>.</span></div></div>';
   const d = { rec: tReceb(), lanc: tLanc(), ret: tRetir(), l: lucro(), bol: tBol(), comp: tComp(), forn: (state.sb_fornecedores || []).map(f => f.nome).join(', ') };
   const ps = {
-    geral: `Joalheria: recebimentos R$${d.rec}, lançamentos R$${d.lanc}, retiradas R$${d.ret}, lucro R$${d.l}, boletos R$${d.bol}. 5 frases. PT-BR.`,
-    lucro: `Lucro R$${d.l}. Recebimentos R$${d.rec}. Lançamentos R$${d.lanc}+R$${d.ret}. 4 ações. PT-BR.`,
-    despesas: `Lançamentos R$${d.lanc}, compras R$${d.comp}. Fornecedores: ${d.forn}. Cortes. PT-BR.`,
-    previsao: `Recebimentos R$${d.rec}, lançamentos R$${d.lanc}. Previsão otimista/realista/pessimista. PT-BR.`,
-    fluxo: `Entradas R$${d.rec}, boletos pendentes R$${(state.sb_boletos || []).filter(b => b.status !== 'pago').reduce((s, b) => s + Number(b.valor || 0), 0)}. Caixa saudável? PT-BR.`
+    geral: `Joalheria/galvânica: recebimentos R$${d.rec}, lançamentos R$${d.lanc}, retiradas R$${d.ret}, lucro R$${d.l}, boletos R$${d.bol}, compras R$${d.comp}. Diagnóstico em 5 frases diretas. PT-BR.`,
+    lucro: `Lucro R$${d.l}. Recebimentos R$${d.rec}. Saídas R$${d.lanc}+R$${d.ret}. 4 ações concretas para melhorar margem. PT-BR.`,
+    despesas: `Lançamentos R$${d.lanc}, compras R$${d.comp}. Fornecedores: ${d.forn}. Onde cortar sem prejudicar operação? PT-BR.`,
+    previsao: `Recebimentos R$${d.rec}, lançamentos R$${d.lanc}, compras R$${d.comp}. Previsão próximo mês: otimista/realista/pessimista com números. PT-BR.`,
+    fluxo: `Entradas R$${d.rec}, boletos pendentes R$${(state.sb_boletos || []).filter(b => b.status !== 'pago').reduce((s, b) => s + Number(b.valor || 0), 0)}, compras R$${d.comp}. Caixa saudável? Riscos? PT-BR.`
   };
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -2055,7 +2222,7 @@ async function analisarIA(tipo) {
       body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 600, messages: [{ role: 'user', content: ps[tipo] }] })
     });
     const data = await res.json(); el.textContent = data.content?.[0]?.text || 'Sem resposta.';
-  } catch (e) { el.textContent = 'Erro. Verifique API Key.'; }
+  } catch (e) { el.textContent = 'Erro. Verifique API Key em Configurações.'; }
 }
 
 // === INITIAL RENDER ===
