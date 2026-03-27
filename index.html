@@ -877,10 +877,11 @@ function pgLanc() {
     <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addLancSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('flanc')">Cancelar</button></div>
   </div>
   <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Descrição</th><th>Fornecedor</th><th>Emissão</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <thead><tr><th>ID</th><th>Descrição</th><th>Nº Doc</th><th>Fornecedor</th><th>Emissão</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th></th></tr></thead>
     <tbody>${lista.length ? lista.map(l => `<tr>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${l.id}</td>
       <td style="font-weight:500">${l.descricao || '—'}</td>
+      <td style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px">${l.numero_documento || '—'}</td>
       <td style="color:var(--txt2);font-size:11px">${getFornNome(l.fornecedor_id)}</td>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${l.data_emissao || '—'}</td>
       <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${l.data_vencimento || '—'}</td>
@@ -891,7 +892,7 @@ function pgLanc() {
         <button class="btn btn-g btn-sm" onclick="editarRegistro('lancamentos',${l.id})">✏️</button>
         <button class="btn btn-d btn-sm" onclick="delSB('lancamentos',${l.id})">×</button>
       </td>
-    </tr>`).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhum lançamento neste mês</td></tr>'}</tbody>
+    </tr>`).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--txt3);padding:24px">Nenhum lançamento neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -923,10 +924,11 @@ function pgBol() {
     <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addBolSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fbol')">Cancelar</button></div>
   </div>
   <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Fornecedor</th><th>Descrição</th><th>Forma</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th>Ações</th></tr></thead>
+    <thead><tr><th>ID</th><th>Fornecedor</th><th>Nº Doc</th><th>Descrição</th><th>Forma</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th>Ações</th></tr></thead>
     <tbody>${(state.sb_boletos || []).length ? state.sb_boletos.map(b => `<tr>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${b.id}</td>
       <td style="font-weight:500">${getFornNome(b.fornecedor_id)}</td>
+      <td style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px">${b.numero_documento || '—'}</td>
       <td style="color:var(--txt2)">${b.descricao || '—'}</td>
       <td><span class="badge ${formaBadge(b.forma_pagamento)}">${formaLabel(b.forma_pagamento)}</span></td>
       <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${b.data_vencimento || '—'}</td>
@@ -937,7 +939,7 @@ function pgBol() {
         <button class="btn btn-g btn-sm" onclick="editarRegistro('boletos',${b.id})">✏️</button>
         <button class="btn btn-d btn-sm" onclick="delSB('boletos',${b.id})">×</button>
       </td>
-    </tr>`).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma conta a pagar</td></tr>'}</tbody>
+    </tr>`).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma conta a pagar</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -964,15 +966,16 @@ function pgComp() {
     <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addCompSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcomp')">Cancelar</button></div>
   </div>
   <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Fornecedor</th><th>Descrição</th><th>Data</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <thead><tr><th>ID</th><th>Fornecedor</th><th>Nº Doc</th><th>Descrição</th><th>Data</th><th style="text-align:right">Valor</th><th></th></tr></thead>
     <tbody>${lista.length ? lista.map(c => `<tr>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${c.id}</td>
       <td style="font-weight:500">${getFornNome(c.fornecedor_id)}</td>
+      <td style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px">${c.numero_documento || '—'}</td>
       <td style="color:var(--txt2)">${c.descricao || '—'}</td>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${c.data_compra || '—'}</td>
       <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valor)}</td>
       <td><button class="btn btn-g btn-sm" onclick="editarRegistro('compras',${c.id})">✏️</button> <button class="btn btn-d btn-sm" onclick="delSB('compras',${c.id})">×</button></td>
-    </tr>`).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra neste mês</td></tr>'}</tbody>
+    </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -1223,7 +1226,7 @@ function pgPDF() {
     ${state.pdfPendentes.map((item, i) => `
     <div class="card" style="margin-bottom:10px">
       <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-        <div><div style="font-size:13px;font-weight:600">${item.descricao || 'Doc'}</div><div style="font-size:11px;color:var(--txt3)">📄 ${item.arquivo}</div></div>
+        <div><div style="font-size:13px;font-weight:600">${item.descricao || 'Doc'}${item.numero_documento ? ` <span style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px">#${item.numero_documento}</span>` : ''}</div><div style="font-size:11px;color:var(--txt3)">📄 ${item.arquivo}</div></div>
         <div><span class="badge ${item.tipo === 'despesa' ? 'br' : item.tipo === 'receita' ? 'bg' : 'ba'}">${item.tipo_documento || 'documento'}</span> <span class="badge ${item._payload?.destino === 'boletos' ? 'bp' : item._payload?.destino === 'compras' ? 'bb' : item._payload?.destino === 'recebimentos' ? 'bg' : 'ba'}" style="margin-left:4px">→ ${item._payload?.destino || 'lançamento'}</span></div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px">
@@ -1592,6 +1595,7 @@ window.editarRegistro = function(tabela, id) {
       titulo: 'Conta a Pagar',
       stateKey: 'sb_boletos',
       campos: [
+        { key: 'numero_documento', label: 'Nº Documento', type: 'text' },
         { key: 'descricao', label: 'Descrição', type: 'text' },
         { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}" \${item.fornecedor_id==f.id?'selected':''}>${f.nome}</option>`).join('') },
         { key: 'valor', label: 'Valor (R$)', type: 'number' },
@@ -1604,6 +1608,7 @@ window.editarRegistro = function(tabela, id) {
       titulo: 'Pagamento',
       stateKey: 'sb_pagamentos',
       campos: [
+        { key: 'numero_documento', label: 'Nº Documento', type: 'text' },
         { key: 'descricao', label: 'Descrição', type: 'text' },
         { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}">${f.nome}</option>`).join('') },
         { key: 'valor', label: 'Valor (R$)', type: 'number' },
@@ -1616,6 +1621,7 @@ window.editarRegistro = function(tabela, id) {
       titulo: 'Recebimento',
       stateKey: 'recebimentos',
       campos: [
+        { key: 'numero_documento', label: 'Nº Documento', type: 'text' },
         { key: 'descricao', label: 'Descrição', type: 'text' },
         { key: 'valor', label: 'Valor (R$)', type: 'number' },
         { key: 'data', label: 'Data', type: 'date' },
@@ -1628,6 +1634,7 @@ window.editarRegistro = function(tabela, id) {
       titulo: 'Lançamento',
       stateKey: 'sb_lancamentos',
       campos: [
+        { key: 'numero_documento', label: 'Nº Documento', type: 'text' },
         { key: 'descricao', label: 'Descrição', type: 'text' },
         { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}">${f.nome}</option>`).join('') },
         { key: 'valor', label: 'Valor (R$)', type: 'number' },
@@ -1641,6 +1648,7 @@ window.editarRegistro = function(tabela, id) {
       titulo: 'Compra',
       stateKey: 'sb_compras',
       campos: [
+        { key: 'numero_documento', label: 'Nº Documento', type: 'text' },
         { key: 'descricao', label: 'Descrição', type: 'text' },
         { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}">${f.nome}</option>`).join('') },
         { key: 'valor', label: 'Valor (R$)', type: 'number' },
@@ -1727,11 +1735,11 @@ window.editarRegistro = function(tabela, id) {
 
 window.salvarEdicao = async function(tabela, id) {
   const configs = {
-    boletos: { stateKey: 'sb_boletos', campos: ['descricao','fornecedor_id','valor','data_vencimento','forma_pagamento','status'] },
-    pagamentos: { stateKey: 'sb_pagamentos', campos: ['descricao','fornecedor_id','valor','data_pagamento','forma_pagamento','observacao'] },
-    recebimentos: { stateKey: 'recebimentos', campos: ['descricao','valor','data','forma','origem','observacao'] },
-    lancamentos: { stateKey: 'sb_lancamentos', campos: ['descricao','fornecedor_id','valor','data_emissao','data_vencimento','status','observacao_status'] },
-    compras: { stateKey: 'sb_compras', campos: ['descricao','fornecedor_id','valor','data_compra'] },
+    boletos: { stateKey: 'sb_boletos', campos: ['numero_documento','descricao','fornecedor_id','valor','data_vencimento','forma_pagamento','status'] },
+    pagamentos: { stateKey: 'sb_pagamentos', campos: ['numero_documento','descricao','fornecedor_id','valor','data_pagamento','forma_pagamento','observacao'] },
+    recebimentos: { stateKey: 'recebimentos', campos: ['numero_documento','descricao','valor','data','forma','origem','observacao'] },
+    lancamentos: { stateKey: 'sb_lancamentos', campos: ['numero_documento','descricao','fornecedor_id','valor','data_emissao','data_vencimento','status','observacao_status'] },
+    compras: { stateKey: 'sb_compras', campos: ['numero_documento','descricao','fornecedor_id','valor','data_compra'] },
     fornecedores: { stateKey: 'sb_fornecedores', campos: ['nome','contato','observacao'] },
     itens: { stateKey: 'sb_itens', campos: ['nome','unidade','aliases'] },
     categorias: { stateKey: 'sb_categorias', campos: ['nome','tipo'] },
@@ -1856,6 +1864,8 @@ async function processarPDF(file) {
       tipo_documento: dados.tipo_documento || 'outros',
       tipo: dados.tipo || 'despesa',
       fornecedor: dados.fornecedor || '',
+      cliente: dados.cliente || '',
+      numero_documento: dados.numero_documento || '',
       descricao: dados.descricao || 'Documento',
       valor: Number(dados.valor_total || dados.valor || 0),
       vencimento: dados.vencimento || dados.data || '',
