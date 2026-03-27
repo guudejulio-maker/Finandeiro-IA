@@ -464,7 +464,7 @@ function stampUpdate() { window.lastUpdate = new Date(); }
 async function loadAll() {
   if (!supabase) {
     window.state = window.state || {};
-    ['sb_fornecedores','sb_categorias','sb_itens','sb_lancamentos','sb_boletos','sb_compras','sb_pagamentos','sb_documentos','recebimentos','retiradas','fechamentos'].forEach(k => { if(!window.state[k]) window.state[k]=[]; });
+    ['sb_fornecedores','sb_categorias','sb_itens','sb_lancamentos','sb_boletos','sb_compras','sb_pagamentos','sb_documentos','sb_clientes','recebimentos','retiradas','fechamentos'].forEach(k => { if(!window.state[k]) window.state[k]=[]; });
     if (typeof render === 'function') render();
     return;
   }
@@ -482,6 +482,7 @@ async function loadAll() {
     s.sb_documentos = await SB.list('documentos', { order: 'created_at', asc: false });
     s.recebimentos = await SB.list('recebimentos', { order: 'data', asc: false });
     s.retiradas = await SB.list('retiradas_diretor', { order: 'data', asc: false });
+    try { s.sb_clientes = await SB.list('clientes', { order: 'created_at' }); } catch(e) { s.sb_clientes = []; }
     try { s.fechamentos = await SB.list('fechamentos', { order: 'data', asc: false }); } catch(e) { s.fechamentos = []; }
   } catch (e) {
     console.error('loadAll error:', e);
@@ -632,7 +633,7 @@ document.getElementById('nav').addEventListener('click', e => {
   state.page = item.dataset.page;
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   item.classList.add('active');
-  const titles = { dashboard:'Dashboard', pdf:'Importar PDF', extrato:'Extrato Bancário', recebimentos:'Recebimentos', despesas:'Despesas (Boletos)', lancamentos:'Lançamentos', produtos:'Itens / Produtos', fornecedores:'Fornecedores', categorias:'Categorias', boletos:'Boletos / Contas a Pagar', compras:'Compras (Histórico)', pagamentos:'Pagamentos', precos:'Comparar Preços', retirada:'Retirada Diretor', fechamento:'Fechamento do Mês', dre:'DRE Completo', relatorio:'Relatório IA', config:'Configurações' };
+  const titles = { dashboard:'Dashboard', pdf:'Importar PDF', extrato:'Extrato Bancário', recebimentos:'Recebimentos', despesas:'Despesas', lancamentos:'Lançamentos', produtos:'Itens / Produtos', fornecedores:'Fornecedores', categorias:'Categorias', boletos:'Contas a Pagar', compras:'Compras (Histórico)', pagamentos:'Pagamentos', precos:'Comparar Preços', retirada:'Retirada Diretor', fechamento:'Fechamento do Mês', dre:'DRE Completo', relatorio:'Relatório IA', config:'Configurações' };
   document.getElementById('page-title').textContent = titles[item.dataset.page] || item.dataset.page;
   render();
 });
@@ -733,6 +734,10 @@ function pgDash() {
 function pgReceb() {
   const lista = fReceb(), total = tReceb();
   const totalGeral = (state.recebimentos || []).reduce((s, r) => s + Number(r.valor || 0), 0);
+  const formaOpts = `<option value="dinheiro">Dinheiro</option><option value="pix">PIX</option><option value="cartao">Cartão</option><option value="cheque">Cheque</option><option value="boleto">Boleto</option>`;
+  const formaLabel = (f) => ({dinheiro:'Dinheiro',pix:'PIX',cartao:'Cartão',cheque:'Cheque',boleto:'Boleto'})[f] || f || '—';
+  const formaBadge = (f) => ({dinheiro:'bg',pix:'bb',cartao:'ba',cheque:'bt',boleto:'bp'})[f] || 'bg';
+  const getClienteNome = (id) => { const c = (state.sb_clientes || []).find(c => c.id === id); return c ? c.nome : ''; };
   return `
   <div class="ar">
     <button class="btn btn-p btn-sm" onclick="toggleForm('frec')">+ Novo Recebimento</button>
@@ -741,23 +746,30 @@ function pgReceb() {
   </div>
   <div id="frec" class="fc" style="display:none">
     <div class="ft">Novo Recebimento</div>
-    <div class="fg c4">
+    <div class="fg c5">
       <div class="fl"><label>Descrição</label><input id="rec-desc" placeholder="Ex: Venda cliente X"/></div>
       <div class="fl"><label>Valor (R$)</label><input id="rec-val" type="number" step="0.01" placeholder="0,00"/></div>
       <div class="fl"><label>Data</label><input id="rec-data" type="date" value="${today()}"/></div>
+      <div class="fl"><label>Forma</label><select id="rec-forma">${formaOpts}</select></div>
+      <div class="fl"><label>Cliente</label><input id="rec-cliente" placeholder="Nome do cliente"/></div>
+    </div>
+    <div class="fg c2">
+      <div class="fl"><label>Origem</label><input id="rec-origem" placeholder="Ex: Loja, Online, WhatsApp"/></div>
       <div class="fl"><label>Observação</label><input id="rec-obs" placeholder="Opcional"/></div>
     </div>
     <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addReceb()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('frec')">Cancelar</button></div>
   </div>
   <div class="tw"><table>
-    <thead><tr><th>Data</th><th>Descrição</th><th>Observação</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <thead><tr><th>Data</th><th>Descrição</th><th>Cliente</th><th>Forma</th><th>Origem</th><th style="text-align:right">Valor</th><th></th></tr></thead>
     <tbody>${lista.length ? lista.map(r => `<tr>
       <td style="font-family:'DM Mono',monospace;font-size:11px">${r.data || ''}</td>
       <td style="font-weight:500">${r.descricao || '—'}</td>
-      <td style="color:var(--txt3)">${r.observacao || '—'}</td>
+      <td style="color:var(--txt2);font-size:11px">${getClienteNome(r.cliente_id) || '—'}</td>
+      <td><span class="badge ${formaBadge(r.forma)}">${formaLabel(r.forma)}</span></td>
+      <td style="color:var(--txt3);font-size:11px">${r.origem || '—'}</td>
       <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(r.valor)}</td>
       <td><button class="btn btn-d btn-sm" onclick="delSB('recebimentos',${r.id})">×</button></td>
-    </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--txt3);padding:24px">Nenhum recebimento neste mês</td></tr>'}</tbody>
+    </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum recebimento neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -880,34 +892,39 @@ function pgLanc() {
 }
 
 // ============================================================
-// PAGE: BOLETOS
+// PAGE: BOLETOS / CONTAS A PAGAR
 // ============================================================
 function pgBol() {
   const total = tBol();
   const pendentes = (state.sb_boletos || []).filter(b => b.status === 'pendente' || b.status === 'atrasado');
+  const formaOpts = `<option value="boleto">Boleto</option><option value="pix">PIX</option><option value="cartao">Cartão</option><option value="cheque">Cheque</option><option value="dinheiro">Dinheiro</option><option value="outros">Outros</option>`;
+  const formaLabel = (f) => ({boleto:'Boleto',pix:'PIX',cartao:'Cartão',cheque:'Cheque',dinheiro:'Dinheiro'})[f] || f || 'Boleto';
+  const formaBadge = (f) => ({boleto:'bp',pix:'bb',cartao:'ba',cheque:'bt',dinheiro:'bg'})[f] || 'bp';
   return `
   <div class="ar">
-    <button class="btn btn-p btn-sm" onclick="toggleForm('fbol')">+ Novo Boleto</button>
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fbol')">+ Nova Conta a Pagar</button>
     <span class="badge br" style="padding:5px 11px">Total: ${fmt(total)}</span>
     <span class="badge ba" style="padding:5px 11px">${pendentes.length} pendentes/atrasados</span>
     <button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button>
   </div>
   <div id="fbol" class="fc" style="display:none">
-    <div class="ft">Novo Boleto (gera conta a pagar)</div>
-    <div class="fg c4">
+    <div class="ft">Nova Conta a Pagar</div>
+    <div class="fg c5">
       <div class="fl"><label>Fornecedor</label><select id="sb-forn"><option value="">—</option>${(state.sb_fornecedores || []).map(f => `<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
       <div class="fl"><label>Descrição</label><input id="sb-desc"/></div>
       <div class="fl"><label>Valor (R$)</label><input id="sb-val" type="number" step="0.01"/></div>
       <div class="fl"><label>Vencimento</label><input id="sb-venc" type="date"/></div>
+      <div class="fl"><label>Forma</label><select id="sb-forma">${formaOpts}</select></div>
     </div>
     <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addBolSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fbol')">Cancelar</button></div>
   </div>
   <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Fornecedor</th><th>Descrição</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th>Ações</th></tr></thead>
+    <thead><tr><th>ID</th><th>Fornecedor</th><th>Descrição</th><th>Forma</th><th>Vencimento</th><th>Status</th><th style="text-align:right">Valor</th><th>Ações</th></tr></thead>
     <tbody>${(state.sb_boletos || []).length ? state.sb_boletos.map(b => `<tr>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${b.id}</td>
       <td style="font-weight:500">${getFornNome(b.fornecedor_id)}</td>
       <td style="color:var(--txt2)">${b.descricao || '—'}</td>
+      <td><span class="badge ${formaBadge(b.forma_pagamento)}">${formaLabel(b.forma_pagamento)}</span></td>
       <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--amber)">${b.data_vencimento || '—'}</td>
       <td><span class="badge ${b.status === 'pago' ? 'bg' : b.status === 'atrasado' ? 'br' : b.status === 'renegociado' ? 'bp' : 'ba'}">${b.status || 'pendente'}</span></td>
       <td style="text-align:right;font-weight:600;color:var(--red);font-family:'DM Mono',monospace">${fmt(b.valor)}</td>
@@ -915,7 +932,7 @@ function pgBol() {
         ${b.status !== 'pago' ? `<button class="btn btn-s btn-sm" onclick="pagarBolSB(${b.id})">✓ Pagar</button><button class="btn btn-a btn-sm" onclick="showRenegociar(${b.id})">🔄</button>` : ''}
         <button class="btn btn-d btn-sm" onclick="delSB('boletos',${b.id})">×</button>
       </td>
-    </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum boleto</td></tr>'}</tbody>
+    </tr>`).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma conta a pagar</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -959,16 +976,42 @@ function pgComp() {
 // ============================================================
 function pgPag() {
   const lista = fPag();
+  const totalMes = lista.reduce((s, p) => s + Number(p.valor || 0), 0);
+  const formaOpts = `<option value="boleto">Boleto</option><option value="pix">PIX</option><option value="cartao">Cartão</option><option value="cheque">Cheque</option><option value="dinheiro">Dinheiro</option>`;
+  const formaLabel = (f) => ({boleto:'Boleto',pix:'PIX',cartao:'Cartão',cheque:'Cheque',dinheiro:'Dinheiro'})[f] || f || '—';
+  const formaBadge = (f) => ({boleto:'bp',pix:'bb',cartao:'ba',cheque:'bt',dinheiro:'bg'})[f] || 'bp';
   return `
-  <div class="ar"><span class="badge bg" style="padding:5px 11px">${lista.length} pagamentos no mês</span><button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button></div>
+  <div class="ar">
+    <button class="btn btn-p btn-sm" onclick="toggleForm('fpag')">+ Novo Pagamento</button>
+    <span class="badge bg" style="padding:5px 11px">${lista.length} pagamentos — ${fmt(totalMes)}</span>
+    <button class="btn btn-g btn-sm" onclick="reloadAllData()">↻</button>
+  </div>
+  <div id="fpag" class="fc" style="display:none">
+    <div class="ft">Registrar Pagamento</div>
+    <div class="fg c5">
+      <div class="fl"><label>Descrição</label><input id="pg-desc" placeholder="Ex: Pagamento fornecedor"/></div>
+      <div class="fl"><label>Fornecedor</label><select id="pg-forn"><option value="">—</option>${(state.sb_fornecedores || []).map(f => `<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
+      <div class="fl"><label>Valor (R$)</label><input id="pg-val" type="number" step="0.01"/></div>
+      <div class="fl"><label>Data</label><input id="pg-data" type="date" value="${today()}"/></div>
+      <div class="fl"><label>Forma</label><select id="pg-forma">${formaOpts}</select></div>
+    </div>
+    <div class="fg c2">
+      <div class="fl"><label>Conta vinculada</label><select id="pg-bol"><option value="">— Avulso —</option>${(state.sb_boletos || []).filter(b => b.status !== 'pago').map(b => `<option value="${b.id}">${b.descricao || 'Conta #' + b.id} — ${fmt(b.valor)}</option>`).join('')}</select></div>
+      <div class="fl"><label>Observação</label><input id="pg-obs" placeholder="Opcional"/></div>
+    </div>
+    <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addPagSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fpag')">Cancelar</button></div>
+  </div>
   <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Boleto</th><th>Data Pagamento</th><th style="text-align:right">Valor</th></tr></thead>
+    <thead><tr><th>ID</th><th>Descrição</th><th>Fornecedor</th><th>Forma</th><th>Data</th><th style="text-align:right">Valor</th><th></th></tr></thead>
     <tbody>${lista.length ? lista.map(p => `<tr>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${p.id}</td>
-      <td style="font-weight:500">Boleto #${p.boleto_id || '—'}</td>
+      <td style="font-weight:500">${p.descricao || (p.boleto_id ? 'Conta #' + p.boleto_id : '—')}</td>
+      <td style="color:var(--txt2);font-size:11px">${getFornNome(p.fornecedor_id)}</td>
+      <td><span class="badge ${formaBadge(p.forma_pagamento)}">${formaLabel(p.forma_pagamento)}</span></td>
       <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--green)">${p.data_pagamento || '—'}</td>
       <td style="text-align:right;font-weight:600;color:var(--green);font-family:'DM Mono',monospace">${fmt(p.valor)}</td>
-    </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;color:var(--txt3);padding:24px">Nenhum pagamento neste mês</td></tr>'}</tbody>
+      <td><button class="btn btn-d btn-sm" onclick="delSB('pagamentos',${p.id})">×</button></td>
+    </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhum pagamento neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -1296,11 +1339,23 @@ window.addReceb = async function() {
   const desc = (document.getElementById('rec-desc')?.value || '').trim();
   const val = +(document.getElementById('rec-val')?.value || 0);
   const data = document.getElementById('rec-data')?.value || null;
+  const forma = document.getElementById('rec-forma')?.value || 'dinheiro';
+  const clienteNome = (document.getElementById('rec-cliente')?.value || '').trim();
+  const origem = (document.getElementById('rec-origem')?.value || '').trim();
   const obs = (document.getElementById('rec-obs')?.value || '').trim();
   if (!val) return toast('Informe o valor', 'te');
   try {
     setSaving();
-    const row = await SB.insert('recebimentos', { descricao: desc || 'Recebimento', valor: val, data: data, observacao: obs || null });
+    let cliente_id = null;
+    if (clienteNome) {
+      cliente_id = await SB.rpc('resolver_cliente', { p_nome: clienteNome });
+      // Recarregar clientes
+      state.sb_clientes = await SB.list('clientes', { order: 'created_at' });
+    }
+    const row = await SB.insert('recebimentos', { 
+      descricao: desc || 'Recebimento', valor: val, data: data, 
+      forma: forma, origem: origem || null, observacao: obs || null, cliente_id: cliente_id 
+    });
     if (!Array.isArray(state.recebimentos)) state.recebimentos = [];
     state.recebimentos.unshift(row);
     setOnline(); render(); toast('Recebimento registrado!');
@@ -1346,18 +1401,19 @@ window.addBolSB = async function() {
   const desc = (document.getElementById('sb-desc')?.value || '').trim();
   const val = +(document.getElementById('sb-val')?.value || 0);
   const venc = document.getElementById('sb-venc')?.value || null;
+  const forma = document.getElementById('sb-forma')?.value || 'boleto';
   if (!val) return toast('Informe o valor', 'te');
   try {
     setSaving();
-    const row = { valor: val, data_vencimento: venc, status: 'pendente', descricao: desc || null };
+    const row = { valor: val, data_vencimento: venc, status: 'pendente', descricao: desc || null, forma_pagamento: forma, tipo_conta: forma };
     if (forn) row.fornecedor_id = +forn;
     const data = await SB.insert('boletos', row);
     state.sb_boletos.unshift(data);
-    setOnline(); render(); toast('Boleto criado!');
+    setOnline(); render(); toast('Conta a pagar criada!');
   } catch (e) { toast('Erro: ' + e.message, 'te'); }
 };
 
-// Pagar boleto
+// Pagar boleto/conta
 window.pagarBolSB = async function(id) {
   try {
     setSaving();
@@ -1365,10 +1421,41 @@ window.pagarBolSB = async function(id) {
     const bol = (state.sb_boletos || []).find(b => b.id === id);
     if (bol) {
       bol.status = 'pago';
-      await SB.insert('pagamentos', { boleto_id: id, valor: bol.valor, data_pagamento: today() });
-      state.sb_pagamentos = await SB.list('pagamentos', { order: 'criado_em', asc: false });
+      await SB.insert('pagamentos', { 
+        boleto_id: id, valor: bol.valor, data_pagamento: today(), 
+        forma_pagamento: bol.forma_pagamento || 'boleto',
+        descricao: bol.descricao, fornecedor_id: bol.fornecedor_id
+      });
+      state.sb_pagamentos = await SB.list('pagamentos', { order: 'created_at', asc: false });
     }
-    setOnline(); render(); toast('Boleto pago!');
+    setOnline(); render(); toast('Conta paga!');
+  } catch (e) { toast('Erro: ' + e.message, 'te'); }
+};
+
+// Pagamento avulso (sem conta vinculada ou com)
+window.addPagSB = async function() {
+  const desc = (document.getElementById('pg-desc')?.value || '').trim();
+  const forn = document.getElementById('pg-forn')?.value;
+  const val = +(document.getElementById('pg-val')?.value || 0);
+  const data = document.getElementById('pg-data')?.value || today();
+  const forma = document.getElementById('pg-forma')?.value || 'dinheiro';
+  const bolId = document.getElementById('pg-bol')?.value || null;
+  const obs = (document.getElementById('pg-obs')?.value || '').trim();
+  if (!val) return toast('Informe o valor', 'te');
+  try {
+    setSaving();
+    const row = { valor: val, data_pagamento: data, forma_pagamento: forma, descricao: desc || null, observacao: obs || null };
+    if (forn) row.fornecedor_id = +forn;
+    if (bolId) {
+      row.boleto_id = +bolId;
+      // Marcar conta como paga
+      await SB.update('boletos', +bolId, { status: 'pago' });
+      const bol = (state.sb_boletos || []).find(b => b.id === +bolId);
+      if (bol) bol.status = 'pago';
+    }
+    const d = await SB.insert('pagamentos', row);
+    state.sb_pagamentos.unshift(d);
+    setOnline(); render(); toast('Pagamento registrado!');
   } catch (e) { toast('Erro: ' + e.message, 'te'); }
 };
 
