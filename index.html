@@ -1003,12 +1003,17 @@ function pgComp() {
   </div>
   <div id="fcomp" class="fc" style="display:none">
     <div class="ft">Nova Compra</div>
-    <div class="fg c5">
+    <div class="fg c4">
       <div class="fl"><label>Fornecedor</label><select id="sco-forn"><option value="">—</option>${(state.sb_fornecedores || []).map(f => `<option value="${f.id}">${f.nome}</option>`).join('')}</select></div>
       <div class="fl"><label>Nº Documento</label><input id="sco-ndoc" placeholder="Nº NF/Pedido"/></div>
-      <div class="fl"><label>Descrição</label><input id="sco-desc"/></div>
-      <div class="fl"><label>Valor (R$)</label><input id="sco-val" type="number" step="0.01"/></div>
+      <div class="fl"><label>Descrição / Produto</label><input id="sco-desc"/></div>
       <div class="fl"><label>Data</label><input id="sco-data" type="date" value="${today()}"/></div>
+    </div>
+    <div class="fg c4">
+      <div class="fl"><label>Quantidade</label><input id="sco-qtd" type="number" step="0.01" value="1"/></div>
+      <div class="fl"><label>Unidade</label><select id="sco-un"><option value="UN">UN</option><option value="KG">KG</option><option value="G">G</option><option value="L">L</option><option value="ML">ML</option><option value="M">M</option><option value="CX">CX</option><option value="PC">PC</option><option value="PAR">PAR</option></select></div>
+      <div class="fl"><label>Valor Total (R$)</label><input id="sco-val" type="number" step="0.01"/></div>
+      <div class="fl"></div>
     </div>
     <div style="display:flex;gap:8px"><button class="btn btn-p btn-sm" onclick="addCompSB()">Salvar</button><button class="btn btn-g btn-sm" onclick="toggleForm('fcomp')">Cancelar</button></div>
   </div>
@@ -1017,19 +1022,21 @@ function pgComp() {
   <div id="compra-detalhe"></div>
 
   <div class="tw"><table>
-    <thead><tr><th>ID</th><th>Fornecedor</th><th>Nº Doc</th><th>Descrição</th><th>Data</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <thead><tr><th>ID</th><th>Fornecedor</th><th>Nº Doc</th><th>Descrição</th><th style="text-align:center">Qtd</th><th>UN</th><th>Data</th><th style="text-align:right">Valor</th><th></th></tr></thead>
     <tbody>${lista.length ? lista.map(c => `<tr style="cursor:pointer" onclick="verCompra(${c.id})">
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:10px">#${c.id}</td>
       <td style="font-weight:500">${getFornNome(c.fornecedor_id)}</td>
       <td style="color:var(--gold);font-family:'DM Mono',monospace;font-size:11px">${c.numero_documento || '—'}</td>
       <td style="color:var(--txt2)">${c.descricao || '—'}</td>
+      <td style="text-align:center;font-family:'DM Mono',monospace;font-size:11px">${c.quantidade || 1}</td>
+      <td style="color:var(--txt3);font-size:10px">${c.unidade || 'UN'}</td>
       <td style="color:var(--txt3);font-family:'DM Mono',monospace;font-size:11px">${c.data_compra || '—'}</td>
       <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(c.valor)}</td>
       <td style="display:flex;gap:4px" onclick="event.stopPropagation()">
         <button class="btn btn-g btn-sm" onclick="editarRegistro('compras',${c.id})">✏️</button>
         <button class="btn btn-d btn-sm" onclick="delSB('compras',${c.id})">×</button>
       </td>
-    </tr>`).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra neste mês</td></tr>'}</tbody>
+    </tr>`).join('') : '<tr><td colspan="9" style="text-align:center;color:var(--txt3);padding:24px">Nenhuma compra neste mês</td></tr>'}</tbody>
   </table></div>`;
 }
 
@@ -1737,12 +1744,14 @@ window.addCompSB = async function() {
   const forn = document.getElementById('sco-forn')?.value;
   const ndoc = (document.getElementById('sco-ndoc')?.value || '').trim();
   const desc = (document.getElementById('sco-desc')?.value || '').trim();
+  const qtd = +(document.getElementById('sco-qtd')?.value || 1);
+  const un = document.getElementById('sco-un')?.value || 'UN';
   const val = +(document.getElementById('sco-val')?.value || 0);
   const data = document.getElementById('sco-data')?.value || null;
   if (!val) return toast('Informe o valor', 'te');
   try {
     setSaving();
-    const row = { descricao: desc || null, valor: val, data_compra: data, numero_documento: ndoc || null };
+    const row = { descricao: desc || null, valor: val, data_compra: data, numero_documento: ndoc || null, quantidade: qtd, unidade: un };
     if (forn) row.fornecedor_id = +forn;
     const d = await SB.insert('compras', row);
     state.sb_compras.unshift(d);
@@ -1762,12 +1771,13 @@ window.verCompra = async function(id) {
     el.innerHTML = `
     <div class="card" style="margin:14px 0;border-left:3px solid var(--blue)">
       <div class="shd">📦 Compra #${compra.id} — ${compra.fornecedor_nome} ${compra.numero_documento ? '<span style="color:var(--gold);font-family:DM Mono,monospace"> Doc #' + compra.numero_documento + '</span>' : ''}</div>
-      <div style="font-size:12px;color:var(--txt2);margin-bottom:10px">${compra.descricao || ''} — ${compra.data_compra || ''} — <strong>${fmt(compra.valor)}</strong></div>
+      <div style="font-size:12px;color:var(--txt2);margin-bottom:10px">${compra.descricao || ''} — ${compra.data_compra || ''} — <strong>${fmt(compra.valor)}</strong> — ${compra.quantidade || 1} ${compra.unidade || 'UN'}</div>
       ${itens.length ? `<table style="width:100%;font-size:12px">
-        <thead><tr><th>Produto</th><th style="text-align:right">Qtd</th><th style="text-align:right">Unitário</th><th style="text-align:right">Total</th></tr></thead>
+        <thead><tr><th>Produto</th><th style="text-align:right">Qtd</th><th>UN</th><th style="text-align:right">Unitário</th><th style="text-align:right">Total</th></tr></thead>
         <tbody>${itens.map(i => `<tr>
           <td style="font-weight:500">${i.item_nome || i.descricao_original || '—'}</td>
           <td style="text-align:right;font-family:'DM Mono',monospace">${i.quantidade || 1}</td>
+          <td style="color:var(--txt3);font-size:10px">${i.unidade || 'UN'}</td>
           <td style="text-align:right;color:var(--txt2);font-family:'DM Mono',monospace">${fmt(i.valor_unitario)}</td>
           <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(i.valor_total)}</td>
         </tr>`).join('')}</tbody>
@@ -1924,8 +1934,10 @@ window.editarRegistro = function(tabela, id) {
       stateKey: 'sb_compras',
       campos: [
         { key: 'numero_documento', label: 'Nº Documento', type: 'text' },
-        { key: 'descricao', label: 'Descrição', type: 'text' },
+        { key: 'descricao', label: 'Descrição / Produto', type: 'text' },
         { key: 'fornecedor_id', label: 'Fornecedor', type: 'select', options: () => (state.sb_fornecedores||[]).map(f => `<option value="${f.id}">${f.nome}</option>`).join('') },
+        { key: 'quantidade', label: 'Quantidade', type: 'number' },
+        { key: 'unidade', label: 'Unidade', type: 'select', options: () => `<option value="UN">UN</option><option value="KG">KG</option><option value="G">G</option><option value="L">L</option><option value="ML">ML</option><option value="M">M</option><option value="CX">CX</option><option value="PC">PC</option><option value="PAR">PAR</option>` },
         { key: 'valor', label: 'Valor (R$)', type: 'number' },
         { key: 'data_compra', label: 'Data Compra', type: 'date' },
       ]
@@ -2014,7 +2026,7 @@ window.salvarEdicao = async function(tabela, id) {
     pagamentos: { stateKey: 'sb_pagamentos', campos: ['numero_documento','descricao','fornecedor_id','valor','data_pagamento','forma_pagamento','observacao'] },
     recebimentos: { stateKey: 'recebimentos', campos: ['numero_documento','descricao','valor','data','forma','origem','observacao'] },
     lancamentos: { stateKey: 'sb_lancamentos', campos: ['numero_documento','descricao','fornecedor_id','valor','data_emissao','data_vencimento','status','observacao_status'] },
-    compras: { stateKey: 'sb_compras', campos: ['numero_documento','descricao','fornecedor_id','valor','data_compra'] },
+    compras: { stateKey: 'sb_compras', campos: ['numero_documento','descricao','fornecedor_id','quantidade','unidade','valor','data_compra'] },
     fornecedores: { stateKey: 'sb_fornecedores', campos: ['nome','contato','observacao'] },
     itens: { stateKey: 'sb_itens', campos: ['nome','unidade','aliases'] },
     categorias: { stateKey: 'sb_categorias', campos: ['nome','tipo'] },
