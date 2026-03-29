@@ -1312,6 +1312,17 @@ function pgPDF() {
         ${item.vencimento ? `<div><div style="font-size:10px;color:var(--txt3)">Vencimento</div><div style="font-size:12px">${item.vencimento}</div></div>` : ''}
       </div>
       ${item.resumo ? `<div style="font-size:11px;color:var(--txt2);margin-bottom:8px;line-height:1.5">${item.resumo}</div>` : ''}
+      ${(item.itens && item.itens.length) ? `<div style="background:var(--bg3);border-radius:8px;padding:10px;margin-bottom:8px">
+        <div style="font-size:10px;color:var(--txt3);margin-bottom:6px;font-weight:600">ITENS EXTRAÍDOS</div>
+        <table style="width:100%;font-size:11px"><thead><tr><th style="text-align:left">Produto</th><th style="text-align:right">Qtd</th><th>UN</th><th style="text-align:right">Unit.</th><th style="text-align:right">Total</th></tr></thead>
+        <tbody>${item.itens.map(it => `<tr>
+          <td style="font-weight:500">${it.descricao || it.nome || '—'}</td>
+          <td style="text-align:right;font-family:'DM Mono',monospace">${it.quantidade || 1}</td>
+          <td style="color:var(--txt3)">${it.unidade || 'UN'}</td>
+          <td style="text-align:right;font-family:'DM Mono',monospace">${fmt(it.valor_unitario || 0)}</td>
+          <td style="text-align:right;font-weight:600;color:var(--blue);font-family:'DM Mono',monospace">${fmt(it.valor_total || 0)}</td>
+        </tr>`).join('')}</tbody></table>
+      </div>` : ''}
       <div style="display:flex;gap:8px">
         <button class="btn btn-s btn-sm" onclick="confirmarPDF(${i})">✓ Confirmar</button>
         <button class="btn btn-g btn-sm" onclick="rejeitarPDF(${i})">Descartar</button>
@@ -2181,14 +2192,32 @@ async function processarPDF(file) {
       txt += ct.items.map(item => item.str).join(' ') + '\n';
     }
 
-    // Envia texto bruto ao Supabase — toda inteligência fica no backend
-    const result = await SB.rpc('processar_documento_pdf', {
-      p_texto: txt.slice(0, 8000),
-      p_nome_arquivo: file.name
-    });
+    // Chamar Edge Function com IA para extrair dados do PDF
+    const session = await window.supabase.auth.getSession();
+    const token = session?.data?.session?.access_token;
+    
+    let dados = null;
+    
+    // Tentar Edge Function (IA) primeiro
+    try {
+      const res = await fetch('https://cqopxsdrxalfmammzdlv.supabase.co/functions/v1/processar-pdf-ia', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ texto: txt.slice(0, 6000), nome_arquivo: file.name })
+      });
+      const json = await res.json();
+      if (json.erro) throw new Error(json.erro);
+      dados = json;
+    } catch (edgeErr) {
+      console.warn('Edge Function indisponível, usando SQL fallback:', edgeErr.message);
+      // Fallback: usar RPC SQL (parsing básico)
+      dados = await SB.rpc('processar_documento_pdf', {
+        p_texto: txt.slice(0, 8000),
+        p_nome_arquivo: file.name
+      });
+    }
 
-    // Supabase retorna JSON estruturado; front apenas exibe
-    const dados = result || {};
+    dados = dados || {};
     state.pdfPendentes.push({
       tipo_documento: dados.tipo_documento || 'outros',
       tipo: dados.tipo || 'despesa',
