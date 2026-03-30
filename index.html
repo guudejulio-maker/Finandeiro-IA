@@ -2294,8 +2294,7 @@ async function processarPDF(file) {
     for (let i = 1; i <= Math.min(pdf.numPages, 6); i++) {
       const pg = await pdf.getPage(i);
       const ct = await pg.getTextContent();
-      txt += ct.items.map(item => item.str).join(' ') + '
-';
+      txt += ct.items.map(item => item.str).join(' ') + '\n';
     }
 
     // Chamar Edge Function com IA para extrair dados do PDF
@@ -2352,8 +2351,7 @@ async function processarPDF(file) {
 async function iaAnalise(texto, instrucao) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST', headers: { 'Content-Type': 'application/json', 'x-api-key': API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: instrucao + '
-Texto: ' + texto.slice(0, 4000) }] })
+    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: instrucao + '\nTexto: ' + texto.slice(0, 4000) }] })
   });
   const data = await res.json(); const t = data.content?.[0]?.text || '{}';
   try { return JSON.parse(t.replace(/```json|```/g, '').trim()); } catch (e) { return { tipo: 'despesa', descricao: 'Doc', valor: 0 }; }
@@ -2408,8 +2406,7 @@ async function processarExtrato(file) {
       for (let i = 1; i <= Math.min(pdf.numPages, 10); i++) {
         const pg = await pdf.getPage(i);
         const ct = await pg.getTextContent();
-        txt += ct.items.map(x => x.str).join(' ') + '
-';
+        txt += ct.items.map(x => x.str).join(' ') + '\n';
       }
     } else {
       txt = await file.text();
