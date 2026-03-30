@@ -2193,23 +2193,21 @@ async function processarPDF(file) {
     }
 
     // Chamar Edge Function com IA para extrair dados do PDF
-    const session = await window.supabase.auth.getSession();
-    const token = session?.data?.session?.access_token;
-    
     let dados = null;
     
     // Tentar Edge Function (IA) primeiro
     try {
       const res = await fetch('https://cqopxsdrxalfmammzdlv.supabase.co/functions/v1/processar-pdf-ia', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ texto: txt.slice(0, 6000), nome_arquivo: file.name })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ texto: txt.slice(0, 6000), nome_arquivo: file.name, api_key: API_KEY })
       });
       const json = await res.json();
       if (json.erro) throw new Error(json.erro);
       dados = json;
+      console.log('Edge Function retornou:', dados);
     } catch (edgeErr) {
-      console.warn('Edge Function indisponível, usando SQL fallback:', edgeErr.message);
+      console.warn('Edge Function falhou:', edgeErr.message, '— usando SQL fallback');
       // Fallback: usar RPC SQL (parsing básico)
       dados = await SB.rpc('processar_documento_pdf', {
         p_texto: txt.slice(0, 8000),
